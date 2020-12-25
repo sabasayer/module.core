@@ -1,34 +1,48 @@
 import { IApiOptions } from "@/api/api-options.interface";
 import { IApi, IApiConstuctor } from "@/api/api.interface";
+import {
+  IController,
+  IControllerConstructor,
+} from "@/controller/controller.interface";
 import { IProvider, IProviderConstructor } from "@/provider/provider.interface";
-import { ICoreModule } from "./core-module.interface";
+import {
+  ICoreModule,
+  RegisterControllerOptions,
+  RegisterProviderOptions,
+} from "./create-module/core-module.interface";
+import { ICoreDecorators } from "./decorators/core-decorators.interface";
 
 export class ModuleCore implements ICoreModule {
   private apis: Map<string, IApi> = new Map();
   private providers: Map<string, IProvider> = new Map();
+  private controllers: Map<string, IController> = new Map();
 
-  registerApi(apiConstructor: IApiConstuctor, options: IApiOptions) {
-    const api = new apiConstructor(options);
-    this.apis.set(apiConstructor.name, api);
+  useDecorators(decorators: ICoreDecorators) {
+    decorators.setModule(this);
     return this;
   }
 
-  resolveApi<T extends IApi>(apiConstructor?: IApiConstuctor): T | undefined {
-    if (apiConstructor)
-      return this.resolveByConstructor<T>(this.apis, apiConstructor);
+  registerApi(api: IApiConstuctor, options: IApiOptions) {
+    const apiObj = new api(options);
+    this.apis.set(api.name, apiObj);
+    return this;
+  }
+
+  resolveApi<T extends IApi>(api?: IApiConstuctor): T | undefined {
+    if (api) return this.resolveByConstructor<T>(this.apis, api);
     else return this.apis.values().next().value;
   }
 
   registerProvider(
-    keyOrConstructor: string | IProviderConstructor,
-    providerConstructor?: IProviderConstructor
+    provider: IProviderConstructor,
+    options?: RegisterProviderOptions
   ) {
-    const api = this.resolveApi();
+    const api = this.resolveApi(options?.prefferedApi);
     if (!api) throw new Error("Api is not registered.");
 
-    if (typeof keyOrConstructor === "string")
-      this.registerProviderWithKey(keyOrConstructor, api, providerConstructor);
-    else this.registerProviderWithConstructor(keyOrConstructor, api);
+    const name = options?.key ?? provider.name;
+    const providerObj = new provider(api);
+    this.providers.set(name, providerObj);
 
     return this;
   }
@@ -40,30 +54,37 @@ export class ModuleCore implements ICoreModule {
     else return this.resolveByConstructor<T>(this.providers, key);
   }
 
+  registerController(
+    controller: IControllerConstructor,
+    options: RegisterControllerOptions
+  ) {
+    const provider = this.resolveProvider(options.provider);
+    if (!provider) return this;
+
+    const name = options.key ?? controller.name;
+    const controllerObj = new controller(provider);
+    this.controllers.set(name, controllerObj);
+
+    return this;
+  }
+
+  resolveController<T extends IController>(
+    key: string | IControllerConstructor
+  ) {
+    if (typeof key === "string") return this.controllers.get(key) as T;
+    return this.resolveByConstructor<T>(this.controllers, key);
+  }
+
+  clear() {
+    this.apis.clear();
+    this.providers.clear();
+    this.controllers.clear();
+  }
+
   private resolveByConstructor<T>(
     map: Map<string, any>,
     typeConstructor: new (...args: any[]) => any
   ) {
     return map.get(typeConstructor.name) as T | undefined;
-  }
-
-  private registerProviderWithKey(
-    key: string,
-    api: IApi,
-    providerConstructor?: IProviderConstructor
-  ) {
-    if (!providerConstructor)
-      throw new Error("providerConstructor is needed for registering by key");
-
-    const provider = new providerConstructor(api);
-    this.providers.set(key, provider);
-  }
-
-  private registerProviderWithConstructor(
-    constructor: IProviderConstructor,
-    api: IApi
-  ) {
-    const provider = new constructor(api);
-    this.providers.set(constructor.name, provider);
   }
 }
