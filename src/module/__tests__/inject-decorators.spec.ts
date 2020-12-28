@@ -2,19 +2,19 @@ import { IApiOptions } from "@/api/api-options.interface";
 import { IApi } from "@/api/api.interface";
 import { IController } from "@/controller/controller.interface";
 import { IProvider } from "@/provider/provider.interface";
-import { coreDecorators } from "../decorators/core-module.decorators";
+import { inject } from "../decorators/inject.decorators";
 import {
-  createAndUseDecorators,
+  createAndUseInject,
   createRegisterApiAndProvider,
   TestApi,
   TestProvider,
 } from "../__mocks__/module.mock";
 
-describe("Module Decorators", () => {
+describe("Inject Decorators", () => {
   it("should register api  with decorator", () => {
-    const module = createAndUseDecorators();
+    const module = createAndUseInject();
 
-    @coreDecorators.api({})
+    @inject.api({})
     class TestApi implements IApi {
       constructor(options: IApiOptions) {}
     }
@@ -25,10 +25,10 @@ describe("Module Decorators", () => {
   });
 
   it("should register provider with decorator", () => {
-    const module = createAndUseDecorators();
+    const module = createAndUseInject();
     module.registerApi(TestApi, {});
 
-    @coreDecorators.provider()
+    @inject.provider()
     class TestProvider implements IProvider {
       constructor(api: IApiOptions) {}
     }
@@ -38,10 +38,10 @@ describe("Module Decorators", () => {
   });
 
   it("should register provider with options", () => {
-    const module = createAndUseDecorators();
+    const module = createAndUseInject();
     module.registerApi(TestApi, {});
 
-    @coreDecorators.provider({ key: "test_p", prefferedApi: TestApi })
+    @inject.provider({ key: "test_p", prefferedApi: TestApi })
     class TestProvider implements IProvider {
       constructor(api: IApiOptions) {}
     }
@@ -52,9 +52,9 @@ describe("Module Decorators", () => {
 
   it("should register controller with decorator", () => {
     const module = createRegisterApiAndProvider();
-    module.useDecorators(coreDecorators);
+    module.useDecorators(inject);
 
-    @coreDecorators.controller({ provider: TestProvider })
+    @inject.controller({ provider: TestProvider })
     class TestController implements IController {
       constructor(provider: IProvider) {}
     }

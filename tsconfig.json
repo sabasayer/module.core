@@ -5,6 +5,11 @@
     "noUnusedLocals": true,
     "noUncheckedIndexedAccess": true,
     "experimentalDecorators": true,
+    "module": "ES2020",
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "outDir": "dist",
+    "sourceMap": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

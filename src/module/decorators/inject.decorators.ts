@@ -6,10 +6,10 @@ import {
   ICoreModule,
   RegisterControllerOptions,
   RegisterProviderOptions,
-} from "../create-module/core-module.interface";
-import { ICoreDecorators } from "./core-decorators.interface";
+} from "../core-module.interface";
+import { IInjectDecorators } from "./inject-decorators.interface";
 
-class CoreModuleDecorators implements ICoreDecorators {
+class InjectDecorators implements IInjectDecorators {
   private module: ICoreModule | null = null;
   setModule(module: ICoreModule) {
     this.module = module;
@@ -25,10 +25,10 @@ class CoreModuleDecorators implements ICoreDecorators {
     };
   }
   controller(options: RegisterControllerOptions) {
-    return (controllerConstructor: IControllerConstructor) => {
+    return (controllerConstructor: IControllerConstructor) => { 
       this.module?.registerController(controllerConstructor, options);
     };
   }
 }
 
-export const coreDecorators = new CoreModuleDecorators();
+export const inject = new InjectDecorators();

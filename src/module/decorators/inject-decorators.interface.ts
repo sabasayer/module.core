@@ -3,13 +3,12 @@ import { IApiConstuctor } from "@/api/api.interface";
 import { IControllerConstructor } from "@/controller/controller.interface";
 import { IProviderConstructor } from "@/provider/provider.interface";
 import {
-  ICoreModule,
   RegisterControllerOptions,
   RegisterProviderOptions,
-} from "../create-module/core-module.interface";
+} from "../core-module.interface";
+import { IDecorators } from "./decorators.interface";
 
-export interface ICoreDecorators {
-  setModule: (module: ICoreModule) => void;
+export interface IInjectDecorators extends IDecorators {
   api: (options: IApiOptions) => (apiConstructor: IApiConstuctor) => void;
   provider: (
     options?: RegisterProviderOptions

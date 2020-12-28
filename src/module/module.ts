@@ -9,15 +9,15 @@ import {
   ICoreModule,
   RegisterControllerOptions,
   RegisterProviderOptions,
-} from "./create-module/core-module.interface";
-import { ICoreDecorators } from "./decorators/core-decorators.interface";
+} from "./core-module.interface";
+import { IDecorators } from "./decorators/decorators.interface";
 
 export class ModuleCore implements ICoreModule {
   private apis: Map<string, IApi> = new Map();
   private providers: Map<string, IProvider> = new Map();
   private controllers: Map<string, IController> = new Map();
 
-  useDecorators(decorators: ICoreDecorators) {
+  useDecorators(decorators: IDecorators) {
     decorators.setModule(this);
     return this;
   }

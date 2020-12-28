@@ -3,7 +3,7 @@ import { IApi } from "../../api/api.interface";
 import { IApiOptions } from "../../api/api-options.interface";
 import { IProvider } from "../../provider/provider.interface";
 import {
-  createModuleAndRegisterTestApi,
+  createRegisterApi,
   createRegisterApiAndProvider,
   TestProvider,
 } from "../__mocks__/module.mock";
@@ -32,7 +32,7 @@ describe("Module Provider", () => {
   });
 
   it("should register provider with class", () => {
-    const module = createModuleAndRegisterTestApi();
+    const module = createRegisterApi();
     module.registerProvider(TestProvider);
 
     const provider = module.resolveProvider(TestProvider);
@@ -41,7 +41,7 @@ describe("Module Provider", () => {
   });
 
   it("should register provider with key", () => {
-    const module = createModuleAndRegisterTestApi();
+    const module = createRegisterApi();
     module.registerProvider(TestProvider, { key: "test_provider" });
 
     const provider = module.resolveProvider("test_provider");
@@ -50,7 +50,7 @@ describe("Module Provider", () => {
   });
 
   it("should register provider with preffered Api", () => {
-    const module = createModuleAndRegisterTestApi();
+    const module = createRegisterApi();
     let isInstanceOfTestApi2 = false;
 
     class TestApi2 implements IApi {

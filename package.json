@@ -1,7 +1,7 @@
 {
   "name": "module.core",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": "salihbaki",
   "license": "MIT",
   "scripts": {
@@ -9,6 +9,7 @@
     "build": "parcel build src/index.ts",
     "test": "jest"
   },
+  "types": "src/index.ts",
   "devDependencies": {
     "@types/jest": "^26.0.19",
     "jest": "^25.x",

@@ -2,7 +2,7 @@ import { createModule } from "../create-module/create-module";
 import { IApi } from "../../api/api.interface";
 import { IApiOptions } from "../../api/api-options.interface";
 import {
-  createModuleAndRegisterTestApi,
+  createRegisterApi,
   createRegisterController,
   TestApi,
   TestController,
@@ -18,14 +18,14 @@ describe("Module", () => {
 
   describe("Api Algorithm", () => {
     it("should resolve api", () => {
-      const module = createModuleAndRegisterTestApi();
+      const module = createRegisterApi();
       const api = module.resolveApi();
 
       expect(api instanceof TestApi).toBe(true);
     });
 
     it("should resolve correct api", () => {
-      const module = createModuleAndRegisterTestApi();
+      const module = createRegisterApi();
 
       class TestApi2 implements IApi {
         constructor(options: IApiOptions) {}

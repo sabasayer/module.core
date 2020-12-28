@@ -1,4 +1,4 @@
-import { ICoreModule } from "./core-module.interface";
+import { ICoreModule } from "../core-module.interface";
 import { ModuleCore } from "../module";
 
 export type CreateModuleFunc<TOptions = undefined> = (

@@ -5,7 +5,7 @@ import {
   IControllerConstructor,
 } from "@/controller/controller.interface";
 import { IProvider, IProviderConstructor } from "@/provider/provider.interface";
-import { ICoreDecorators } from "../decorators/core-decorators.interface";
+import { IDecorators } from "./decorators/decorators.interface";
 
 export interface RegisterProviderOptions {
   key?: string;
@@ -18,7 +18,7 @@ export interface RegisterControllerOptions {
 }
 
 export interface ICoreModule {
-  useDecorators: (decorators: ICoreDecorators) => ICoreModule;
+  useDecorators: (decorators: IDecorators) => ICoreModule;
 
   registerApi: (
     api: IApiConstuctor,

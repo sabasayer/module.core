@@ -3,7 +3,9 @@ import { IApi } from "@/api/api.interface";
 import { IController } from "@/controller/controller.interface";
 import { IProvider } from "@/provider/provider.interface";
 import { createModule } from "../create-module/create-module";
-import { coreDecorators } from "../decorators/core-module.decorators";
+import { inject } from "../decorators/inject.decorators";
+import { resolve } from "../decorators/resolve.decorators";
+import { ICoreModule } from "../index";
 
 export class TestApi implements IApi {
   constructor(options: IApiOptions) {}
@@ -17,20 +19,31 @@ export class TestController implements IController {
   constructor(provider: IProvider) {}
 }
 
-export const createModuleAndRegisterTestApi = () => {
-  const module = createModule();
+export const createRegisterApi = (moduleArg?: ICoreModule) => {
+  const module = moduleArg ?? createModule();
   module.registerApi(TestApi, {});
   return module;
 };
 
-export const createAndUseDecorators = () => {
+export const createAndUseInject = () => {
   const module = createModule();
-  module.useDecorators(coreDecorators);
+  module.useDecorators(inject);
   return module;
 };
 
+export const createAndUseResolve = () => {
+  const module = createModule();
+  module.useDecorators(resolve);
+  return module;
+};
+
+export const createRegisterApiAndUseResolve = () => {
+  const module = createAndUseResolve();
+  return createRegisterApi(module);
+};
+
 export const createRegisterApiAndProvider = () => {
-  const module = createModuleAndRegisterTestApi();
+  const module = createRegisterApi();
   module.registerProvider(TestProvider);
   return module;
 };
