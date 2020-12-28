@@ -21,7 +21,7 @@ describe("Inject Decorators", () => {
 
     const api = module.resolveApi();
 
-    expect(api instanceof TestApi).toBe(true);
+    expect(api).toBeInstanceOf(TestApi);
   });
 
   it("should register provider with decorator", () => {
@@ -34,7 +34,7 @@ describe("Inject Decorators", () => {
     }
 
     const provider = module.resolveProvider(TestProvider);
-    expect(provider instanceof TestProvider).toBe(true);
+    expect(provider).toBeInstanceOf(TestProvider);
   });
 
   it("should register provider with options", () => {
@@ -47,7 +47,7 @@ describe("Inject Decorators", () => {
     }
 
     const provider = module.resolveProvider("test_p");
-    expect(provider instanceof TestProvider).toBe(true);
+    expect(provider).toBeInstanceOf(TestProvider);
   });
 
   it("should register controller with decorator", () => {
@@ -61,6 +61,6 @@ describe("Inject Decorators", () => {
 
     const controller = module.resolveController(TestController);
 
-    expect(controller instanceof TestController).toBe(true);
+    expect(controller).toBeInstanceOf(TestController);
   });
 });

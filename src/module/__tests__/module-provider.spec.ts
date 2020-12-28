@@ -21,14 +21,14 @@ describe("Module Provider", () => {
     const module = createRegisterApiAndProvider();
     const provider = module.resolveProvider<TestProvider>("TestProvider");
 
-    expect(provider instanceof TestProvider).toBe(true);
+    expect(provider).toBeInstanceOf(TestProvider);
   });
 
   it("should resolve provider with class", () => {
     const module = createRegisterApiAndProvider();
     const provider = module.resolveProvider(TestProvider);
 
-    expect(provider instanceof TestProvider).toBe(true);
+    expect(provider).toBeInstanceOf(TestProvider);
   });
 
   it("should register provider with class", () => {
@@ -37,7 +37,7 @@ describe("Module Provider", () => {
 
     const provider = module.resolveProvider(TestProvider);
 
-    expect(provider instanceof TestProvider).toBe(true);
+    expect(provider).toBeInstanceOf(TestProvider);
   });
 
   it("should register provider with key", () => {
@@ -46,7 +46,7 @@ describe("Module Provider", () => {
 
     const provider = module.resolveProvider("test_provider");
 
-    expect(provider instanceof TestProvider).toBe(true);
+    expect(provider).toBeInstanceOf(TestProvider);
   });
 
   it("should register provider with preffered Api", () => {

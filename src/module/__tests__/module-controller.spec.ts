@@ -15,7 +15,7 @@ describe("Module Controller", () => {
 
     const controller = module.resolveController("TestController");
 
-    expect(controller instanceof TestController).toBe(true);
+    expect(controller).toBeInstanceOf(TestController);
   });
 
   it("should register with key", () => {
@@ -27,7 +27,7 @@ describe("Module Controller", () => {
 
     const controller = module.resolveController("test_controller");
 
-    expect(controller instanceof TestController).toBe(true);
+    expect(controller).toBeInstanceOf(TestController);
   });
 
   it("should resolve by class", () => {
@@ -35,6 +35,6 @@ describe("Module Controller", () => {
 
     const controller = module.resolveController(TestController);
 
-    expect(controller instanceof TestController).toBe(true);
+    expect(controller).toBeInstanceOf(TestController);
   });
 });

@@ -21,7 +21,7 @@ describe("Module", () => {
       const module = createRegisterApi();
       const api = module.resolveApi();
 
-      expect(api instanceof TestApi).toBe(true);
+      expect(api).toBeInstanceOf(TestApi);
     });
 
     it("should resolve correct api", () => {
@@ -35,7 +35,7 @@ describe("Module", () => {
 
       const api = module.resolveApi(TestApi);
 
-      expect(api instanceof TestApi).toBe(true);
+      expect(api).toBeInstanceOf(TestApi);
     });
 
     it("should clear all registered types",() => {
