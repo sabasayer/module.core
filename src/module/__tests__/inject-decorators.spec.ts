@@ -17,6 +17,8 @@ describe("Inject Decorators", () => {
     @inject.api({})
     class TestApi implements IApi {
       constructor(options: IApiOptions) {}
+      async get(url:string){}
+
     }
 
     const api = module.resolveApi();

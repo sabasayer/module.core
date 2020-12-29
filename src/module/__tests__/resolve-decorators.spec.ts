@@ -27,7 +27,9 @@ describe("Resolve Decoratros", () => {
   it("should resolve api with class", () => {
     const module = createRegisterApiAndUseResolve();
 
-    class TestApi2 implements IApi {}
+    class TestApi2 implements IApi {
+      async get(url: string) {}
+    }
 
     module.registerApi(TestApi2, {});
 

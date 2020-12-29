@@ -6,7 +6,7 @@ import {
   createRegisterController,
   TestApi,
   TestController,
-  TestProvider
+  TestProvider,
 } from "../__mocks__/module.mock";
 
 describe("Module", () => {
@@ -29,6 +29,7 @@ describe("Module", () => {
 
       class TestApi2 implements IApi {
         constructor(options: IApiOptions) {}
+        async get(url: string) {}
       }
 
       module.registerApi(TestApi2, {});
@@ -38,7 +39,7 @@ describe("Module", () => {
       expect(api).toBeInstanceOf(TestApi);
     });
 
-    it("should clear all registered types",() => {
+    it("should clear all registered types", () => {
       const module = createRegisterController();
       module.clear();
 
@@ -49,6 +50,6 @@ describe("Module", () => {
       expect(api).toBeUndefined();
       expect(provider).toBeUndefined();
       expect(controller).toBeUndefined();
-    })
+    });
   });
 });

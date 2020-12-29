@@ -9,6 +9,8 @@ import { ICoreModule } from "../index";
 
 export class TestApi implements IApi {
   constructor(options: IApiOptions) {}
+
+  async get(url:string){}
 }
 
 export class TestProvider implements IProvider {

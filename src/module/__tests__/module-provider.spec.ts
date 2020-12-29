@@ -55,6 +55,7 @@ describe("Module Provider", () => {
 
     class TestApi2 implements IApi {
       constructor(options: IApiOptions) {}
+      async get(url: string) {}
     }
 
     class TestProvider2 implements IProvider {
