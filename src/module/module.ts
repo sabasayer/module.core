@@ -1,5 +1,5 @@
-import { IApiOptions } from "@/api/api-options.interface";
-import { IApi, IApiConstuctor } from "@/api/api.interface";
+import { IHTTPClientOptions } from "@/api/api-options.interface";
+import { IHTTPClient, IHTTPClientConstuctor } from "@/api/http-client.interface";
 import {
   IController,
   IControllerConstructor,
@@ -13,7 +13,7 @@ import {
 import { IDecorators } from "./decorators/decorators.interface";
 
 export class ModuleCore implements ICoreModule {
-  private apis: Map<string, IApi> = new Map();
+  private apis: Map<string, IHTTPClient> = new Map();
   private providers: Map<string, IProvider> = new Map();
   private controllers: Map<string, IController> = new Map();
 
@@ -22,13 +22,13 @@ export class ModuleCore implements ICoreModule {
     return this;
   }
 
-  registerApi(api: IApiConstuctor, options: IApiOptions) {
+  registerApi(api: IHTTPClientConstuctor, options: IHTTPClientOptions) {
     const apiObj = new api(options);
     this.apis.set(api.name, apiObj);
     return this;
   }
 
-  resolveApi<T extends IApi>(api?: IApiConstuctor): T | undefined {
+  resolveApi<T extends IHTTPClient>(api?: IHTTPClientConstuctor): T | undefined {
     if (api) return this.resolveByConstructor<T>(this.apis, api);
     else return this.apis.values().next().value;
   }

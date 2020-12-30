@@ -6,7 +6,7 @@
     "noUncheckedIndexedAccess": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "module": "ES2020",
+    "module": "commonjs",
     "target": "ESNext",
     "lib": ["ESNext", "DOM"],
     "outDir": "dist",

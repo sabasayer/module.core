@@ -1,4 +1,4 @@
-import { IApiConstuctor } from "@/api/api.interface";
+import { IHTTPClientConstuctor } from "@/api/http-client.interface";
 import { IControllerConstructor } from "@/controller/index";
 import { IProviderConstructor } from "@/provider/index";
 import { ICoreModule } from "../index";
@@ -10,7 +10,7 @@ class ResolveDecorators implements IResolveDecorators {
     this.module = module;
   }
 
-  api(api?: IApiConstuctor) {
+  api(api?: IHTTPClientConstuctor) {
     return (target: any, key: string | symbol) => {
       const apiObj = this.module?.resolveApi(api);
 

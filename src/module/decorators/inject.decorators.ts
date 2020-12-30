@@ -1,5 +1,5 @@
-import { IApiOptions } from "@/api/api-options.interface";
-import { IApiConstuctor } from "@/api/api.interface";
+import { IHTTPClientOptions } from "@/api/api-options.interface";
+import { IHTTPClientConstuctor } from "@/api/http-client.interface";
 import { IControllerConstructor } from "@/controller/controller.interface";
 import { IProviderConstructor } from "@/provider/provider.interface";
 import {
@@ -14,8 +14,8 @@ class InjectDecorators implements IInjectDecorators {
   setModule(module: ICoreModule) {
     this.module = module;
   }
-  api(options: IApiOptions) {
-    return (apiConstructor: IApiConstuctor) => {
+  api(options: IHTTPClientOptions) {
+    return (apiConstructor: IHTTPClientConstuctor) => {
       this.module?.registerApi(apiConstructor, options);
     };
   }

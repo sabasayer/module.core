@@ -1,6 +1,6 @@
 import { createModule } from "../create-module/create-module";
-import { IApi } from "../../api/api.interface";
-import { IApiOptions } from "../../api/api-options.interface";
+import { IHTTPClient } from "../../api/http-client.interface";
+import { IHTTPClientOptions } from "../../api/api-options.interface";
 import { IProvider } from "../../provider/provider.interface";
 import {
   createRegisterApi,
@@ -53,13 +53,14 @@ describe("Module Provider", () => {
     const module = createRegisterApi();
     let isInstanceOfTestApi2 = false;
 
-    class TestApi2 implements IApi {
-      constructor(options: IApiOptions) {}
-      async get(url: string) {}
+    class TestApi2 implements IHTTPClient {
+      constructor(options: IHTTPClientOptions) {}
+      async get(url: string) {return null as any}
+      async post(url: string) {return null as any}
     }
 
     class TestProvider2 implements IProvider {
-      constructor(api: IApi) {
+      constructor(api: IHTTPClient) {
         isInstanceOfTestApi2 = api instanceof TestApi2;
       }
     }

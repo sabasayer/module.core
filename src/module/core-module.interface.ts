@@ -1,5 +1,5 @@
-import { IApiOptions } from "@/api/api-options.interface";
-import { IApi, IApiConstuctor } from "@/api/api.interface";
+import { IHTTPClientOptions } from "@/api/api-options.interface";
+import { IHTTPClient, IHTTPClientConstuctor } from "@/api/http-client.interface";
 import {
   IController,
   IControllerConstructor,
@@ -9,7 +9,7 @@ import { IDecorators } from "./decorators/decorators.interface";
 
 export interface RegisterProviderOptions {
   key?: string;
-  prefferedApi?: IApiConstuctor;
+  prefferedApi?: IHTTPClientConstuctor;
 }
 
 export interface RegisterControllerOptions {
@@ -21,11 +21,11 @@ export interface ICoreModule {
   useDecorators: (decorators: IDecorators) => ICoreModule;
 
   registerApi: (
-    api: IApiConstuctor,
-    options: IApiOptions
+    api: IHTTPClientConstuctor,
+    options: IHTTPClientOptions
   ) => ICoreModule;
-  resolveApi: <T extends IApi>(
-    api?: IApiConstuctor
+  resolveApi: <T extends IHTTPClient>(
+    api?: IHTTPClientConstuctor
   ) => T | undefined;
 
   registerProvider: (

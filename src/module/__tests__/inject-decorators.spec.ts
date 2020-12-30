@@ -1,5 +1,5 @@
-import { IApiOptions } from "@/api/api-options.interface";
-import { IApi } from "@/api/api.interface";
+import { IHTTPClientOptions } from "@/api/api-options.interface";
+import { IHTTPClient } from "@/api/http-client.interface";
 import { IController } from "@/controller/controller.interface";
 import { IProvider } from "@/provider/provider.interface";
 import { inject } from "../decorators/inject.decorators";
@@ -15,10 +15,14 @@ describe("Inject Decorators", () => {
     const module = createAndUseInject();
 
     @inject.api({})
-    class TestApi implements IApi {
-      constructor(options: IApiOptions) {}
-      async get(url:string){}
-
+    class TestApi implements IHTTPClient {
+      constructor(options: IHTTPClientOptions) {}
+      async get(url: string) {
+        return null as any;
+      }
+      async post(url: string) {
+        return null as any;
+      }
     }
 
     const api = module.resolveApi();
@@ -32,7 +36,7 @@ describe("Inject Decorators", () => {
 
     @inject.provider()
     class TestProvider implements IProvider {
-      constructor(api: IApiOptions) {}
+      constructor(api: IHTTPClient) {}
     }
 
     const provider = module.resolveProvider(TestProvider);
@@ -45,7 +49,7 @@ describe("Inject Decorators", () => {
 
     @inject.provider({ key: "test_p", prefferedApi: TestApi })
     class TestProvider implements IProvider {
-      constructor(api: IApiOptions) {}
+      constructor(api: IHTTPClient) {}
     }
 
     const provider = module.resolveProvider("test_p");

@@ -1,5 +1,5 @@
-import { IApiOptions } from "@/api/api-options.interface";
-import { IApiConstuctor } from "@/api/api.interface";
+import { IHTTPClientOptions } from "@/api/api-options.interface";
+import { IHTTPClientConstuctor } from "@/api/http-client.interface";
 import { IControllerConstructor } from "@/controller/controller.interface";
 import { IProviderConstructor } from "@/provider/provider.interface";
 import {
@@ -9,7 +9,7 @@ import {
 import { IDecorators } from "./decorators.interface";
 
 export interface IInjectDecorators extends IDecorators {
-  api: (options: IApiOptions) => (apiConstructor: IApiConstuctor) => void;
+  api: (options: IHTTPClientOptions) => (apiConstructor: IHTTPClientConstuctor) => void;
   provider: (
     options?: RegisterProviderOptions
   ) => (providerConstructor: IProviderConstructor) => void;

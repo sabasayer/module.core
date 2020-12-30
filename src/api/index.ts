@@ -1,4 +1,4 @@
-import { IApiOptions } from "./api-options.interface";
-import { IApi } from "./api.interface";
+import { IHTTPClientOptions } from "./api-options.interface";
+import { IHTTPClient } from "./http-client.interface";
 
-export { IApi, IApiOptions };
+export { IHTTPClient, IHTTPClientOptions};

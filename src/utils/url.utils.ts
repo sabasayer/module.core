@@ -18,7 +18,7 @@ class URLUtils {
     return this.ensureLastCharacterToBeSlash(joined);
   }
 
-  private ensureLastCharacterToBeSlash(baseUrl: string): string {
+  ensureLastCharacterToBeSlash(baseUrl: string): string {
     if (baseUrl[baseUrl.length - 1] != "/") return baseUrl + "/";
     return baseUrl;
   }

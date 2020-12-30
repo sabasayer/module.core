@@ -1,4 +1,4 @@
-import { IApi } from "@/api/index";
+import { IHTTPClient } from "@/api/index";
 import { IController } from "@/controller/index";
 import { IProvider } from "@/provider/index";
 import { resolve } from "../decorators/resolve.decorators";
@@ -16,7 +16,7 @@ describe("Resolve Decoratros", () => {
 
     class Test {
       @resolve.api()
-      api!: IApi;
+      api!: IHTTPClient;
     }
 
     const test = new Test();
@@ -27,15 +27,20 @@ describe("Resolve Decoratros", () => {
   it("should resolve api with class", () => {
     const module = createRegisterApiAndUseResolve();
 
-    class TestApi2 implements IApi {
-      async get(url: string) {}
+    class TestApi2 implements IHTTPClient {
+      async get(url: string) {
+        return null as any;
+      }
+      async post(url: string) {
+        return null as any;
+      }
     }
 
     module.registerApi(TestApi2, {});
 
     class Test {
       @resolve.api(TestApi2)
-      api!: IApi;
+      api!: IHTTPClient;
     }
 
     const test = new Test();

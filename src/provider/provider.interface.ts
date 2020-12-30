@@ -1,5 +1,5 @@
-import { IApi } from "@/api/api.interface";
+import { IHTTPClient } from "@/api/http-client.interface";
 
 export interface IProvider {}
 
-export type IProviderConstructor = new (api: IApi) => IProvider;
+export type IProviderConstructor = new (api: IHTTPClient) => IProvider;

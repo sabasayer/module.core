@@ -1,6 +1,6 @@
 import { createModule } from "../create-module/create-module";
-import { IApi } from "../../api/api.interface";
-import { IApiOptions } from "../../api/api-options.interface";
+import { IHTTPClient } from "../../api/http-client.interface";
+import { IHTTPClientOptions } from "../../api/api-options.interface";
 import {
   createRegisterApi,
   createRegisterController,
@@ -27,9 +27,10 @@ describe("Module", () => {
     it("should resolve correct api", () => {
       const module = createRegisterApi();
 
-      class TestApi2 implements IApi {
-        constructor(options: IApiOptions) {}
-        async get(url: string) {}
+      class TestApi2 implements IHTTPClient {
+        constructor(options: IHTTPClientOptions) {}
+        async get(url: string) {return null as any}
+        async post(url: string) {return null as any}
       }
 
       module.registerApi(TestApi2, {});
