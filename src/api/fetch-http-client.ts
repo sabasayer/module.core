@@ -1,50 +1,64 @@
 import { urlUtils } from "@/utils/url.utils";
-import { IAbortController } from "./abort-controller.interface";
 import { IHTTPClient, IHTTPClientOptions } from "./index";
 import { RequestError } from "./request-error";
+import { RequestOptions } from "./request-options.interface";
 import { EnumRequestErrorType } from "./statics/request-error-type.enum";
 
 export class FetchHTTPClient implements IHTTPClient {
   private baseUrl: string;
   private headers?: Record<string, string>;
   private createErrorFn?: (response: Response) => Promise<Error>;
+  private pendingRequests = new Map<string, Promise<Response>>();
+  private preventRequestDuplication?: boolean;
 
   constructor(options: IHTTPClientOptions) {
     this.baseUrl = this.createBaseUrl(options);
     this.headers = options.headers;
     this.createErrorFn = options.createErrorFn;
+    this.preventRequestDuplication = options.preventRequestDuplication;
   }
 
   createAbortController() {
     return new AbortController();
   }
 
+  getPendingRequests() {
+    return this.pendingRequests;
+  }
+
   async get<TResponse = undefined>(
     url: string,
-    options?: { abortController: IAbortController }
+    options?: RequestOptions
   ): Promise<TResponse | undefined> {
     try {
       return await this.handleGet(url, options);
     } catch (e: unknown) {
-      this.handleError(e);
+      this.handleError(e, url);
     }
   }
 
   async post<TRequest, TResponse = undefined>(
     url: string,
     data?: TRequest,
-    options?: { abortController: IAbortController }
+    options?: RequestOptions
   ): Promise<TResponse | undefined> {
+    const key = this.createKey(url, data);
+
     try {
-      return await this.handlePost(url, data, options);
+      return await this.handlePost({
+        url,
+        data,
+        options,
+        key,
+      });
     } catch (e) {
-      this.handleError(e);
+      this.handleError(e, key);
     }
   }
 
   private createFetchInit(
     method: string,
-    options?: { abortController: IAbortController },
+    options?: RequestOptions,
     data?: unknown
   ): RequestInit {
     const abortController = options?.abortController as
@@ -60,36 +74,71 @@ export class FetchHTTPClient implements IHTTPClient {
     };
   }
 
-  private async handlePost<TRequest, TResponse = undefined>(
-    url: string,
-    data?: TRequest,
-    options?: { abortController: IAbortController }
-  ): Promise<TResponse> {
-    const init = this.createFetchInit("POST", options, data);
-    const response = await fetch(`${this.baseUrl}${url}`, init);
+  private async handlePost<TRequest, TResponse = undefined>(options: {
+    url: string;
+    key: string;
+    data?: TRequest;
+    options?: RequestOptions;
+  }): Promise<TResponse> {
+    const pendingRequest = this.pendingRequests.get(options.key);
+    const init = this.createFetchInit("POST", options.options, options.data);
+
+    let response: Response = await this.createResponse({
+      url: options.url,
+      init,
+      key: options.key,
+      pendingRequest,
+    });
+
+    this.pendingRequests.delete(options.key);
 
     return this.handleResponse(response);
+  }
+
+  private createKey(url: string, data?: any) {
+    return `${url}_${data ? JSON.stringify(data) : ""}`;
   }
 
   private async handleGet<TResponse = undefined>(
     url: string,
-    options?: { abortController: IAbortController }
+    options?: RequestOptions
   ): Promise<TResponse> {
+    const pendingRequest = this.pendingRequests.get(url);
     const init = this.createFetchInit("GET", options);
-    const response = await fetch(`${this.baseUrl}${url}`, init);
+
+    let response: Response = await this.createResponse({
+      url,
+      init,
+      key: url,
+      pendingRequest,
+    });
 
     return this.handleResponse(response);
   }
 
+  private async createResponse(options: {
+    url: string;
+    init: RequestInit;
+    key: string;
+    pendingRequest?: Promise<Response>;
+  }): Promise<Response> {
+    if (options.pendingRequest) return await options.pendingRequest;
+
+    const request = fetch(`${this.baseUrl}${options.url}`, options.init);
+
+    if (this.preventRequestDuplication)
+      this.pendingRequests.set(options.key, request);
+
+    return await request;
+  }
+
   private async handleResponse(response: Response) {
-    if (!response.ok) {
-      if (this.createErrorFn) throw await this.createErrorFn(response);
+    if (response.ok) return response.json();
 
-      const body = response.body ? ` ${response.body}` : "";
-      throw new Error(`${response.status}: ${response.statusText}.${body}`);
-    }
+    if (this.createErrorFn) throw await this.createErrorFn(response);
 
-    return response.json();
+    const body = response.body ? ` ${response.body}` : "";
+    throw new Error(`${response.status}: ${response.statusText}.${body}`);
   }
 
   private createBaseUrl(options: IHTTPClientOptions): string {
@@ -99,13 +148,15 @@ export class FetchHTTPClient implements IHTTPClient {
     return urlUtils.createBaseUrl(options);
   }
 
-  private handleError(error: unknown) {
-    if (error instanceof DOMException && error.name == "AbortError") {
+  private handleError(error: unknown, key: string) {
+    this.pendingRequests.delete(key);
+
+    if (error instanceof DOMException && error.name == "AbortError")
       throw new RequestError(EnumRequestErrorType.aborted);
-    } else
-      throw new RequestError(
-        EnumRequestErrorType.serverError,
-        (error as Error).message
-      );
+
+    throw new RequestError(
+      EnumRequestErrorType.serverError,
+      (error as Error).message
+    );
   }
 }

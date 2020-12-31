@@ -3,6 +3,7 @@ import fetchMock from "jest-fetch-mock";
 import {
   mockFetchResponse,
   mockFetchResponseWithError,
+  mockFetchResponseWithTimeout,
   mockRejectResponse,
 } from "../__mocks__/fetch.mock";
 import { EnumRequestErrorType } from "../statics/request-error-type.enum";
@@ -195,6 +196,69 @@ describe("Api", () => {
       await expect(
         api.post("test", undefined, { abortController })
       ).rejects.toEqual(new RequestError(EnumRequestErrorType.serverError));
+    });
+  });
+
+  describe("Prevent Request Duplication", () => {
+    it("should prevent second same request for post", () => {
+      mockFetchResponseWithTimeout({ id: 1 }, 4000);
+
+      const api = new FetchHTTPClient({
+        baseUrl: "test.com",
+        preventRequestDuplication: true,
+      });
+
+      api.post("test", { id: 1 });
+      api.post("test", { id: 1 });
+
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("should prevent second same request for get", () => {
+      mockFetchResponseWithTimeout({ id: 1 }, 4000);
+
+      const api = new FetchHTTPClient({
+        baseUrl: "test.com",
+        preventRequestDuplication: true,
+      });
+
+      api.get("test?id=1");
+      api.get("test?id=1");
+
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("should clear from pending requests if there is an error", async () => {
+      mockFetchResponseWithError(404);
+
+      const api = new FetchHTTPClient({
+        baseUrl: "test.com",
+        preventRequestDuplication: true,
+      });
+
+      try {
+        await api.post("test");
+      } catch (e) {}
+
+      const pendingRequests = api.getPendingRequests();
+
+      expect(pendingRequests.size).toBe(0);
+    });
+
+    it("should not prevent second if preventRequestDuplication is false", () => {
+      mockFetchResponse({ id: 1 });
+
+      const api = new FetchHTTPClient({
+        baseUrl: "test.com",
+      });
+
+      api.get("test?id=1");
+
+      mockFetchResponse({ id: 1 });
+
+      api.get("test?id=1");
+
+      expect(fetchMock).toHaveBeenCalledTimes(2);
     });
   });
 });
