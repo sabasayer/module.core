@@ -10,6 +10,7 @@ export interface IHTTPClient {
     url: string,
     data?: TRequest
   ) => Promise<TResponse | undefined>;
+  upload:(url:string,formData:FormData) => Promise<Response |undefined>
   createAbortController?: () => IAbortController;
 }
 
