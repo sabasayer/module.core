@@ -23,6 +23,9 @@ describe("Inject Decorators", () => {
       async post(url: string) {
         return null as any;
       }
+      async upload(url:string,formData:FormData){
+        return null as any; 
+      }
     }
 
     const api = module.resolveApi();

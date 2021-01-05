@@ -17,6 +17,9 @@ export class TestApi implements IHTTPClient {
   async post(url: string) {
     return null as any;
   }
+  async upload(url:string,formData:FormData){
+    return null as any; 
+  }
 }
 
 export class TestProvider implements IProvider {

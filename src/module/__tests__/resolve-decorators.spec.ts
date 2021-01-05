@@ -34,6 +34,9 @@ describe("Resolve Decoratros", () => {
       async post(url: string) {
         return null as any;
       }
+      async upload(url: string, formData: FormData) {
+        return null as any;
+      }
     }
 
     module.registerApi(TestApi2, {});

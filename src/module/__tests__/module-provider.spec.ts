@@ -55,8 +55,15 @@ describe("Module Provider", () => {
 
     class TestApi2 implements IHTTPClient {
       constructor(options: IHTTPClientOptions) {}
-      async get(url: string) {return null as any}
-      async post(url: string) {return null as any}
+      async get(url: string) {
+        return null as any;
+      }
+      async post(url: string) {
+        return null as any;
+      }
+      async upload(url: string, formData: FormData) {
+        return null as any;
+      }
     }
 
     class TestProvider2 implements IProvider {
