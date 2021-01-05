@@ -56,6 +56,25 @@ export class FetchHTTPClient implements IHTTPClient {
     }
   }
 
+  async upload(url: string, formData: FormData) {
+    try {
+      return this.handleUpload(url, formData);
+    } catch (e: unknown) {
+      this.handleError(e, url);
+    }
+  }
+
+  private handleUpload(url: string, formData: FormData) {
+    return fetch(`${this.baseUrl}${url}`, {
+      method: "POST",
+      headers: {
+        ...this.headers,
+        "Content-Type": "multipart/form-data",
+      },
+      body: formData,
+    });
+  }
+
   private createFetchInit(
     method: string,
     options?: RequestOptions,

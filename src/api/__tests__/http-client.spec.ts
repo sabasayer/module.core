@@ -171,6 +171,33 @@ describe("Api", () => {
     });
   });
 
+  describe("Upload", () => {
+    it("should call post with form data and content-type header", () => {
+      mockFetchResponse({id:1});
+      
+      const api = new FetchHTTPClient({
+        baseUrl: "http://test.com",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const formData = new FormData();
+      formData.append("file",new Blob());
+
+      api.upload('upload',formData);
+
+      expect(fetchMock).toBeCalledWith("http://test.com/upload", {
+        method: "POST",
+        headers:{
+          "Content-Type":"multipart/form-data"
+        },
+        body: formData,
+      });
+      
+    });
+  });
+
   describe("Cancelation", () => {
     it("should cancel request for get", async () => {
       const api = new FetchHTTPClient({
