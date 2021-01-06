@@ -1,7 +1,7 @@
 import { urlUtils } from "@/utils/url.utils";
 import { IHTTPClient, IHTTPClientOptions } from "./index";
 import { RequestError } from "./request-error";
-import { RequestOptions } from "./request-options.interface";
+import { RequestOptions } from "./types/request-options.interface";
 import { EnumRequestErrorType } from "./statics/request-error-type.enum";
 
 export class FetchHTTPClient implements IHTTPClient {
@@ -56,7 +56,10 @@ export class FetchHTTPClient implements IHTTPClient {
     }
   }
 
-  async upload(url: string, formData: FormData) {
+  async upload<TResponse = undefined>(
+    url: string,
+    formData: FormData
+  ): Promise<TResponse | undefined> {
     try {
       return this.handleUpload(url, formData);
     } catch (e: unknown) {
@@ -64,7 +67,10 @@ export class FetchHTTPClient implements IHTTPClient {
     }
   }
 
-  private handleUpload(url: string, formData: FormData) {
+  private handleUpload<TResponse = undefined>(
+    url: string,
+    formData: FormData
+  ): Promise<TResponse> {
     return fetch(`${this.baseUrl}${url}`, {
       method: "POST",
       headers: {
@@ -72,7 +78,7 @@ export class FetchHTTPClient implements IHTTPClient {
         "Content-Type": "multipart/form-data",
       },
       body: formData,
-    });
+    }) as Promise<any>;
   }
 
   private createFetchInit(

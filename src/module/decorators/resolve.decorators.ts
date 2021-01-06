@@ -1,8 +1,9 @@
-import { IHTTPClientConstuctor } from "@/api/http-client.interface";
+import { IHTTPClientConstuctor } from "@/http-client/types/http-client.interface";
 import { IControllerConstructor } from "@/controller/index";
 import { IProviderConstructor } from "@/provider/index";
 import { ICoreModule } from "../index";
 import { IResolveDecorators } from "./resolve-decorators.interface";
+import { ICacheConstructor } from "@/cache/cache.interface";
 
 class ResolveDecorators implements IResolveDecorators {
   private module: ICoreModule | null = null;
@@ -16,11 +17,7 @@ class ResolveDecorators implements IResolveDecorators {
 
       if (!apiObj) return;
 
-      Object.defineProperty(target, key, {
-        get: () => apiObj,
-        enumerable: false,
-        configurable: true,
-      });
+      this.defineProperty(target, key, apiObj);
     };
   }
 
@@ -30,11 +27,7 @@ class ResolveDecorators implements IResolveDecorators {
 
       if (!providerObj) return;
 
-      Object.defineProperty(target, key, {
-        get: () => providerObj,
-        enumerable: false,
-        configurable: true,
-      });
+      this.defineProperty(target, key, providerObj);
     };
   }
 
@@ -44,12 +37,26 @@ class ResolveDecorators implements IResolveDecorators {
 
       if (!controllerObj) return;
 
-      Object.defineProperty(target, key, {
-        get: () => controllerObj,
-        enumerable: false,
-        configurable: true,
-      });
+      this.defineProperty(target, key, controllerObj);
     };
+  }
+
+  cache(cache: ICacheConstructor | string) {
+    return (target: any, key: string | symbol) => {
+      const cacheObj = this.module?.resolveCache(cache);
+
+      if (!cacheObj) return;
+
+      this.defineProperty(target, key, cacheObj);
+    };
+  }
+
+  private defineProperty(target: any, key: string | symbol, newValue: any) {
+    Object.defineProperty(target, key, {
+      get: () => newValue,
+      enumerable: false,
+      configurable: true,
+    });
   }
 }
 

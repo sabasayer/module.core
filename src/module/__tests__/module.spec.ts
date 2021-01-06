@@ -1,10 +1,11 @@
 import { createModule } from "../create-module/create-module";
-import { IHTTPClient } from "../../api/http-client.interface";
-import { IHTTPClientOptions } from "../../api/api-options.interface";
+import { IHTTPClient } from "../../http-client/types/http-client.interface";
+import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
 import {
   createRegisterApi,
   createRegisterController,
   TestApi,
+  TestCache,
   TestController,
   TestProvider,
 } from "../__mocks__/module.mock";
@@ -49,15 +50,45 @@ describe("Module", () => {
 
     it("should clear all registered types", () => {
       const module = createRegisterController();
+      module.registerCache(TestCache);
       module.clear();
 
       const api = module.resolveApi();
       const provider = module.resolveProvider(TestProvider);
       const controller = module.resolveController(TestController);
+      const cache = module.resolveCache(TestCache);
 
       expect(api).toBeUndefined();
       expect(provider).toBeUndefined();
       expect(controller).toBeUndefined();
+      expect(cache).toBeUndefined();
+    });
+  });
+
+  describe("Cache", () => {
+    it("should return undefined at resolve when not registered", () => {
+      const module = createModule();
+      const cache = module.resolveCache("TestCache");
+
+      expect(cache).toBeUndefined();
+    });
+
+    it("should register cache", () => {
+      const module = createModule();
+      module.registerCache(TestCache);
+
+      const cache = module.resolveCache(TestCache);
+
+      expect(cache).toBeInstanceOf(TestCache);
+    });
+
+    it("should register cache by key", () => {
+      const module = createModule();
+      module.registerCache(TestCache, "Tooty");
+
+      const cache = module.resolveCache("Tooty");
+
+      expect(cache).toBeInstanceOf(TestCache);
     });
   });
 });

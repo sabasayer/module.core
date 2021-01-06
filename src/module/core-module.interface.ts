@@ -1,11 +1,16 @@
-import { IHTTPClientOptions } from "@/api/api-options.interface";
-import { IHTTPClient, IHTTPClientConstuctor } from "@/api/http-client.interface";
+import { IHTTPClientOptions } from "@/http-client/types/http-client-options.interface";
+import {
+  IHTTPClient,
+  IHTTPClientConstuctor,
+} from "@/http-client/types/http-client.interface";
 import {
   IController,
   IControllerConstructor,
 } from "@/controller/controller.interface";
 import { IProvider, IProviderConstructor } from "@/provider/provider.interface";
 import { IDecorators } from "./decorators/decorators.interface";
+import { ICache } from "@/cache";
+import { ICacheConstructor } from "@/cache/cache.interface";
 
 export interface RegisterProviderOptions {
   key?: string;
@@ -44,6 +49,12 @@ export interface ICoreModule {
 
   resolveController: <T extends IController>(
     key: string | IControllerConstructor
+  ) => T | undefined;
+
+  registerCache: (cache: ICacheConstructor, key?: string) => ICoreModule;
+
+  resolveCache: <T extends ICache>(
+    key: string | ICacheConstructor
   ) => T | undefined;
 
   clear: () => void;

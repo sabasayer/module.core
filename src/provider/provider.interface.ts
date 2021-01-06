@@ -1,4 +1,4 @@
-import { IHTTPClient } from "@/api/http-client.interface";
+import { IHTTPClient } from "@/http-client/types/http-client.interface";
 
 export interface IProvider {}
 

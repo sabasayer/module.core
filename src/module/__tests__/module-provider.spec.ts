@@ -1,6 +1,6 @@
 import { createModule } from "../create-module/create-module";
-import { IHTTPClient } from "../../api/http-client.interface";
-import { IHTTPClientOptions } from "../../api/api-options.interface";
+import { IHTTPClient } from "../../http-client/types/http-client.interface";
+import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
 import { IProvider } from "../../provider/provider.interface";
 import {
   createRegisterApi,

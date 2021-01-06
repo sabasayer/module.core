@@ -1,5 +1,5 @@
-import { IHTTPClientOptions } from "@/api/api-options.interface";
-import { IHTTPClient } from "@/api/http-client.interface";
+import { IHTTPClientOptions } from "@/http-client/types/http-client-options.interface";
+import { IHTTPClient } from "@/http-client/types/http-client.interface";
 import { IController } from "@/controller/controller.interface";
 import { IProvider } from "@/provider/provider.interface";
 import { inject } from "../decorators/inject.decorators";
@@ -9,6 +9,8 @@ import {
   TestApi,
   TestProvider,
 } from "../__mocks__/module.mock";
+import { createModule } from "../create-module/create-module";
+import { ICache } from "@/cache";
 
 describe("Inject Decorators", () => {
   it("should register api  with decorator", () => {
@@ -23,8 +25,8 @@ describe("Inject Decorators", () => {
       async post(url: string) {
         return null as any;
       }
-      async upload(url:string,formData:FormData){
-        return null as any; 
+      async upload(url: string, formData: FormData) {
+        return null as any;
       }
     }
 
@@ -71,5 +73,27 @@ describe("Inject Decorators", () => {
     const controller = module.resolveController(TestController);
 
     expect(controller).toBeInstanceOf(TestController);
+  });
+
+  it("should register cache with decorator", () => {
+    const module = createModule();
+    module.useDecorators(inject);
+
+    @inject.cache()
+    class TestCache implements ICache {
+      get<T>(key: string) {
+        return null as any;
+      }
+
+      set(key: string, value: any) {}
+
+      remove(key: string) {}
+
+      clear() {}
+    }
+
+    const cache = module.resolveCache(TestCache);
+
+    expect(cache).toBeInstanceOf(TestCache);
   });
 });

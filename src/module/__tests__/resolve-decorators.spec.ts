@@ -1,14 +1,17 @@
-import { IHTTPClient } from "@/api/index";
+import { IHTTPClient } from "@/http-client/index";
 import { IController } from "@/controller/index";
 import { IProvider } from "@/provider/index";
 import { resolve } from "../decorators/resolve.decorators";
 import {
   createRegisterApiAndUseResolve,
+  createRegisterCache,
   createRegisterController,
   TestApi,
+  TestCache,
   TestController,
   TestProvider,
 } from "../__mocks__/module.mock";
+import { ICache } from "@/cache";
 
 describe("Resolve Decoratros", () => {
   it("should resolve api", () => {
@@ -101,5 +104,18 @@ describe("Resolve Decoratros", () => {
 
     const test = new Test();
     expect(test.controller).toBeInstanceOf(TestController);
+  });
+
+  it("should resolve cache", () => {
+    const module = createRegisterCache();
+    module.useDecorators(resolve);
+
+    class Test {
+      @resolve.cache(TestCache)
+      cache!: ICache;
+    }
+
+    const test = new Test();
+    expect(test.cache).toBeInstanceOf(TestCache);
   });
 });

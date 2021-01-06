@@ -1,5 +1,8 @@
-import { IHTTPClientOptions } from "@/api/api-options.interface";
-import { IHTTPClient, IHTTPClientConstuctor } from "@/api/http-client.interface";
+import { IHTTPClientOptions } from "@/http-client/types/http-client-options.interface";
+import {
+  IHTTPClient,
+  IHTTPClientConstuctor,
+} from "@/http-client/types/http-client.interface";
 import {
   IController,
   IControllerConstructor,
@@ -11,11 +14,14 @@ import {
   RegisterProviderOptions,
 } from "./core-module.interface";
 import { IDecorators } from "./decorators/decorators.interface";
+import { ICache } from "@/cache";
+import { ICacheConstructor } from "@/cache/cache.interface";
 
 export class ModuleCore implements ICoreModule {
-  private apis: Map<string, IHTTPClient> = new Map();
-  private providers: Map<string, IProvider> = new Map();
-  private controllers: Map<string, IController> = new Map();
+  private apis = new Map<string, IHTTPClient>();
+  private providers = new Map<string, IProvider>();
+  private controllers = new Map<string, IController>();
+  private caches = new Map<string, ICache>();
 
   useDecorators(decorators: IDecorators) {
     decorators.setModule(this);
@@ -28,7 +34,9 @@ export class ModuleCore implements ICoreModule {
     return this;
   }
 
-  resolveApi<T extends IHTTPClient>(api?: IHTTPClientConstuctor): T | undefined {
+  resolveApi<T extends IHTTPClient>(
+    api?: IHTTPClientConstuctor
+  ): T | undefined {
     if (api) return this.resolveByConstructor<T>(this.apis, api);
     else return this.apis.values().next().value;
   }
@@ -75,10 +83,24 @@ export class ModuleCore implements ICoreModule {
     return this.resolveByConstructor<T>(this.controllers, key);
   }
 
+  registerCache(cache: ICacheConstructor, key?: string) {
+    const name = key ?? cache.name;
+    const cacheObj = new cache();
+    this.caches.set(name, cacheObj);
+
+    return this;
+  }
+
+  resolveCache<T extends ICache>(key: string | ICacheConstructor) {
+    if (typeof key === "string") return this.caches.get(key) as T;
+    return this.resolveByConstructor<T>(this.caches, key);
+  }
+
   clear() {
     this.apis.clear();
     this.providers.clear();
     this.controllers.clear();
+    this.caches.clear();
   }
 
   private resolveByConstructor<T>(

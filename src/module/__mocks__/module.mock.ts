@@ -1,11 +1,12 @@
-import { IHTTPClientOptions } from "@/api/api-options.interface";
-import { IHTTPClient } from "@/api/http-client.interface";
+import { IHTTPClientOptions } from "@/http-client/types/http-client-options.interface";
+import { IHTTPClient } from "@/http-client/types/http-client.interface";
 import { IController } from "@/controller/controller.interface";
 import { IProvider } from "@/provider/provider.interface";
 import { createModule } from "../create-module/create-module";
 import { inject } from "../decorators/inject.decorators";
 import { resolve } from "../decorators/resolve.decorators";
 import { ICoreModule } from "../index";
+import { ICache } from "@/cache";
 
 export class TestApi implements IHTTPClient {
   constructor(options: IHTTPClientOptions) {}
@@ -17,8 +18,8 @@ export class TestApi implements IHTTPClient {
   async post(url: string) {
     return null as any;
   }
-  async upload(url:string,formData:FormData){
-    return null as any; 
+  async upload(url: string, formData: FormData) {
+    return null as any;
   }
 }
 
@@ -29,6 +30,24 @@ export class TestProvider implements IProvider {
 export class TestController implements IController {
   constructor(provider: IProvider) {}
 }
+
+export class TestCache implements ICache {
+  get<T>(key: string) {
+    return null as any;
+  }
+
+  set(key: string, value: any) {}
+
+  remove(key: string) {}
+
+  clear() {}
+}
+
+export const createRegisterCache = () => {
+  const module = createModule();
+  module.registerCache(TestCache);
+  return module;
+};
 
 export const createRegisterApi = (moduleArg?: ICoreModule) => {
   const module = moduleArg ?? createModule();
