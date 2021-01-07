@@ -173,8 +173,8 @@ describe("Api", () => {
 
   describe("Upload", () => {
     it("should call post with form data and content-type header", () => {
-      mockFetchResponse({id:1});
-      
+      mockFetchResponse({ id: 1 });
+
       const api = new FetchHTTPClient({
         baseUrl: "http://test.com",
         headers: {
@@ -183,18 +183,17 @@ describe("Api", () => {
       });
 
       const formData = new FormData();
-      formData.append("file",new Blob());
+      formData.append("file", new Blob());
 
-      api.upload('upload',formData);
+      api.upload("upload", formData);
 
       expect(fetchMock).toBeCalledWith("http://test.com/upload", {
         method: "POST",
-        headers:{
-          "Content-Type":"multipart/form-data"
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
         body: formData,
       });
-      
     });
   });
 
@@ -208,7 +207,7 @@ describe("Api", () => {
       abortController.abort();
 
       await expect(api.get("test", { abortController })).rejects.toEqual(
-        new RequestError(EnumRequestErrorType.serverError)
+        new RequestError(EnumRequestErrorType.aborted)
       );
     });
 
@@ -222,7 +221,7 @@ describe("Api", () => {
 
       await expect(
         api.post("test", undefined, { abortController })
-      ).rejects.toEqual(new RequestError(EnumRequestErrorType.serverError));
+      ).rejects.toEqual(new RequestError(EnumRequestErrorType.aborted));
     });
   });
 

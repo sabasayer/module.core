@@ -67,18 +67,20 @@ export class FetchHTTPClient implements IHTTPClient {
     }
   }
 
-  private handleUpload<TResponse = undefined>(
+  private async handleUpload<TResponse = undefined>(
     url: string,
     formData: FormData
   ): Promise<TResponse> {
-    return fetch(`${this.baseUrl}${url}`, {
+    const response = await fetch(`${this.baseUrl}${url}`, {
       method: "POST",
       headers: {
         ...this.headers,
         "Content-Type": "multipart/form-data",
       },
       body: formData,
-    }) as Promise<any>;
+    });
+
+    return this.handleResponse(response);
   }
 
   private createFetchInit(
@@ -138,6 +140,8 @@ export class FetchHTTPClient implements IHTTPClient {
       pendingRequest,
     });
 
+    this.pendingRequests.delete(url);
+
     return this.handleResponse(response);
   }
 
@@ -160,17 +164,14 @@ export class FetchHTTPClient implements IHTTPClient {
   private async handleResponse(response: Response) {
     if (response.ok) return response.json();
 
+    await this.handleResponseError(response);
+  }
+
+  private async handleResponseError(response: Response) {
     if (this.createErrorFn) throw await this.createErrorFn(response);
 
     const body = response.body ? ` ${response.body}` : "";
     throw new Error(`${response.status}: ${response.statusText}.${body}`);
-  }
-
-  private createBaseUrl(options: IHTTPClientOptions): string {
-    if (options.baseUrl)
-      return urlUtils.ensureLastCharacterToBeSlash(options.baseUrl);
-
-    return urlUtils.createBaseUrl(options);
   }
 
   private handleError(error: unknown, key: string) {
@@ -183,5 +184,12 @@ export class FetchHTTPClient implements IHTTPClient {
       EnumRequestErrorType.serverError,
       (error as Error).message
     );
+  }
+
+  private createBaseUrl(options: IHTTPClientOptions): string {
+    if (options.baseUrl)
+      return urlUtils.ensureLastCharacterToBeSlash(options.baseUrl);
+
+    return urlUtils.createBaseUrl(options);
   }
 }
