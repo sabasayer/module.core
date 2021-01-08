@@ -1,4 +1,4 @@
-import { IAbortController, IHTTPClient, RequestOptions } from "@/http-client";
+import { IAbortController, IHTTPClient, RequestOptions } from "../http-client";
 import { IProvider } from ".";
 import { ProviderRequestOptions } from "./provider-request-options.interface";
 

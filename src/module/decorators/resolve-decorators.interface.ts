@@ -1,16 +1,16 @@
-import { IHTTPClientConstuctor } from "@/http-client/types/http-client.interface";
-import { IControllerConstructor } from "@/controller/index";
-import { IProviderConstructor } from "@/provider/index";
+import { IHTTPClientConstuctor } from "../../http-client/types/http-client.interface";
+import { IControllerConstructor } from "../../controller/index";
+import { IProvider, IProviderConstructor } from "../../provider/index";
 import { IDecorators } from "./decorators.interface";
-import { ICacheConstructor } from "@/cache/cache.interface";
+import { ICacheConstructor } from "../../cache/cache.interface";
 
 type PropDecoratorFunc = (target: any, key: string | symbol) => void;
 
 export type IResolveDecorators = IDecorators & {
   api: (api?: IHTTPClientConstuctor) => PropDecoratorFunc;
   provider: (provider: IProviderConstructor | string) => PropDecoratorFunc;
-  controller: (
-    controller: IControllerConstructor | string
+  controller: <TProvider extends IProvider>(
+    controller: IControllerConstructor<TProvider> | string
   ) => PropDecoratorFunc;
   cache: (cache: ICacheConstructor | string) => PropDecoratorFunc;
 };

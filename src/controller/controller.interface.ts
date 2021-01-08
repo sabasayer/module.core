@@ -1,5 +1,7 @@
-import { IProvider } from "@/provider/provider.interface";
+import { IProvider } from "../provider/provider.interface";
 
 export type IController = {};
 
-export type IControllerConstructor = new (provider: IProvider) => IController;
+export type IControllerConstructor<TProvider extends IProvider> = new (
+  provider: TProvider
+) => IController;

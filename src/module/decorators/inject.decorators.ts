@@ -1,14 +1,17 @@
-import { IHTTPClientOptions } from "@/http-client/types/http-client-options.interface";
-import { IHTTPClientConstuctor } from "@/http-client/types/http-client.interface";
-import { IControllerConstructor } from "@/controller/controller.interface";
-import { IProviderConstructor } from "@/provider/provider.interface";
+import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
+import { IHTTPClientConstuctor } from "../../http-client/types/http-client.interface";
+import { IControllerConstructor } from "../../controller/controller.interface";
+import {
+  IProvider,
+  IProviderConstructor,
+} from "../../provider/provider.interface";
 import {
   ICoreModule,
   RegisterControllerOptions,
   RegisterProviderOptions,
 } from "../core-module.interface";
 import { IInjectDecorators } from "./inject-decorators.interface";
-import { ICacheConstructor } from "@/cache/cache.interface";
+import { ICacheConstructor } from "../../cache/cache.interface";
 
 class InjectDecorators implements IInjectDecorators {
   private module: ICoreModule | null = null;
@@ -26,7 +29,9 @@ class InjectDecorators implements IInjectDecorators {
     };
   }
   controller(options: RegisterControllerOptions) {
-    return (controllerConstructor: IControllerConstructor) => {
+    return <TProvider extends IProvider>(
+      controllerConstructor: IControllerConstructor<TProvider>
+    ) => {
       this.module?.registerController(controllerConstructor, options);
     };
   }

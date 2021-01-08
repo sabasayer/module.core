@@ -1,21 +1,24 @@
-import { IHTTPClientOptions } from "@/http-client/types/http-client-options.interface";
+import { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
 import {
   IHTTPClient,
   IHTTPClientConstuctor,
-} from "@/http-client/types/http-client.interface";
+} from "../http-client/types/http-client.interface";
 import {
   IController,
   IControllerConstructor,
-} from "@/controller/controller.interface";
-import { IProvider, IProviderConstructor } from "@/provider/provider.interface";
+} from "../controller/controller.interface";
+import {
+  IProvider,
+  IProviderConstructor,
+} from "../provider/provider.interface";
 import {
   ICoreModule,
   RegisterControllerOptions,
   RegisterProviderOptions,
 } from "./core-module.interface";
 import { IDecorators } from "./decorators/decorators.interface";
-import { ICache } from "@/cache";
-import { ICacheConstructor } from "@/cache/cache.interface";
+import { ICache } from "../cache";
+import { ICacheConstructor } from "../cache/cache.interface";
 
 export class ModuleCore implements ICoreModule {
   private apis = new Map<string, IHTTPClient>();
@@ -62,11 +65,11 @@ export class ModuleCore implements ICoreModule {
     else return this.resolveByConstructor<T>(this.providers, key);
   }
 
-  registerController(
-    controller: IControllerConstructor,
+  registerController<TProvider extends IProvider>(
+    controller: IControllerConstructor<TProvider>,
     options: RegisterControllerOptions
   ) {
-    const provider = this.resolveProvider(options.provider);
+    const provider = this.resolveProvider(options.provider) as TProvider;
     if (!provider) return this;
 
     const name = options.key ?? controller.name;
@@ -76,8 +79,8 @@ export class ModuleCore implements ICoreModule {
     return this;
   }
 
-  resolveController<T extends IController>(
-    key: string | IControllerConstructor
+  resolveController<T extends IController, TProvider extends IProvider>(
+    key: string | IControllerConstructor<TProvider>
   ) {
     if (typeof key === "string") return this.controllers.get(key) as T;
     return this.resolveByConstructor<T>(this.controllers, key);

@@ -1,7 +1,7 @@
-import { IHTTPClient } from "@/http-client/types/http-client.interface";
+import { IHTTPClient } from "../http-client/types/http-client.interface";
 import { ProviderRequestOptions } from "./provider-request-options.interface";
 
-export type IProvider = {
+export interface IProvider {
   post<TRequest = undefined, TResponse = undefined>(
     url: string,
     data?: TRequest,

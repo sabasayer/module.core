@@ -5,16 +5,17 @@
     "noUnusedLocals": true,
     "noUncheckedIndexedAccess": true,
     "experimentalDecorators": true,
-    "importsNotUsedAsValues": "remove",
     "moduleResolution": "node",
-    "module": "commonjs",
-    "target": "ESNext",
+    "esModuleInterop": true,
+    "module": "esnext",
+    "target": "ES2018",
     "lib": ["ESNext", "DOM"],
     "outDir": "dist",
-    "sourceMap": true,
     "declaration": true,
     "declarationDir": "dist/types",
+    "sourceMap": false,
     "baseUrl": ".",
+    "types": ["jest", "node"],
     "paths": {
       "@/*": ["src/*"]
     }

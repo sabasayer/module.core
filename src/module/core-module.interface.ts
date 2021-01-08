@@ -1,16 +1,19 @@
-import { IHTTPClientOptions } from "@/http-client/types/http-client-options.interface";
+import { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
 import {
   IHTTPClient,
   IHTTPClientConstuctor,
-} from "@/http-client/types/http-client.interface";
+} from "../http-client/types/http-client.interface";
 import {
   IController,
   IControllerConstructor,
-} from "@/controller/controller.interface";
-import { IProvider, IProviderConstructor } from "@/provider/provider.interface";
+} from "../controller/controller.interface";
+import {
+  IProvider,
+  IProviderConstructor,
+} from "../provider/provider.interface";
 import { IDecorators } from "./decorators/decorators.interface";
-import { ICache } from "@/cache";
-import { ICacheConstructor } from "@/cache/cache.interface";
+import { ICache } from "../cache";
+import { ICacheConstructor } from "../cache/cache.interface";
 
 export type RegisterProviderOptions = {
   key?: string;
@@ -42,13 +45,13 @@ export type ICoreModule = {
     key: string | IProviderConstructor
   ) => T | undefined;
 
-  registerController: (
-    controller: IControllerConstructor,
+  registerController: <TProvider extends IProvider>(
+    controller: IControllerConstructor<TProvider>,
     options: RegisterControllerOptions
   ) => ICoreModule;
 
-  resolveController: <T extends IController>(
-    key: string | IControllerConstructor
+  resolveController: <T extends IController, TProvider extends IProvider>(
+    key: string | IControllerConstructor<TProvider>
   ) => T | undefined;
 
   registerCache: (cache: ICacheConstructor, key?: string) => ICoreModule;

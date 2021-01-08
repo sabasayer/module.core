@@ -1,6 +1,6 @@
-import { IHTTPClient } from "@/http-client/index";
-import { IController } from "@/controller/index";
-import { IProvider } from "@/provider/index";
+import { IHTTPClient } from "../../http-client/index";
+import { IController } from "../../controller/index";
+import { IProvider } from "../../provider/index";
 import { resolve } from "../decorators/resolve.decorators";
 import {
   createRegisterApiAndUseResolve,
@@ -11,7 +11,7 @@ import {
   TestController,
   TestProvider,
 } from "../__mocks__/module.mock";
-import { ICache } from "@/cache";
+import { ICache } from "../../cache";
 
 describe("Resolve Decoratros", () => {
   it("should resolve api", () => {

@@ -1,12 +1,12 @@
-import { IHTTPClientOptions } from "@/http-client/types/http-client-options.interface";
-import { IHTTPClient } from "@/http-client/types/http-client.interface";
-import { IController } from "@/controller/controller.interface";
-import { IProvider } from "@/provider/provider.interface";
+import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
+import { IHTTPClient } from "../../http-client/types/http-client.interface";
+import { IController } from "../../controller/controller.interface";
+import { IProvider } from "../../provider/provider.interface";
 import { createModule } from "../create-module/create-module";
 import { inject } from "../decorators/inject.decorators";
 import { resolve } from "../decorators/resolve.decorators";
 import { ICoreModule } from "../index";
-import { ICache } from "@/cache";
+import { ICache } from "../../cache";
 
 export class TestApi implements IHTTPClient {
   constructor(options: IHTTPClientOptions) {}

@@ -1,9 +1,9 @@
-import { IHTTPClientConstuctor } from "@/http-client/types/http-client.interface";
-import { IControllerConstructor } from "@/controller/index";
-import { IProviderConstructor } from "@/provider/index";
+import { IHTTPClientConstuctor } from "../../http-client/types/http-client.interface";
+import { IControllerConstructor } from "../../controller/index";
+import { IProvider, IProviderConstructor } from "../../provider/index";
 import { ICoreModule } from "../index";
 import { IResolveDecorators } from "./resolve-decorators.interface";
-import { ICacheConstructor } from "@/cache/cache.interface";
+import { ICacheConstructor } from "../../cache/cache.interface";
 
 class ResolveDecorators implements IResolveDecorators {
   private module: ICoreModule | null = null;
@@ -31,7 +31,9 @@ class ResolveDecorators implements IResolveDecorators {
     };
   }
 
-  controller(controller: IControllerConstructor | string) {
+  controller<TProvider extends IProvider>(
+    controller: IControllerConstructor<TProvider> | string
+  ) {
     return (target: any, key: string | symbol) => {
       const controllerObj = this.module?.resolveController(controller);
 

@@ -32,7 +32,7 @@ export class FetchHTTPClient implements IHTTPClient {
   ): Promise<TResponse | undefined> {
     try {
       return await this.handleGet(url, options);
-    } catch (e: unknown) {
+    } catch (e) {
       this.handleError(e, url);
     }
   }
@@ -62,7 +62,7 @@ export class FetchHTTPClient implements IHTTPClient {
   ): Promise<TResponse | undefined> {
     try {
       return this.handleUpload(url, formData);
-    } catch (e: unknown) {
+    } catch (e) {
       this.handleError(e, url);
     }
   }
