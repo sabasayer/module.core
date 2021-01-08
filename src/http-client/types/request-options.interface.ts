@@ -1,5 +1,5 @@
 import { IAbortController } from "./abort-controller.interface";
 
-export interface RequestOptions {
+export type RequestOptions = {
   abortController?: IAbortController;
-}
+};

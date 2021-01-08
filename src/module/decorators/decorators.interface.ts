@@ -1,5 +1,5 @@
 import { ICoreModule } from "../index";
 
-export interface IDecorators{
-    setModule: (module: ICoreModule) => void;
-}
+export type IDecorators = {
+  setModule: (module: ICoreModule) => void;
+};

@@ -35,8 +35,8 @@ export class CoreProvider implements IProvider {
     );
   }
 
-  async upload(url: string, formData: FormData) {
-    return this.client.upload(url, formData);
+  async upload<TResponse = undefined>(url: string, formData: FormData) {
+    return this.client.upload<TResponse>(url, formData);
   }
 
   private async tryClientRequest<TResponse>(
@@ -76,7 +76,7 @@ export class CoreProvider implements IProvider {
 
     abortController = this.client.createAbortController();
     this.abortControllers.set(options.raceId, abortController);
-    
+
     return abortController;
   }
 

@@ -1,3 +1,3 @@
-export interface IAbortController {
+export type IAbortController = {
   abort: () => void;
-}
+};

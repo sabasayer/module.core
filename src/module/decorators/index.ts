@@ -4,4 +4,5 @@ import { IResolveDecorators } from "./resolve-decorators.interface";
 import { resolve } from "./resolve.decorators";
 import { IDecorators } from "./decorators.interface";
 
-export { IInjectDecorators, inject, IResolveDecorators, resolve, IDecorators };
+export type { IInjectDecorators, IResolveDecorators, IDecorators };
+export { inject, resolve };

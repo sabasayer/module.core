@@ -1,3 +1,3 @@
-export interface ProviderRequestOptions {
+export type ProviderRequestOptions = {
   raceId: string;
-}
+};

@@ -1,4 +1,4 @@
-import { urlUtils } from "@/utils/url.utils";
+import { urlUtils } from "../utils/url.utils";
 import { IHTTPClient, IHTTPClientOptions } from "./index";
 import { RequestError } from "./request-error";
 import { RequestOptions } from "./types/request-options.interface";

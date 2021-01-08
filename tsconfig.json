@@ -5,17 +5,21 @@
     "noUnusedLocals": true,
     "noUncheckedIndexedAccess": true,
     "experimentalDecorators": true,
+    "importsNotUsedAsValues": "remove",
     "moduleResolution": "node",
     "module": "commonjs",
     "target": "ESNext",
     "lib": ["ESNext", "DOM"],
     "outDir": "dist",
     "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "dist/types",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+
+  "exclude": ["node_modules", "**/*.spec.ts", "__mocks__"],
+  "include": ["src/**/*"]
 }

@@ -12,17 +12,17 @@ import { IDecorators } from "./decorators/decorators.interface";
 import { ICache } from "@/cache";
 import { ICacheConstructor } from "@/cache/cache.interface";
 
-export interface RegisterProviderOptions {
+export type RegisterProviderOptions = {
   key?: string;
   prefferedApi?: IHTTPClientConstuctor;
-}
+};
 
-export interface RegisterControllerOptions {
+export type RegisterControllerOptions = {
   provider: IProviderConstructor;
   key?: string;
-}
+};
 
-export interface ICoreModule {
+export type ICoreModule = {
   useDecorators: (decorators: IDecorators) => ICoreModule;
 
   registerApi: (
@@ -58,4 +58,4 @@ export interface ICoreModule {
   ) => T | undefined;
 
   clear: () => void;
-}
+};

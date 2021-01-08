@@ -39,6 +39,27 @@ describe("Core Mapper", () => {
     expect(mapped).toEqual({ first: "orange", age: 231, sum: "orange 231" });
   });
 
+  it("should map to target array and source array", () => {
+    interface TestType {
+      name: string;
+    }
+
+    const mapper = new CoreMapper<TestType, TestType>();
+
+    const mapped = mapper.mapToTargetList([
+      { name: "first" },
+      { name: "second" },
+    ]);
+
+    const mappedSource = mapper.mapToSourceList([
+      { name: "first" },
+      { name: "second" },
+    ]);
+
+    expect(mapped).toEqual([{ name: "first" }, { name: "second" }]);
+    expect(mappedSource).toEqual([{ name: "first" }, { name: "second" }]);
+  });
+
   it("should map to source", () => {
     interface Target {
       list: number[];

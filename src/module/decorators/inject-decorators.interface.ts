@@ -9,7 +9,7 @@ import {
 import { IDecorators } from "./decorators.interface";
 import { ICacheConstructor } from "@/cache/cache.interface";
 
-export interface IInjectDecorators extends IDecorators {
+export type IInjectDecorators = IDecorators & {
   api: (
     options: IHTTPClientOptions
   ) => (apiConstructor: IHTTPClientConstuctor) => void;
@@ -20,4 +20,4 @@ export interface IInjectDecorators extends IDecorators {
     options: RegisterControllerOptions
   ) => (controllerConstructor: IControllerConstructor) => void;
   cache: (key?: string) => (cacheConstructor: ICacheConstructor) => void;
-}
+};

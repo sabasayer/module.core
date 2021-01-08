@@ -60,6 +60,14 @@ export class CoreMapper<Source, Target> implements IMapper<Source, Target> {
     return this.map(target, this.sourceConfiguration);
   }
 
+  mapToTargetList(sources?: Source[]): Target[] | undefined {
+    return sources?.map((e) => this.mapToTarget(e));
+  }
+
+  mapToSourceList(targets?: Target[]): Source[] | undefined {
+    return targets?.map((e) => this.mapToSource(e));
+  }
+
   private map<TSource, TTarget>(
     source: TSource,
     configuration: MapperConfiguration<TSource, TTarget>

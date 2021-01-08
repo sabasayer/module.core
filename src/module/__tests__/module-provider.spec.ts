@@ -70,6 +70,15 @@ describe("Module Provider", () => {
       constructor(api: IHTTPClient) {
         isInstanceOfTestApi2 = api instanceof TestApi2;
       }
+      async get(url: string) {
+        return null as any;
+      }
+      async post(url: string) {
+        return null as any;
+      }
+      async upload(url: string, formData: FormData) {
+        return null as any;
+      }
     }
 
     module.registerApi(TestApi2, {});

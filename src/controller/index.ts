@@ -1,3 +1,3 @@
 import { IController, IControllerConstructor } from "./controller.interface";
 
-export { IController, IControllerConstructor };
+export type { IController, IControllerConstructor };

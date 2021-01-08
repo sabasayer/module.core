@@ -1,4 +1,4 @@
-export interface IMapper<Source, Target> {
+export type IMapper<Source, Target> = {
   setTargetConfig(
     config: Omit<MapperConfiguration<Source, Target>, "fieldConfigurations">
   ): void;
@@ -19,7 +19,7 @@ export interface IMapper<Source, Target> {
 
   mapToTarget(source: Source): Target;
   mapToSource(target: Target): Source;
-}
+};
 
 export type MapperFieldConfigurations<Source, Target> = {
   [TargetField in keyof Target]?:
@@ -31,7 +31,7 @@ export type MapperFieldConfigurations<Source, Target> = {
 export type MapperConfiguration<Source, Target> = {
   fieldConfigurations: MapperFieldConfigurations<Source, Target>;
   canMapUndefinedFields?: boolean;
-  ignoredSourceFields?:(keyof Source)[]
+  ignoredSourceFields?: (keyof Source)[];
 };
 
 export type MapperTargetValue<

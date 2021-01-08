@@ -1,3 +1,5 @@
+import fetchMock from "jest-fetch-mock";
+
 export const mockFetchResponse = (value: object) => {
   return fetchMock.mockResponseOnce(
     () => new Promise((resolve) => resolve(JSON.stringify(value)))

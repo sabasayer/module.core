@@ -25,6 +25,18 @@ export class TestApi implements IHTTPClient {
 
 export class TestProvider implements IProvider {
   constructor(api: IHTTPClient) {}
+
+  post(url: string) {
+    return null as any;
+  }
+
+  get(url: string) {
+    return null as any;
+  }
+
+  upload(url: string, formData: FormData) {
+    return null as any;
+  }
 }
 
 export class TestController implements IController {

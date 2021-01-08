@@ -42,6 +42,15 @@ describe("Inject Decorators", () => {
     @inject.provider()
     class TestProvider implements IProvider {
       constructor(api: IHTTPClient) {}
+      async get(url: string) {
+        return null as any;
+      }
+      async post(url: string) {
+        return null as any;
+      }
+      async upload(url: string, formData: FormData) {
+        return null as any;
+      }
     }
 
     const provider = module.resolveProvider(TestProvider);
@@ -55,6 +64,15 @@ describe("Inject Decorators", () => {
     @inject.provider({ key: "test_p", prefferedApi: TestApi })
     class TestProvider implements IProvider {
       constructor(api: IHTTPClient) {}
+      async get(url: string) {
+        return null as any;
+      }
+      async post(url: string) {
+        return null as any;
+      }
+      async upload(url: string, formData: FormData) {
+        return null as any;
+      }
     }
 
     const provider = module.resolveProvider("test_p");

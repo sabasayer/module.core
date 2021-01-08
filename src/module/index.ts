@@ -3,4 +3,5 @@ import { ModuleCore } from "./module";
 import { createModule } from "./create-module/create-module";
 
 export * from "./decorators/index";
-export { ICoreModule, ModuleCore, createModule };
+export type { ICoreModule };
+export { ModuleCore, createModule };

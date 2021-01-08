@@ -2,7 +2,7 @@ import { IAbortController } from "./abort-controller.interface";
 import { IHTTPClientOptions } from "./http-client-options.interface";
 import { RequestOptions } from "./request-options.interface";
 
-export interface IHTTPClient {
+export type IHTTPClient = {
   get: <TResponse = undefined>(
     url: string,
     options?: RequestOptions
@@ -20,7 +20,7 @@ export interface IHTTPClient {
   ) => Promise<TResponse | undefined>;
 
   createAbortController?: () => IAbortController;
-}
+};
 
 export type IHTTPClientConstuctor = new (
   options: IHTTPClientOptions

@@ -6,10 +6,11 @@ import {
 } from "./mapper.interface";
 import { CoreMapper } from "./core-mapper";
 
-export {
+export type {
   IMapper,
-  CoreMapper,
   MapperConfiguration,
   MapperTargetValue,
   MapperFieldConfigurations,
 };
+
+export { CoreMapper };
