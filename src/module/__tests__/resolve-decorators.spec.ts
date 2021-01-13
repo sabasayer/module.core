@@ -18,7 +18,7 @@ describe("Resolve Decoratros", () => {
     createRegisterApiAndUseResolve();
 
     class Test {
-      @resolve.api()
+      @resolve.client()
       api!: IHTTPClient;
     }
 
@@ -45,7 +45,7 @@ describe("Resolve Decoratros", () => {
     module.registerApi(TestApi2, {});
 
     class Test {
-      @resolve.api(TestApi2)
+      @resolve.client(TestApi2)
       api!: IHTTPClient;
     }
 

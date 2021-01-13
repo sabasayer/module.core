@@ -18,7 +18,7 @@ class InjectDecorators implements IInjectDecorators {
   setModule(module: ICoreModule) {
     this.module = module;
   }
-  api(options: IHTTPClientOptions) {
+  client(options: IHTTPClientOptions) {
     return (apiConstructor: IHTTPClientConstuctor) => {
       this.module?.registerApi(apiConstructor, options);
     };

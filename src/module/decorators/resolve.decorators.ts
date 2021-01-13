@@ -11,9 +11,9 @@ class ResolveDecorators implements IResolveDecorators {
     this.module = module;
   }
 
-  api(api?: IHTTPClientConstuctor) {
+  client(client?: IHTTPClientConstuctor) {
     return (target: any, key: string | symbol) => {
-      const apiObj = this.module?.resolveApi(api);
+      const apiObj = this.module?.resolveApi(client);
 
       if (!apiObj) return;
 

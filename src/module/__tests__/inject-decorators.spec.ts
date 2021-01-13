@@ -16,7 +16,7 @@ describe("Inject Decorators", () => {
   it("should register api  with decorator", () => {
     const module = createAndUseInject();
 
-    @inject.api({})
+    @inject.client({})
     class TestApi implements IHTTPClient {
       constructor(options: IHTTPClientOptions) {}
       async get(url: string) {

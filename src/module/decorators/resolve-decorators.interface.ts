@@ -7,7 +7,7 @@ import { ICacheConstructor } from "../../cache/cache.interface";
 type PropDecoratorFunc = (target: any, key: string | symbol) => void;
 
 export type IResolveDecorators = IDecorators & {
-  api: (api?: IHTTPClientConstuctor) => PropDecoratorFunc;
+  client: (client?: IHTTPClientConstuctor) => PropDecoratorFunc;
   provider: (provider: IProviderConstructor | string) => PropDecoratorFunc;
   controller: <TProvider extends IProvider>(
     controller: IControllerConstructor<TProvider> | string

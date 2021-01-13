@@ -13,9 +13,9 @@ import { IDecorators } from "./decorators.interface";
 import { ICacheConstructor } from "../../cache/cache.interface";
 
 export type IInjectDecorators = IDecorators & {
-  api: (
+  client: (
     options: IHTTPClientOptions
-  ) => (apiConstructor: IHTTPClientConstuctor) => void;
+  ) => (clientConstructor: IHTTPClientConstuctor) => void;
   provider: (
     options?: RegisterProviderOptions
   ) => (providerConstructor: IProviderConstructor) => void;

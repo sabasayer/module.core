@@ -67,6 +67,12 @@ export class FetchHTTPClient implements IHTTPClient {
     }
   }
 
+  setHeader(key: string, value: string) {
+    if (!this.headers) this.headers = {};
+
+    this.headers[key] = value;
+  }
+
   private async handleUpload<TResponse = undefined>(
     url: string,
     formData: FormData
