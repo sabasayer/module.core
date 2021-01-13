@@ -19,4 +19,4 @@ export interface IProvider {
   ): Promise<TResponse | undefined>;
 }
 
-export type IProviderConstructor = new (api: IHTTPClient) => IProvider;
+export type IProviderConstructor = new (client: IHTTPClient) => IProvider;

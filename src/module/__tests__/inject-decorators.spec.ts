@@ -30,14 +30,14 @@ describe("Inject Decorators", () => {
       }
     }
 
-    const api = module.resolveApi();
+    const api = module.resolveHttpClient();
 
     expect(api).toBeInstanceOf(TestApi);
   });
 
   it("should register provider with decorator", () => {
     const module = createAndUseInject();
-    module.registerApi(TestApi, {});
+    module.registerHttpClient(TestApi, {});
 
     @inject.provider()
     class TestProvider implements IProvider {
@@ -59,9 +59,9 @@ describe("Inject Decorators", () => {
 
   it("should register provider with options", () => {
     const module = createAndUseInject();
-    module.registerApi(TestApi, {});
+    module.registerHttpClient(TestApi, {});
 
-    @inject.provider({ key: "test_p", prefferedApi: TestApi })
+    @inject.provider({ key: "test_p", client: TestApi })
     class TestProvider implements IProvider {
       constructor(api: IHTTPClient) {}
       async get(url: string) {

@@ -63,7 +63,7 @@ export const createRegisterCache = () => {
 
 export const createRegisterApi = (moduleArg?: ICoreModule) => {
   const module = moduleArg ?? createModule();
-  module.registerApi(TestApi, {});
+  module.registerHttpClient(TestApi, {});
   return module;
 };
 

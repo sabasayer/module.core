@@ -13,7 +13,7 @@ describe("Module Provider", () => {
     const module = createModule();
 
     expect(() => module.registerProvider(TestProvider)).toThrowError(
-      "Api is not registered."
+      "Http-Client is not registered."
     );
   });
 
@@ -81,9 +81,9 @@ describe("Module Provider", () => {
       }
     }
 
-    module.registerApi(TestApi2, {});
+    module.registerHttpClient(TestApi2, {});
 
-    module.registerProvider(TestProvider2, { prefferedApi: TestApi2 });
+    module.registerProvider(TestProvider2, { client: TestApi2 });
 
     expect(isInstanceOfTestApi2).toBe(true);
   });

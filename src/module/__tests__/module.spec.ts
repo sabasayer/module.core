@@ -20,7 +20,7 @@ describe("Module", () => {
   describe("Api Algorithm", () => {
     it("should resolve api", () => {
       const module = createRegisterApi();
-      const api = module.resolveApi();
+      const api = module.resolveHttpClient();
 
       expect(api).toBeInstanceOf(TestApi);
     });
@@ -41,9 +41,9 @@ describe("Module", () => {
         }
       }
 
-      module.registerApi(TestApi2, {});
+      module.registerHttpClient(TestApi2, {});
 
-      const api = module.resolveApi(TestApi);
+      const api = module.resolveHttpClient(TestApi);
 
       expect(api).toBeInstanceOf(TestApi);
     });
@@ -53,7 +53,7 @@ describe("Module", () => {
       module.registerCache(TestCache);
       module.clear();
 
-      const api = module.resolveApi();
+      const api = module.resolveHttpClient();
       const provider = module.resolveProvider(TestProvider);
       const controller = module.resolveController(TestController);
       const cache = module.resolveCache(TestCache);

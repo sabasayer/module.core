@@ -42,7 +42,7 @@ describe("Resolve Decoratros", () => {
       }
     }
 
-    module.registerApi(TestApi2, {});
+    module.registerHttpClient(TestApi2, {});
 
     class Test {
       @resolve.client(TestApi2)

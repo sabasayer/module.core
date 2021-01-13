@@ -13,11 +13,11 @@ class ResolveDecorators implements IResolveDecorators {
 
   client(client?: IHTTPClientConstuctor) {
     return (target: any, key: string | symbol) => {
-      const apiObj = this.module?.resolveApi(client);
+      const clientObj = this.module?.resolveHttpClient(client);
 
-      if (!apiObj) return;
+      if (!clientObj) return;
 
-      this.defineProperty(target, key, apiObj);
+      this.defineProperty(target, key, clientObj);
     };
   }
 

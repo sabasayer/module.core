@@ -21,38 +21,38 @@ import { ICache } from "../cache";
 import { ICacheConstructor } from "../cache/cache.interface";
 
 export class ModuleCore implements ICoreModule {
-  private apis = new Map<string, IHTTPClient>();
+  private clients = new Map<string, IHTTPClient>();
   private providers = new Map<string, IProvider>();
   private controllers = new Map<string, IController>();
   private caches = new Map<string, ICache>();
 
-  useDecorators(decorators: IDecorators) {
-    decorators.setModule(this);
+  useDecorators(...decorators: IDecorators[]) {
+    decorators.forEach((decorator) => decorator.setModule(this));
     return this;
   }
 
-  registerApi(api: IHTTPClientConstuctor, options: IHTTPClientOptions) {
-    const apiObj = new api(options);
-    this.apis.set(api.name, apiObj);
+  registerHttpClient(client: IHTTPClientConstuctor, options: IHTTPClientOptions) {
+    const clientObj = new client(options);
+    this.clients.set(client.name, clientObj);
     return this;
   }
 
-  resolveApi<T extends IHTTPClient>(
-    api?: IHTTPClientConstuctor
+  resolveHttpClient<T extends IHTTPClient>(
+    client?: IHTTPClientConstuctor
   ): T | undefined {
-    if (api) return this.resolveByConstructor<T>(this.apis, api);
-    else return this.apis.values().next().value;
+    if (client) return this.resolveByConstructor<T>(this.clients, client);
+    else return this.clients.values().next().value;
   }
 
   registerProvider(
     provider: IProviderConstructor,
     options?: RegisterProviderOptions
   ) {
-    const api = this.resolveApi(options?.prefferedApi);
-    if (!api) throw new Error("Api is not registered.");
+    const client = this.resolveHttpClient(options?.client);
+    if (!client) throw new Error("Http-Client is not registered.");
 
     const name = options?.key ?? provider.name;
-    const providerObj = new provider(api);
+    const providerObj = new provider(client);
     this.providers.set(name, providerObj);
 
     return this;
@@ -100,7 +100,7 @@ export class ModuleCore implements ICoreModule {
   }
 
   clear() {
-    this.apis.clear();
+    this.clients.clear();
     this.providers.clear();
     this.controllers.clear();
     this.caches.clear();

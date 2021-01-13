@@ -5,6 +5,7 @@ import { ProviderRequestOptions } from "./provider-request-options.interface";
 export class CoreProvider implements IProvider {
   private client: IHTTPClient;
   private abortControllers = new Map<string, IAbortController>();
+  protected baseUrl: string | null = null;
 
   constructor(client: IHTTPClient) {
     this.client = client;
@@ -17,8 +18,15 @@ export class CoreProvider implements IProvider {
   ) {
     let requestOptions = this.createRequestOptions(options);
 
+    const computedUrl = this.createUrl(url);
+
     return this.tryClientRequest(
-      () => this.client.post<TRequest, TResponse>(url, data, requestOptions),
+      () =>
+        this.client.post<TRequest, TResponse>(
+          computedUrl,
+          data,
+          requestOptions
+        ),
       options
     );
   }
@@ -29,14 +37,22 @@ export class CoreProvider implements IProvider {
   ) {
     let requestOptions = this.createRequestOptions(options);
 
+    const computedUrl = this.createUrl(url);
+
     return this.tryClientRequest(
-      () => this.client.get<TResponse>(url, requestOptions),
+      () => this.client.get<TResponse>(computedUrl, requestOptions),
       options
     );
   }
 
   async upload<TResponse = undefined>(url: string, formData: FormData) {
-    return this.client.upload<TResponse>(url, formData);
+    const computedUrl = this.createUrl(url);
+
+    return this.client.upload<TResponse>(computedUrl, formData);
+  }
+
+  private createUrl(url: string) {
+    return this.baseUrl ? `${this.baseUrl}/${url}` : url;
   }
 
   private async tryClientRequest<TResponse>(

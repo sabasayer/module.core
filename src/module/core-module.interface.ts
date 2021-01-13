@@ -17,7 +17,7 @@ import { ICacheConstructor } from "../cache/cache.interface";
 
 export type RegisterProviderOptions = {
   key?: string;
-  prefferedApi?: IHTTPClientConstuctor;
+  client?: IHTTPClientConstuctor;
 };
 
 export type RegisterControllerOptions = {
@@ -26,14 +26,14 @@ export type RegisterControllerOptions = {
 };
 
 export type ICoreModule = {
-  useDecorators: (decorators: IDecorators) => ICoreModule;
+  useDecorators: (...decorators: IDecorators[]) => ICoreModule;
 
-  registerApi: (
-    api: IHTTPClientConstuctor,
+  registerHttpClient: (
+    client: IHTTPClientConstuctor,
     options: IHTTPClientOptions
   ) => ICoreModule;
-  resolveApi: <T extends IHTTPClient>(
-    api?: IHTTPClientConstuctor
+  resolveHttpClient: <T extends IHTTPClient>(
+    client?: IHTTPClientConstuctor
   ) => T | undefined;
 
   registerProvider: (

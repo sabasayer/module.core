@@ -30,6 +30,21 @@ describe("Data Provider", () => {
     });
   });
 
+  it("should post with baseUrl added to url", () => {
+    mockFetchResponse({ id: 1 });
+
+    class TestProvider extends CoreProvider {
+      protected baseUrl: string = "giganto";
+    }
+
+    const provider = new TestProvider(client);
+    provider.post("haleluya");
+
+    expect(fetchMock).toBeCalledWith("http://test.com/giganto/haleluya", {
+      method: "POST",
+    });
+  });
+
   it("should get using options", () => {
     mockFetchResponse({ id: 1 });
 

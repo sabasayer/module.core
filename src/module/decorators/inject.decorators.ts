@@ -19,8 +19,8 @@ class InjectDecorators implements IInjectDecorators {
     this.module = module;
   }
   client(options: IHTTPClientOptions) {
-    return (apiConstructor: IHTTPClientConstuctor) => {
-      this.module?.registerApi(apiConstructor, options);
+    return (clientConstructor: IHTTPClientConstuctor) => {
+      this.module?.registerHttpClient(clientConstructor, options);
     };
   }
   provider(options?: RegisterProviderOptions) {
