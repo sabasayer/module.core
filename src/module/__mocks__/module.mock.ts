@@ -3,7 +3,7 @@ import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
 import { IProvider } from "../../provider/provider.interface";
 import { createModule } from "../create-module/create-module";
-import { inject } from "../decorators/inject.decorators";
+import { injectable } from "../decorators/inject.decorators";
 import { resolve } from "../decorators/resolve.decorators";
 import { ICoreModule } from "../index";
 import { ICache } from "../../cache";
@@ -21,6 +21,8 @@ export class TestApi implements IHTTPClient {
   async upload(url: string, formData: FormData) {
     return null as any;
   }
+
+  setHeader(key: string) {}
 }
 
 export class TestProvider implements IProvider {
@@ -69,7 +71,7 @@ export const createRegisterApi = (moduleArg?: ICoreModule) => {
 
 export const createAndUseInject = () => {
   const module = createModule();
-  module.useDecorators(inject);
+  module.useDecorators(injectable);
   return module;
 };
 

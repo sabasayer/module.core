@@ -11,6 +11,8 @@
     "target": "ES2018",
     "lib": ["ESNext", "DOM"],
     "outDir": "dist",
+    "declaration": true,
+    "declarationDir": "dist",
     "sourceMap": false,
     "baseUrl": ".",
     "types": ["jest", "node"],

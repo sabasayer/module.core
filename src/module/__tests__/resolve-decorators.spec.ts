@@ -40,6 +40,8 @@ describe("Resolve Decoratros", () => {
       async upload(url: string, formData: FormData) {
         return null as any;
       }
+
+      setHeader(key:string){}
     }
 
     module.registerHttpClient(TestApi2, {});
