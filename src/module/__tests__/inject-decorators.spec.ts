@@ -2,7 +2,7 @@ import { IHTTPClientOptions } from "../../http-client/types/http-client-options.
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
 import { IProvider } from "../../provider/provider.interface";
-import { inject } from "../decorators/inject.decorators";
+import { injectable } from "../decorators/inject.decorators";
 import {
   createAndUseInject,
   createRegisterApiAndProvider,
@@ -16,7 +16,7 @@ describe("Inject Decorators", () => {
   it("should register api  with decorator", () => {
     const module = createAndUseInject();
 
-    @inject.client({})
+    @injectable.client({})
     class TestApi implements IHTTPClient {
       constructor(options: IHTTPClientOptions) {}
       async get(url: string) {
@@ -28,6 +28,7 @@ describe("Inject Decorators", () => {
       async upload(url: string, formData: FormData) {
         return null as any;
       }
+      setHeader(key:string){}
     }
 
     const api = module.resolveHttpClient();
@@ -39,7 +40,7 @@ describe("Inject Decorators", () => {
     const module = createAndUseInject();
     module.registerHttpClient(TestApi, {});
 
-    @inject.provider()
+    @injectable.provider()
     class TestProvider implements IProvider {
       constructor(api: IHTTPClient) {}
       async get(url: string) {
@@ -61,7 +62,7 @@ describe("Inject Decorators", () => {
     const module = createAndUseInject();
     module.registerHttpClient(TestApi, {});
 
-    @inject.provider({ key: "test_p", client: TestApi })
+    @injectable.provider({ key: "test_p", client: TestApi })
     class TestProvider implements IProvider {
       constructor(api: IHTTPClient) {}
       async get(url: string) {
@@ -81,9 +82,9 @@ describe("Inject Decorators", () => {
 
   it("should register controller with decorator", () => {
     const module = createRegisterApiAndProvider();
-    module.useDecorators(inject);
+    module.useDecorators(injectable);
 
-    @inject.controller({ provider: TestProvider })
+    @injectable.controller({ provider: TestProvider })
     class TestController implements IController {
       constructor(provider: IProvider) {}
     }
@@ -95,9 +96,9 @@ describe("Inject Decorators", () => {
 
   it("should register cache with decorator", () => {
     const module = createModule();
-    module.useDecorators(inject);
+    module.useDecorators(injectable);
 
-    @inject.cache()
+    @injectable.cache()
     class TestCache implements ICache {
       get<T>(key: string) {
         return null as any;

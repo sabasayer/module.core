@@ -19,6 +19,8 @@ export type IHTTPClient = {
     formData: FormData
   ) => Promise<TResponse | undefined>;
 
+  setHeader(key: string, value: string): void;
+
   createAbortController?: () => IAbortController;
 };
 
