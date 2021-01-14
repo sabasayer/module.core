@@ -4,7 +4,7 @@ import { IControllerConstructor } from "../../controller/controller.interface";
 import {
   IProvider,
   IProviderConstructor,
-} from "../../provider/provider.interface";
+} from "../../provider/types/provider.interface";
 import {
   ICoreModule,
   RegisterControllerOptions,

@@ -1,7 +1,7 @@
 import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
-import { IProvider } from "../../provider/provider.interface";
+import { IProvider } from "../../provider/types/provider.interface";
 import { injectable } from "../decorators/inject.decorators";
 import {
   createAndUseInject,
@@ -11,6 +11,7 @@ import {
 } from "../__mocks__/module.mock";
 import { createModule } from "../create-module/create-module";
 import { ICache } from "../../cache";
+import { IRequestConfig } from "@/provider/types/request-config.interface";
 
 describe("Inject Decorators", () => {
   it("should register api  with decorator", () => {
@@ -47,7 +48,7 @@ describe("Inject Decorators", () => {
       async get(url: string) {
         return null as any;
       }
-      async post(url: string) {
+      async post(config:IRequestConfig) {
         return null as any;
       }
       async upload(url: string, formData: FormData) {
@@ -69,7 +70,7 @@ describe("Inject Decorators", () => {
       async get(url: string) {
         return null as any;
       }
-      async post(url: string) {
+      async post(config:IRequestConfig) {
         return null as any;
       }
       async upload(url: string, formData: FormData) {

@@ -1,6 +1,7 @@
 import { IAbortController, IHTTPClient, RequestOptions } from "../http-client";
 import { IProvider } from ".";
-import { ProviderRequestOptions } from "./provider-request-options.interface";
+import { ProviderRequestOptions } from "./types/provider-request-options.interface";
+import { IRequestConfig } from "./types/request-config.interface";
 
 export class CoreProvider implements IProvider {
   private client: IHTTPClient;
@@ -12,13 +13,13 @@ export class CoreProvider implements IProvider {
   }
 
   async post<TRequest = undefined, TResponse = undefined>(
-    url: string,
+    config: IRequestConfig<TRequest, TResponse>,
     data?: TRequest,
     options?: ProviderRequestOptions
   ): Promise<TResponse | undefined> {
     let requestOptions = this.createRequestOptions(options);
 
-    const computedUrl = this.createUrl(url);
+    const computedUrl = this.createUrl(config.url);
 
     return this.tryClientRequest(
       () =>

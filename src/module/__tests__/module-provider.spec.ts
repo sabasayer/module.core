@@ -1,12 +1,13 @@
 import { createModule } from "../create-module/create-module";
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
-import { IProvider } from "../../provider/provider.interface";
+import { IProvider } from "../../provider/types/provider.interface";
 import {
   createRegisterApi,
   createRegisterApiAndProvider,
   TestProvider,
 } from "../__mocks__/module.mock";
+import { IRequestConfig } from "@/provider/types/request-config.interface";
 
 describe("Module Provider", () => {
   it("should throw error if api is not registered", () => {
@@ -75,7 +76,7 @@ describe("Module Provider", () => {
       async get(url: string) {
         return null as any;
       }
-      async post(url: string) {
+      async post(config:IRequestConfig) {
         return null as any;
       }
       async upload(url: string, formData: FormData) {

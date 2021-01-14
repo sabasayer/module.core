@@ -1,12 +1,13 @@
 import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
-import { IProvider } from "../../provider/provider.interface";
+import { IProvider } from "../../provider/types/provider.interface";
 import { createModule } from "../create-module/create-module";
 import { injectable } from "../decorators/inject.decorators";
 import { resolve } from "../decorators/resolve.decorators";
 import { ICoreModule } from "../index";
 import { ICache } from "../../cache";
+import { IRequestConfig } from "@/provider/types/request-config.interface";
 
 export class TestApi implements IHTTPClient {
   constructor(options: IHTTPClientOptions) {}
@@ -29,7 +30,7 @@ export class TestApi implements IHTTPClient {
 export class TestProvider implements IProvider {
   constructor(api: IHTTPClient) {}
 
-  post(url: string) {
+  post(config:IRequestConfig) {
     return null as any;
   }
 

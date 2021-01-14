@@ -1,6 +1,6 @@
 {
   "name": "@sabasayer/module.core",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "main": "dist/index.js",
   "author": "salihbaki",
   "license": "MIT",
@@ -8,6 +8,7 @@
     "dev": "parcel src/index.ts",
     "build": "node pre-build.js && tsc --project tsconfig.prod.json",
     "test": "jest",
+    "pre-publish":"npm run test && npm run build",
     "npm-publish": "npm publish --access public"
   },
   "types": "dist/index.d.ts",

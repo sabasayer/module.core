@@ -9,6 +9,7 @@ import {
 } from "@/http-client/__mocks__/fetch.mock";
 import { CoreProvider } from "../core-provider";
 import fetchMock from "jest-fetch-mock";
+import { IRequestConfig } from "../types/request-config.interface";
 
 describe("Data Provider", () => {
   const client = new FetchHTTPClient({ baseUrl: "http://test.com" });
@@ -22,7 +23,12 @@ describe("Data Provider", () => {
     mockFetchResponse({ id: 1 });
 
     const provider = new CoreProvider(client);
-    provider.post("getPatient", { id: 1 });
+
+    const config: IRequestConfig<{ id: number }, number> = {
+      url: "getPatient",
+    };
+
+    provider.post(config, { id: 1 });
 
     expect(fetchMock).toBeCalledWith("http://test.com/getPatient", {
       method: "POST",
@@ -38,7 +44,8 @@ describe("Data Provider", () => {
     }
 
     const provider = new TestProvider(client);
-    provider.post("haleluya");
+    const config:IRequestConfig = {url:"haleluya"}
+    provider.post(config);
 
     expect(fetchMock).toBeCalledWith("http://test.com/giganto/haleluya", {
       method: "POST",
@@ -77,23 +84,27 @@ describe("Data Provider", () => {
   it("should prevent race condition and abort previous not finished requests", async () => {
     const provider = new CoreProvider(client);
 
+    const config: IRequestConfig<{ search: string }, { id: number }> = {
+      url: "testRace",
+    };
+
     mockFetchResponseWithTimeout({ id: 1 }, 200);
     const firstRequest = provider.post(
-      "testRace",
+      config,
       { search: "t" },
       { raceId: "1" }
     );
 
     mockFetchResponseWithTimeout({ id: 2 }, 300);
     const secondRequest = provider.post(
-      "testRace",
+      config,
       { search: "tes" },
       { raceId: "1" }
     );
 
     mockFetchResponseWithTimeout({ id: 12 }, 100);
     const response = await provider.post(
-      "testRace",
+      config,
       { search: "test" },
       { raceId: "1" }
     );

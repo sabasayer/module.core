@@ -1,9 +1,10 @@
-import { IHTTPClient } from "../http-client/types/http-client.interface";
+import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { ProviderRequestOptions } from "./provider-request-options.interface";
+import { IRequestConfig } from "./request-config.interface";
 
 export interface IProvider {
   post<TRequest = undefined, TResponse = undefined>(
-    url: string,
+    config: IRequestConfig<TRequest,TResponse>,
     data?: TRequest,
     options?: ProviderRequestOptions
   ): Promise<TResponse | undefined>;

@@ -10,7 +10,7 @@ import {
 import {
   IProvider,
   IProviderConstructor,
-} from "../provider/provider.interface";
+} from "../provider/types/provider.interface";
 import { IDecorators } from "./decorators/decorators.interface";
 import { ICache } from "../cache";
 import { ICacheConstructor } from "../cache/cache.interface";
