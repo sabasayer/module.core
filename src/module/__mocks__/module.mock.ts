@@ -24,7 +24,10 @@ export class TestApi implements IHTTPClient {
   }
 
   setHeader(key: string) {}
+<<<<<<< HEAD
   removeHeader(key: string) {}
+=======
+>>>>>>> a4d0e8cff15630a08845a7a6bcfb6121dbbede7b
 }
 
 export class TestProvider implements IProvider {

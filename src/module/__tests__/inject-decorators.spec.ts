@@ -1,7 +1,11 @@
 import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
+<<<<<<< HEAD
 import { IProvider } from "../../provider/types/provider.interface";
+=======
+import { IProvider } from "../../provider/provider.interface";
+>>>>>>> a4d0e8cff15630a08845a7a6bcfb6121dbbede7b
 import { injectable } from "../decorators/inject.decorators";
 import {
   createAndUseInject,
@@ -29,8 +33,12 @@ describe("Inject Decorators", () => {
       async upload(url: string, formData: FormData) {
         return null as any;
       }
+<<<<<<< HEAD
       setHeader(key: string) {}
       removeHeader(key: string) {}
+=======
+      setHeader(key:string){}
+>>>>>>> a4d0e8cff15630a08845a7a6bcfb6121dbbede7b
     }
 
     const api = module.resolveHttpClient();
