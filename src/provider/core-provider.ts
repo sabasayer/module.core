@@ -15,7 +15,7 @@ export class CoreProvider implements IProvider {
     url: string,
     data?: TRequest,
     options?: ProviderRequestOptions
-  ) {
+  ): Promise<TResponse | undefined> {
     let requestOptions = this.createRequestOptions(options);
 
     const computedUrl = this.createUrl(url);
@@ -34,7 +34,7 @@ export class CoreProvider implements IProvider {
   async get<TResponse = undefined>(
     url: string,
     options?: ProviderRequestOptions
-  ) {
+  ): Promise<TResponse | undefined> {
     let requestOptions = this.createRequestOptions(options);
 
     const computedUrl = this.createUrl(url);
@@ -45,7 +45,10 @@ export class CoreProvider implements IProvider {
     );
   }
 
-  async upload<TResponse = undefined>(url: string, formData: FormData) {
+  async upload<TResponse = undefined>(
+    url: string,
+    formData: FormData
+  ): Promise<TResponse | undefined> {
     const computedUrl = this.createUrl(url);
 
     return this.client.upload<TResponse>(computedUrl, formData);

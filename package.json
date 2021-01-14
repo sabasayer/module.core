@@ -6,8 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "parcel src/index.ts",
-    "build": "parcel build src/index.ts",
-    "build-tsc": "node pre-build.js && tsc",
+    "build": "node pre-build.js && tsc --project tsconfig.prod.json",
     "test": "jest",
     "npm-publish": "npm publish --access public"
   },

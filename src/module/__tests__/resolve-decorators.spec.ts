@@ -41,7 +41,8 @@ describe("Resolve Decoratros", () => {
         return null as any;
       }
 
-      setHeader(key:string){}
+      removeHeader(key: string) {}
+      setHeader(key: string) {}
     }
 
     module.registerHttpClient(TestApi2, {});

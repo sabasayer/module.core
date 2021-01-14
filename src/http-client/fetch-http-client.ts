@@ -73,6 +73,14 @@ export class FetchHTTPClient implements IHTTPClient {
     this.headers[key] = value;
   }
 
+  removeHeader(key: string) {
+    delete this.headers?.[key];
+
+    const isHeadersEmpty = !Object.keys(this.headers ?? {}).length;
+
+    if (isHeadersEmpty) this.headers = undefined;
+  }
+
   private async handleUpload<TResponse = undefined>(
     url: string,
     formData: FormData

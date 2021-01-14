@@ -64,8 +64,8 @@ describe("Module Provider", () => {
       async upload(url: string, formData: FormData) {
         return null as any;
       }
-      setHeader(key:string){}
-
+      setHeader(key: string) {}
+      removeHeader(key: string) {}
     }
 
     class TestProvider2 implements IProvider {

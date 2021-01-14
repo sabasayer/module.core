@@ -23,6 +23,7 @@ export class TestApi implements IHTTPClient {
   }
 
   setHeader(key: string) {}
+  removeHeader(key: string) {}
 }
 
 export class TestProvider implements IProvider {

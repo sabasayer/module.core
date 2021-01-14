@@ -28,7 +28,8 @@ describe("Inject Decorators", () => {
       async upload(url: string, formData: FormData) {
         return null as any;
       }
-      setHeader(key:string){}
+      setHeader(key: string) {}
+      removeHeader(key: string) {}
     }
 
     const api = module.resolveHttpClient();

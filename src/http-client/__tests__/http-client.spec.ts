@@ -151,5 +151,22 @@ describe("Http Client", () => {
         },
       });
     });
+
+    it("should remove header with key", () => {
+      mockFetchResponse({ id: 1 });
+
+      const client = new FetchHTTPClient({
+        baseUrl: "http://a.com",
+        headers: {
+          "test-header": "asd",
+        },
+      });
+
+      client.removeHeader("test-header");
+
+      client.get("get");
+
+      expect(fetchMock).toBeCalledWith("http://a.com/get", { method: "GET" });
+    });
   });
 });

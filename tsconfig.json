@@ -20,7 +20,6 @@
       "@/*": ["src/*"]
     }
   },
-
-  "exclude": ["node_modules", "**/*.spec.ts", "**/__mocks__"],
+  "exclude": ["node_modules"],
   "include": ["src/**/*"]
 }
