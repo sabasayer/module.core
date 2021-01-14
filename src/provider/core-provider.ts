@@ -1,12 +1,17 @@
 import { IAbortController, IHTTPClient, RequestOptions } from "../http-client";
 import { IProvider } from ".";
 import { ProviderRequestOptions } from "./types/provider-request-options.interface";
-import { IRequestConfig } from "./types/request-config.interface";
+import {
+  ICachableRequestConfig,
+  IRequestConfig,
+} from "./types/request-config.interface";
+import { ICache } from "@/cache";
 
 export class CoreProvider implements IProvider {
   private client: IHTTPClient;
   private abortControllers = new Map<string, IAbortController>();
   protected baseUrl: string | null = null;
+  protected cache?: ICache;
 
   constructor(client: IHTTPClient) {
     this.client = client;
@@ -32,6 +37,21 @@ export class CoreProvider implements IProvider {
     );
   }
 
+  async cachablePost<TRequest = undefined, TResponse = undefined>(
+    config: ICachableRequestConfig<TRequest, TResponse>,
+    data?: TRequest,
+    options?: ProviderRequestOptions
+  ): Promise<TResponse | undefined> {
+    const cached = this.getFromCache<TResponse>(config.cacheKey);
+    if (cached != undefined) return cached;
+
+    const response = await this.post(config, data, options);
+
+    this.saveToCache(config.cacheKey, response);
+
+    return response;
+  }
+
   async get<TResponse = undefined>(
     url: string,
     options?: ProviderRequestOptions
@@ -53,6 +73,14 @@ export class CoreProvider implements IProvider {
     const computedUrl = this.createUrl(url);
 
     return this.client.upload<TResponse>(computedUrl, formData);
+  }
+
+  protected getFromCache<T>(key: string) {
+    return this.cache?.get(key) as T | undefined;
+  }
+
+  protected saveToCache<T>(key: string, value: T) {
+    if (value != undefined) this.cache?.set(key, value);
   }
 
   private createUrl(url: string) {

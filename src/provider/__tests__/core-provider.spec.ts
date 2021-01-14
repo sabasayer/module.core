@@ -9,7 +9,11 @@ import {
 } from "@/http-client/__mocks__/fetch.mock";
 import { CoreProvider } from "../core-provider";
 import fetchMock from "jest-fetch-mock";
-import { IRequestConfig } from "../types/request-config.interface";
+import {
+  ICachableRequestConfig,
+  IRequestConfig,
+} from "../types/request-config.interface";
+import { ICache, MemoryCache } from "@/cache";
 
 describe("Data Provider", () => {
   const client = new FetchHTTPClient({ baseUrl: "http://test.com" });
@@ -44,7 +48,7 @@ describe("Data Provider", () => {
     }
 
     const provider = new TestProvider(client);
-    const config:IRequestConfig = {url:"haleluya"}
+    const config: IRequestConfig = { url: "haleluya" };
     provider.post(config);
 
     expect(fetchMock).toBeCalledWith("http://test.com/giganto/haleluya", {
@@ -135,5 +139,30 @@ describe("Data Provider", () => {
 
     expect(firstResponse).toEqual({ id: 1 });
     expect(secondResponse).toEqual({ id: 2 });
+  });
+
+  it("should get values from cache when cachablePost is called second time", async () => {
+    const mockResponse = [{ id: 1 }, { id: 2 }];
+    mockFetchResponse(mockResponse);
+
+    class CachebleProvider extends CoreProvider {
+      cache: ICache = new MemoryCache();
+    }
+
+    const provider = new CachebleProvider(client);
+    const config: ICachableRequestConfig<undefined, { id: number }[]> = {
+      url: "getAll",
+      cacheKey: "item",
+    };
+
+    const firstResponse = await provider.cachablePost(config);
+
+    mockFetchResponse([]);
+
+    const secondResponse = await provider.cachablePost(config);
+
+    expect(firstResponse).toEqual(mockResponse);
+    expect(secondResponse).toEqual(mockResponse);
+    expect(fetchMock).toBeCalledTimes(1);
   });
 });
