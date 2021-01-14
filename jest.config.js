@@ -4,4 +4,7 @@ module.exports = {
   moduleNameMapper: {
     "@/(.*)$": "<rootDir>/src/$1",
   },
+  setupFiles:[
+    "mock-local-storage"
+  ]
 };
