@@ -5,7 +5,7 @@ import {
   ICachableRequestConfig,
   IRequestConfig,
 } from "./types/request-config.interface";
-import { ICache } from "@/cache";
+import { ICache } from "../cache";
 
 export class CoreProvider implements IProvider {
   private client: IHTTPClient;
