@@ -20,10 +20,7 @@ export type IHTTPClient = {
   ) => Promise<TResponse | undefined>;
 
   setHeader(key: string, value: string): void;
-<<<<<<< HEAD
   removeHeader(key: string): void;
-=======
->>>>>>> a4d0e8cff15630a08845a7a6bcfb6121dbbede7b
 
   createAbortController?: () => IAbortController;
 };

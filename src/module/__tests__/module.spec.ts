@@ -39,13 +39,8 @@ describe("Module", () => {
         async upload(url: string, formData: FormData) {
           return null as any;
         }
-<<<<<<< HEAD
         removeHeader(key: string) {}
         setHeader(key: string) {}
-=======
-      setHeader(key:string){}
-
->>>>>>> a4d0e8cff15630a08845a7a6bcfb6121dbbede7b
       }
 
       module.registerHttpClient(TestApi2, {});
