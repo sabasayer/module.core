@@ -42,6 +42,8 @@ export class CoreProvider implements IProvider {
     data?: TRequest,
     options?: ProviderRequestOptions
   ): Promise<TResponse | undefined> {
+    if (!this.cache) throw new Error("'cache' property must be defined.");
+
     const cached = this.getFromCache<TResponse>(config.cacheKey);
     if (cached != undefined) return cached;
 

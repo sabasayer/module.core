@@ -141,6 +141,19 @@ describe("Data Provider", () => {
     expect(secondResponse).toEqual({ id: 2 });
   });
 
+  it("should throw error if cache prop is not defined for cachablePost", async () => {
+    const provider = new CoreProvider(client);
+
+    const config: ICachableRequestConfig<undefined, number> = {
+      url: "test",
+      cacheKey: "caches",
+    };
+
+    await expect(() => provider.cachablePost(config)).rejects.toEqual(
+      new Error("'cache' property must be defined.")
+    );
+  });
+
   it("should get values from cache when cachablePost is called second time", async () => {
     const mockResponse = [{ id: 1 }, { id: 2 }];
     mockFetchResponse(mockResponse);
