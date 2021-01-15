@@ -25,6 +25,19 @@ describe("Logger", () => {
     expect(console.log).toHaveBeenCalledWith("%csome logging", logStyle);
   });
 
+  it("should console log undefined text", () => {
+    const logger = new Logger({
+      logStyle,
+    });
+
+    logger.log("some logging", undefined);
+
+    expect(console.log).toHaveBeenCalledWith(
+      "%csome logging undefined",
+      logStyle
+    );
+  });
+
   it("should console log multiple values", () => {
     const logger = new Logger({
       logStyle,
@@ -32,14 +45,7 @@ describe("Logger", () => {
 
     logger.log("test", 2, true);
 
-    expect(console.log).toHaveBeenCalledWith(
-      "%ctest",
-      logStyle,
-      "%c2",
-      logStyle,
-      "%ctrue",
-      logStyle
-    );
+    expect(console.log).toHaveBeenCalledWith("%ctest 2 true", logStyle);
   });
 
   it("should console log object types after styled values", () => {
@@ -52,7 +58,7 @@ describe("Logger", () => {
     expect(console.log).toHaveBeenCalledWith("%ctest", logStyle, [1, 2, 3]);
   });
 
-  it("should conse log function types after styled values", () => {
+  it("should console log function name ", () => {
     const logger = new Logger({
       logStyle,
     });
@@ -109,13 +115,6 @@ describe("Logger", () => {
 
     new Test().get(1, "ali");
 
-    expect(console.log).toHaveBeenCalledWith(
-      "%cTest => get()",
-      logStyle,
-      "%c1",
-      logStyle,
-      "%cali",
-      logStyle
-    );
+    expect(console.log).toHaveBeenCalledWith("%cTest => get() 1 ali", logStyle);
   });
 });

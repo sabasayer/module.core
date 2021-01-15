@@ -27,8 +27,8 @@ export class ModuleCore implements ICoreModule {
   private controllers = new Map<string, IController>();
   private caches = new Map<string, ICache>();
 
+  @coreLogger.logMethod()
   useDecorators(...decorators: IDecorators[]) {
-    coreLogger.log("useDecorators", ...decorators);
     decorators.forEach((decorator) => decorator.setModule(this));
     return this;
   }
