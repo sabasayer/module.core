@@ -52,6 +52,22 @@ describe("Logger", () => {
     expect(console.log).toHaveBeenCalledWith("%ctest", logStyle, [1, 2, 3]);
   });
 
+  it("should conse log function types after styled values", () => {
+    const logger = new Logger({
+      logStyle,
+    });
+
+    const classFunction = class Test {};
+
+    logger.log(classFunction, "hohoho");
+
+    expect(console.log).toHaveBeenCalledWith(
+      "%chohoho",
+      logStyle,
+      classFunction
+    );
+  });
+
   it("should not call console when disabled ", () => {
     const logger = new Logger({
       disabled: true,
