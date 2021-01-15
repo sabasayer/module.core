@@ -1,5 +1,5 @@
 import { ICoreModule } from "../core-module.interface";
-import { ModuleCore } from "../module";
+import { ModuleCore } from "../core-module";
 
 export type CreateModuleFunc<TOptions = undefined> = (
   options?: TOptions

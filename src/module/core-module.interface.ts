@@ -32,6 +32,12 @@ export type ICoreModule = {
     client: IHTTPClientConstuctor,
     options: IHTTPClientOptions
   ) => ICoreModule;
+
+  registerHttpClientImplementation: (
+    client: IHTTPClient,
+    key: string | IHTTPClientConstuctor
+  ) => ICoreModule;
+
   resolveHttpClient: <T extends IHTTPClient>(
     client?: IHTTPClientConstuctor
   ) => T | undefined;

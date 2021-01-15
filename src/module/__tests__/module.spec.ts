@@ -18,6 +18,17 @@ describe("Module", () => {
   });
 
   describe("Api Algorithm", () => {
+    it("should set http-client implementation", () => {
+      const module = createModule();
+      const client = new TestApi({ baseUrl: "test.com" });
+
+      module.registerHttpClientImplementation(client, TestApi);
+
+      const resolvedClient = module.resolveHttpClient(TestApi);
+
+      expect(resolvedClient).toEqual(client);
+    });
+
     it("should resolve api", () => {
       const module = createRegisterApi();
       const api = module.resolveHttpClient();

@@ -31,7 +31,20 @@ export class ModuleCore implements ICoreModule {
     return this;
   }
 
-  registerHttpClient(client: IHTTPClientConstuctor, options: IHTTPClientOptions) {
+  registerHttpClientImplementation(
+    client: IHTTPClient,
+    key: string | IHTTPClientConstuctor
+  ) {
+    const name: string = typeof key === "string" ? key : key.name;
+    this.clients.set(name, client);
+
+    return this;
+  }
+
+  registerHttpClient(
+    client: IHTTPClientConstuctor,
+    options: IHTTPClientOptions
+  ) {
     const clientObj = new client(options);
     this.clients.set(client.name, clientObj);
     return this;
