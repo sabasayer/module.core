@@ -1,19 +1,33 @@
 import { IHTTPClient } from "../../http-client/index";
 import { IController } from "../../controller/index";
 import { IProvider } from "../../provider/index";
-import { resolve } from "../decorators/resolve.decorators";
+import { ResolveDecorators } from "../decorators/resolve.decorators";
 import {
-  createRegisterApiAndUseResolve,
   createRegisterCache,
   createRegisterController,
   TestApi,
   TestCache,
   TestController,
   TestProvider,
+  createRegisterApi,
 } from "../__mocks__/module.mock";
 import { ICache } from "../../cache";
+import { createModule } from "../create-module/create-module";
 
 describe("Resolve Decoratros", () => {
+  const resolve = new ResolveDecorators();
+
+  const createAndUseResolve = () => {
+    const module = createModule();
+    module.useDecorators(resolve);
+    return module;
+  };
+
+  const createRegisterApiAndUseResolve = () => {
+    const module = createAndUseResolve();
+    return createRegisterApi(module);
+  };
+
   it("should resolve api", () => {
     createRegisterApiAndUseResolve();
 

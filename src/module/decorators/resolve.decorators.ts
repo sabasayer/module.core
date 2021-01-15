@@ -61,5 +61,3 @@ export class ResolveDecorators implements IResolveDecorators {
     });
   }
 }
-
-export const resolve = new ResolveDecorators();

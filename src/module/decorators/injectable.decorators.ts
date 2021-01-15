@@ -41,5 +41,3 @@ export class InjectableDecorators implements IInjectableDecorators {
     };
   }
 }
-
-export const injectable = new InjectableDecorators();

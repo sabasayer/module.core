@@ -3,8 +3,6 @@ import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
 import { IProvider } from "../../provider/types/provider.interface";
 import { createModule } from "../create-module/create-module";
-import { injectable } from "../decorators/injectable.decorators";
-import { resolve } from "../decorators/resolve.decorators";
 import { ICoreModule } from "../index";
 import { ICache } from "../../cache";
 import { IRequestConfig } from "@/provider/types/request-config.interface";
@@ -30,7 +28,7 @@ export class TestApi implements IHTTPClient {
 export class TestProvider implements IProvider {
   constructor(api: IHTTPClient) {}
 
-  post(config:IRequestConfig) {
+  post(config: IRequestConfig) {
     return null as any;
   }
 
@@ -69,23 +67,6 @@ export const createRegisterApi = (moduleArg?: ICoreModule) => {
   const module = moduleArg ?? createModule();
   module.registerHttpClient(TestApi, {});
   return module;
-};
-
-export const createAndUseInject = () => {
-  const module = createModule();
-  module.useDecorators(injectable);
-  return module;
-};
-
-export const createAndUseResolve = () => {
-  const module = createModule();
-  module.useDecorators(resolve);
-  return module;
-};
-
-export const createRegisterApiAndUseResolve = () => {
-  const module = createAndUseResolve();
-  return createRegisterApi(module);
 };
 
 export const createRegisterApiAndProvider = () => {
