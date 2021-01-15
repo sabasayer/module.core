@@ -19,6 +19,7 @@ import {
 import { IDecorators } from "./decorators/decorators.interface";
 import { ICache } from "../cache";
 import { ICacheConstructor } from "../cache/cache.interface";
+import { coreLogger } from "@/logger/core.logger";
 
 export class ModuleCore implements ICoreModule {
   private clients = new Map<string, IHTTPClient>();
@@ -27,10 +28,12 @@ export class ModuleCore implements ICoreModule {
   private caches = new Map<string, ICache>();
 
   useDecorators(...decorators: IDecorators[]) {
+    coreLogger.log("useDecorators", ...decorators);
     decorators.forEach((decorator) => decorator.setModule(this));
     return this;
   }
 
+  @coreLogger.logMethod()
   registerHttpClientImplementation(
     client: IHTTPClient,
     key: string | IHTTPClientConstuctor
@@ -41,10 +44,13 @@ export class ModuleCore implements ICoreModule {
     return this;
   }
 
+  @coreLogger.logMethod()
   registerHttpClient(
     client: IHTTPClientConstuctor,
     options: IHTTPClientOptions
   ) {
+    coreLogger.log("registerHttpClient", client, options);
+
     const clientObj = new client(options);
     this.clients.set(client.name, clientObj);
     return this;
@@ -57,6 +63,7 @@ export class ModuleCore implements ICoreModule {
     else return this.clients.values().next().value;
   }
 
+  @coreLogger.logMethod()
   registerProvider(
     provider: IProviderConstructor,
     options?: RegisterProviderOptions
@@ -78,6 +85,7 @@ export class ModuleCore implements ICoreModule {
     else return this.resolveByConstructor<T>(this.providers, key);
   }
 
+  @coreLogger.logMethod()
   registerController<TProvider extends IProvider>(
     controller: IControllerConstructor<TProvider>,
     options: RegisterControllerOptions
@@ -99,6 +107,7 @@ export class ModuleCore implements ICoreModule {
     return this.resolveByConstructor<T>(this.controllers, key);
   }
 
+  @coreLogger.logMethod()
   registerCache(cache: ICacheConstructor, key?: string) {
     const name = key ?? cache.name;
     const cacheObj = new cache();
@@ -112,6 +121,7 @@ export class ModuleCore implements ICoreModule {
     return this.resolveByConstructor<T>(this.caches, key);
   }
 
+  @coreLogger.logMethod()
   clear() {
     this.clients.clear();
     this.providers.clear();
