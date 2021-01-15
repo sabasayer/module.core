@@ -1,4 +1,4 @@
-import { isProduction } from "@/utils/env.utils";
+import { isProduction } from "../utils/env.utils";
 import { Logger } from "./logger";
 
 export const coreLogger = new Logger({

@@ -19,7 +19,7 @@ import {
 import { IDecorators } from "./decorators/decorators.interface";
 import { ICache } from "../cache";
 import { ICacheConstructor } from "../cache/cache.interface";
-import { coreLogger } from "@/logger/core.logger";
+import { coreLogger } from "../logger/core.logger";
 
 export class ModuleCore implements ICoreModule {
   private clients = new Map<string, IHTTPClient>();
