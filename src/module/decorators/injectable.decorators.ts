@@ -10,10 +10,10 @@ import {
   RegisterControllerOptions,
   RegisterProviderOptions,
 } from "../core-module.interface";
-import { IInjectDecorators } from "./inject-decorators.interface";
+import { IInjectableDecorators } from "./injectable-decorators.interface";
 import { ICacheConstructor } from "../../cache/cache.interface";
 
-class InjectDecorators implements IInjectDecorators {
+export class InjectableDecorators implements IInjectableDecorators {
   private module: ICoreModule | null = null;
   setModule(module: ICoreModule) {
     this.module = module;
@@ -42,4 +42,4 @@ class InjectDecorators implements IInjectDecorators {
   }
 }
 
-export const injectable = new InjectDecorators();
+export const injectable = new InjectableDecorators();

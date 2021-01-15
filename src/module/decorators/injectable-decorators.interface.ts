@@ -12,7 +12,7 @@ import {
 import { IDecorators } from "./decorators.interface";
 import { ICacheConstructor } from "../../cache/cache.interface";
 
-export type IInjectDecorators = IDecorators & {
+export type IInjectableDecorators = IDecorators & {
   client: (
     options: IHTTPClientOptions
   ) => (clientConstructor: IHTTPClientConstuctor) => void;

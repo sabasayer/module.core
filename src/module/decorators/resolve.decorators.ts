@@ -5,7 +5,7 @@ import { ICoreModule } from "../index";
 import { IResolveDecorators } from "./resolve-decorators.interface";
 import { ICacheConstructor } from "../../cache/cache.interface";
 
-class ResolveDecorators implements IResolveDecorators {
+export class ResolveDecorators implements IResolveDecorators {
   private module: ICoreModule | null = null;
   setModule(module: ICoreModule) {
     this.module = module;

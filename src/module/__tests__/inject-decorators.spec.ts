@@ -2,7 +2,7 @@ import { IHTTPClientOptions } from "../../http-client/types/http-client-options.
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
 import { IProvider } from "../../provider/types/provider.interface";
-import { injectable } from "../decorators/inject.decorators";
+import { injectable } from "../decorators/injectable.decorators";
 import {
   createAndUseInject,
   createRegisterApiAndProvider,
