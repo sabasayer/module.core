@@ -27,13 +27,16 @@ export class ModuleCore implements ICoreModule {
   private controllers = new Map<string, IController>();
   private caches = new Map<string, ICache>();
 
+  bootstrap() {
+    return this;
+  }
+
   @coreLogger.logMethod()
   useDecorators(...decorators: IDecorators[]) {
     decorators.forEach((decorator) => decorator.setModule(this));
     return this;
   }
 
-  @coreLogger.logMethod()
   registerHttpClientImplementation(
     client: IHTTPClient,
     key: string | IHTTPClientConstuctor
@@ -44,7 +47,6 @@ export class ModuleCore implements ICoreModule {
     return this;
   }
 
-  @coreLogger.logMethod()
   registerHttpClient(
     client: IHTTPClientConstuctor,
     options: IHTTPClientOptions
@@ -63,7 +65,6 @@ export class ModuleCore implements ICoreModule {
     else return this.clients.values().next().value;
   }
 
-  @coreLogger.logMethod()
   registerProvider(
     provider: IProviderConstructor,
     options?: RegisterProviderOptions
@@ -85,7 +86,6 @@ export class ModuleCore implements ICoreModule {
     else return this.resolveByConstructor<T>(this.providers, key);
   }
 
-  @coreLogger.logMethod()
   registerController<TProvider extends IProvider>(
     controller: IControllerConstructor<TProvider>,
     options: RegisterControllerOptions
@@ -107,7 +107,6 @@ export class ModuleCore implements ICoreModule {
     return this.resolveByConstructor<T>(this.controllers, key);
   }
 
-  @coreLogger.logMethod()
   registerCache(cache: ICacheConstructor, key?: string) {
     const name = key ?? cache.name;
     const cacheObj = new cache();

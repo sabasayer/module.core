@@ -26,6 +26,8 @@ export type RegisterControllerOptions = {
 };
 
 export type ICoreModule = {
+  bootstrap: (options?: any) => Promise<ICoreModule> | ICoreModule;
+
   useDecorators: (...decorators: IDecorators[]) => ICoreModule;
 
   registerHttpClient: (

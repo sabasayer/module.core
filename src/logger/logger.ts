@@ -37,12 +37,10 @@ export class Logger implements ILogger {
       const originalMethod = descriptor.value;
       const self = this;
       descriptor.value = function (...args: any[]) {
-        let header = `${String(propertyKey)}()`;
-
-        if (target.constructor?.name)
-          header = `${target.constructor.name} => ${header}`;
+        let header = self.createHeader(propertyKey, target);
 
         self.log(header, ...args);
+
         return originalMethod?.apply(this, args);
       };
       return descriptor;
@@ -51,5 +49,14 @@ export class Logger implements ILogger {
 
   private isPrimativeValue(value: any) {
     return typeof value !== "object" && typeof value !== "function";
+  }
+
+  private createHeader(propKey: string | symbol, target: Object): string {
+    let header = `${String(propKey)}()`;
+
+    if (target.constructor?.name)
+      header = `${target.constructor.name} => ${header}`;
+
+    return header;
   }
 }
