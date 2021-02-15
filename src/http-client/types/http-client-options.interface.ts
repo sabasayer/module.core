@@ -4,5 +4,5 @@ export interface IHTTPClientOptions extends Partial<URLOptions> {
   baseUrl?: string;
   headers?: Record<string, string>;
   preventRequestDuplication?: boolean;
-  createErrorFn?: (response: Response) => Promise<Error>;
+  createErrorFn?: (response: any) => Promise<Error>;
 }
