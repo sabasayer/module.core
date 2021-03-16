@@ -3,8 +3,8 @@ import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
 import { IProvider } from "../../provider/types/provider.interface";
 import {
-  createRegisterApiAndProvider,
-  TestApi,
+  createRegisterProvider,
+  TestHttpClient,
   TestProvider,
 } from "../__mocks__/module.mock";
 import { createModule } from "../create-module/create-module";
@@ -47,7 +47,7 @@ describe("Inject Decorators", () => {
 
   it("should register provider with decorator", () => {
     const module = createAndUseInject();
-    module.registerHttpClient(TestApi, {});
+    module.registerHttpClient(TestHttpClient, {});
 
     @injectable.provider()
     class TestProvider implements IProvider {
@@ -69,9 +69,9 @@ describe("Inject Decorators", () => {
 
   it("should register provider with options", () => {
     const module = createAndUseInject();
-    module.registerHttpClient(TestApi, {});
+    module.registerHttpClient(TestHttpClient, {});
 
-    @injectable.provider({ key: "test_p", client: TestApi })
+    @injectable.provider({ key: "test_p", client: TestHttpClient })
     class TestProvider implements IProvider {
       constructor(api: IHTTPClient) {}
       async get(url: string) {
@@ -90,7 +90,7 @@ describe("Inject Decorators", () => {
   });
 
   it("should register controller with decorator", () => {
-    const module = createRegisterApiAndProvider();
+    const module = createRegisterProvider();
     module.useDecorators(injectable);
 
     @injectable.controller({ provider: TestProvider })

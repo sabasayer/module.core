@@ -5,8 +5,7 @@ import {
   mockFetchResponseWithError,
   mockRejectResponse,
 } from "../__mocks__/fetch.mock";
-import { EnumRequestErrorType } from "../statics/request-error-type.enum";
-import { RequestError } from "../request-error";
+import { CustomServerError } from "../../custom-errors/custom-server-error";
 
 describe("Http Client Get Method", () => {
   fetchMock.enableMocks();
@@ -80,7 +79,7 @@ describe("Http Client Get Method", () => {
     const api = new FetchHTTPClient({ baseUrl: "test.com" });
 
     await expect(api.get("test")).rejects.toEqual(
-      new RequestError(EnumRequestErrorType.serverError, "Some server error")
+      new CustomServerError({ message: "Some server error" })
     );
   });
 
@@ -90,7 +89,7 @@ describe("Http Client Get Method", () => {
     const api = new FetchHTTPClient({ baseUrl: "test.com" });
 
     await expect(api.get("test")).rejects.toEqual(
-      new RequestError(EnumRequestErrorType.serverError, "500: Not found.")
+      new CustomServerError({ message: "500: Not found." })
     );
   });
 
@@ -100,10 +99,7 @@ describe("Http Client Get Method", () => {
     const api = new FetchHTTPClient({ baseUrl: "test.com" });
 
     await expect(api.get("test")).rejects.toEqual(
-      new RequestError(
-        EnumRequestErrorType.serverError,
-        "500: Not found. Body Error Message"
-      )
+      new CustomServerError({ message: "500: Not found. Body Error Message" })
     );
   });
 
@@ -123,7 +119,7 @@ describe("Http Client Get Method", () => {
     });
 
     await expect(api.get("test")).rejects.toEqual(
-      new RequestError(EnumRequestErrorType.serverError, "test error")
+      new CustomServerError({ message: "test error" })
     );
   });
 });

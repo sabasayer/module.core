@@ -2,9 +2,10 @@ import { createModule } from "../create-module/create-module";
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
 import {
-  createRegisterApi,
+  createRegisterHttpClient,
+  createRegisterProvider,
   createRegisterController,
-  TestApi,
+  TestHttpClient,
   TestCache,
   TestController,
   TestProvider,
@@ -17,27 +18,40 @@ describe("Module", () => {
     expect(module).toBeDefined();
   });
 
-  describe("Api Algorithm", () => {
+  describe("bootstrap method", () => {
+    it("should register httpClient", () => {
+      const module = createModule();
+      const client = new TestHttpClient({ baseUrl: "test" });
+
+      module.bootstrap({ httpClient: client, httpClientKey: TestHttpClient });
+
+      const resolvedClient = module.resolveHttpClient();
+
+      expect(resolvedClient).toBeInstanceOf(TestHttpClient);
+    });
+  });
+
+  describe("Http Client Algorithm", () => {
     it("should set http-client implementation", () => {
       const module = createModule();
-      const client = new TestApi({ baseUrl: "test.com" });
+      const client = new TestHttpClient({ baseUrl: "test.com" });
 
-      module.registerHttpClientImplementation(client, TestApi);
+      module.registerHttpClientImplementation(client, TestHttpClient);
 
-      const resolvedClient = module.resolveHttpClient(TestApi);
+      const resolvedClient = module.resolveHttpClient(TestHttpClient);
 
       expect(resolvedClient).toEqual(client);
     });
 
-    it("should resolve api", () => {
-      const module = createRegisterApi();
+    it("should resolve Http Client", () => {
+      const module = createRegisterHttpClient();
       const api = module.resolveHttpClient();
 
-      expect(api).toBeInstanceOf(TestApi);
+      expect(api).toBeInstanceOf(TestHttpClient);
     });
 
-    it("should resolve correct api", () => {
-      const module = createRegisterApi();
+    it("should resolve correct HttpClient", () => {
+      const module = createRegisterHttpClient();
 
       class TestApi2 implements IHTTPClient {
         constructor(options: IHTTPClientOptions) {}
@@ -56,9 +70,9 @@ describe("Module", () => {
 
       module.registerHttpClient(TestApi2, {});
 
-      const api = module.resolveHttpClient(TestApi);
+      const api = module.resolveHttpClient(TestHttpClient);
 
-      expect(api).toBeInstanceOf(TestApi);
+      expect(api).toBeInstanceOf(TestHttpClient);
     });
 
     it("should clear all registered types", () => {
@@ -78,30 +92,42 @@ describe("Module", () => {
     });
   });
 
-  describe("Cache", () => {
-    it("should return undefined at resolve when not registered", () => {
+  describe("Resolve Method", () => {
+    it("should resolce HttpClient", () => {
       const module = createModule();
-      const cache = module.resolveCache("TestCache");
+      module.registerHttpClient(TestHttpClient, { baseUrl: "test" });
 
-      expect(cache).toBeUndefined();
+      const client = module.resolve(TestHttpClient);
+      expect(client).toBeInstanceOf(TestHttpClient);
     });
 
-    it("should register cache", () => {
+    it("should resolve Cache", () => {
       const module = createModule();
       module.registerCache(TestCache);
 
-      const cache = module.resolveCache(TestCache);
+      const cache = module.resolve(TestCache);
 
       expect(cache).toBeInstanceOf(TestCache);
     });
 
-    it("should register cache by key", () => {
-      const module = createModule();
-      module.registerCache(TestCache, "Tooty");
+    it("should resolve Provider", () => {
+      const module = createRegisterHttpClient();
 
-      const cache = module.resolveCache("Tooty");
+      module.registerProvider(TestProvider);
 
-      expect(cache).toBeInstanceOf(TestCache);
+      const provider = module.resolve(TestProvider);
+
+      expect(provider).toBeInstanceOf(TestProvider);
+    });
+
+    it("should resolve Controller", () => {
+      const module = createRegisterProvider();
+
+      module.registerController(TestController, { provider: TestProvider });
+
+      const controller = module.resolve(TestController);
+
+      expect(controller).toBeInstanceOf(TestController);
     });
   });
 });

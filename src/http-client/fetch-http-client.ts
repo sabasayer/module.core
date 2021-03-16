@@ -1,8 +1,9 @@
 import { urlUtils } from "../utils/url.utils";
 import { IHTTPClient, IHTTPClientOptions } from "./index";
-import { RequestError } from "./request-error";
+import { CustomServerError } from "../custom-errors/custom-server-error";
 import { RequestOptions } from "./types/request-options.interface";
-import { EnumRequestErrorType } from "./statics/request-error-type.enum";
+import { CustomHttpClientError } from "@/custom-errors/custom-http-client-error";
+import { EnumCustomErrorType } from "@/custom-errors/statics/custom-error-type.enum";
 
 export class FetchHTTPClient implements IHTTPClient {
   private baseUrl: string;
@@ -192,12 +193,11 @@ export class FetchHTTPClient implements IHTTPClient {
     this.pendingRequests.delete(key);
 
     if (error instanceof DOMException && error.name == "AbortError")
-      throw new RequestError(EnumRequestErrorType.aborted);
+      throw new CustomHttpClientError({
+        type: EnumCustomErrorType.AbortedRequest,
+      });
 
-    throw new RequestError(
-      EnumRequestErrorType.serverError,
-      (error as Error).message
-    );
+    throw new CustomServerError({ message: (error as Error).message });
   }
 
   private createBaseUrl(options: IHTTPClientOptions): string {

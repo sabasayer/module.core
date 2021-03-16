@@ -7,7 +7,7 @@ import { ICoreModule } from "../index";
 import { ICache } from "../../cache";
 import { IRequestConfig } from "@/provider/types/request-config.interface";
 
-export class TestApi implements IHTTPClient {
+export class TestHttpClient implements IHTTPClient {
   constructor(options: IHTTPClientOptions) {}
 
   async get<TResponse = null>(url: string): Promise<TResponse> {
@@ -63,20 +63,20 @@ export const createRegisterCache = () => {
   return module;
 };
 
-export const createRegisterApi = (moduleArg?: ICoreModule) => {
+export const createRegisterHttpClient = (moduleArg?: ICoreModule) => {
   const module = moduleArg ?? createModule();
-  module.registerHttpClient(TestApi, {});
+  module.registerHttpClient(TestHttpClient, {});
   return module;
 };
 
-export const createRegisterApiAndProvider = () => {
-  const module = createRegisterApi();
+export const createRegisterProvider = () => {
+  const module = createRegisterHttpClient();
   module.registerProvider(TestProvider);
   return module;
 };
 
 export const createRegisterController = () => {
-  const module = createRegisterApiAndProvider();
+  const module = createRegisterProvider();
   module.registerController(TestController, {
     provider: TestProvider,
   });

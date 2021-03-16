@@ -25,10 +25,26 @@ export type RegisterControllerOptions = {
   key?: string;
 };
 
+export type ModuleBootstrapOptions<T = any> = {
+  httpClient: IHTTPClient;
+  httpClientKey: string | IHTTPClientConstuctor;
+  config?: T;
+};
+
 export type ICoreModule = {
-  bootstrap: (options?: any) => Promise<ICoreModule> | ICoreModule;
+  bootstrap: (
+    options?: ModuleBootstrapOptions
+  ) => Promise<ICoreModule> | ICoreModule;
 
   useDecorators: (...decorators: IDecorators[]) => ICoreModule;
+
+  resolve: <T extends IProvider | IController | ICache>(
+    key:
+      | string
+      | IProviderConstructor
+      | IControllerConstructor<any>
+      | ICacheConstructor
+  ) => T | undefined;
 
   registerHttpClient: (
     client: IHTTPClientConstuctor,

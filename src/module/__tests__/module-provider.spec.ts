@@ -3,8 +3,8 @@ import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
 import { IProvider } from "../../provider/types/provider.interface";
 import {
-  createRegisterApi,
-  createRegisterApiAndProvider,
+  createRegisterHttpClient,
+  createRegisterProvider,
   TestProvider,
 } from "../__mocks__/module.mock";
 import { IRequestConfig } from "@/provider/types/request-config.interface";
@@ -19,21 +19,21 @@ describe("Module Provider", () => {
   });
 
   it("should resolve provider with key", () => {
-    const module = createRegisterApiAndProvider();
+    const module = createRegisterProvider();
     const provider = module.resolveProvider<TestProvider>("TestProvider");
 
     expect(provider).toBeInstanceOf(TestProvider);
   });
 
   it("should resolve provider with class", () => {
-    const module = createRegisterApiAndProvider();
+    const module = createRegisterProvider();
     const provider = module.resolveProvider(TestProvider);
 
     expect(provider).toBeInstanceOf(TestProvider);
   });
 
   it("should register provider with class", () => {
-    const module = createRegisterApi();
+    const module = createRegisterHttpClient();
     module.registerProvider(TestProvider);
 
     const provider = module.resolveProvider(TestProvider);
@@ -42,7 +42,7 @@ describe("Module Provider", () => {
   });
 
   it("should register provider with key", () => {
-    const module = createRegisterApi();
+    const module = createRegisterHttpClient();
     module.registerProvider(TestProvider, { key: "test_provider" });
 
     const provider = module.resolveProvider("test_provider");
@@ -51,7 +51,7 @@ describe("Module Provider", () => {
   });
 
   it("should register provider with preffered Api", () => {
-    const module = createRegisterApi();
+    const module = createRegisterHttpClient();
     let isInstanceOfTestApi2 = false;
 
     class TestApi2 implements IHTTPClient {

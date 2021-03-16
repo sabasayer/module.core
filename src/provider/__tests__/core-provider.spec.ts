@@ -1,8 +1,4 @@
-import {
-  EnumRequestErrorType,
-  FetchHTTPClient,
-  RequestError,
-} from "@/http-client";
+import { FetchHTTPClient } from "@/http-client";
 import {
   mockFetchResponse,
   mockFetchResponseWithTimeout,
@@ -14,6 +10,9 @@ import {
   IRequestConfig,
 } from "../types/request-config.interface";
 import { ICache, MemoryCache } from "@/cache";
+
+import { CustomServerError, EnumCustomErrorType } from "@/custom-errors";
+import { CustomProviderError } from "@/custom-errors/custom-provider-error";
 
 describe("Data Provider", () => {
   const client = new FetchHTTPClient({ baseUrl: "http://test.com" });
@@ -114,11 +113,11 @@ describe("Data Provider", () => {
     );
 
     await expect(async () => await firstRequest).rejects.toEqual(
-      new RequestError(EnumRequestErrorType.serverError)
+      new CustomServerError()
     );
 
     await expect(async () => await secondRequest).rejects.toEqual(
-      new RequestError(EnumRequestErrorType.serverError)
+      new CustomServerError()
     );
 
     expect(response).toEqual({ id: 12 });
@@ -150,7 +149,10 @@ describe("Data Provider", () => {
     };
 
     await expect(() => provider.cachablePost(config)).rejects.toEqual(
-      new Error("'cache' property must be defined.")
+      new CustomProviderError({
+        type: EnumCustomErrorType.Construction,
+        message: "'cache' property must be defined.",
+      })
     );
   });
 

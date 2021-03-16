@@ -6,6 +6,8 @@ import {
   IRequestConfig,
 } from "./types/request-config.interface";
 import { ICache } from "../cache";
+import { CustomProviderError } from "@/custom-errors/custom-provider-error";
+import { EnumCustomErrorType } from "@/custom-errors";
 
 export class CoreProvider implements IProvider {
   private client: IHTTPClient;
@@ -42,7 +44,11 @@ export class CoreProvider implements IProvider {
     data?: TRequest,
     options?: ProviderRequestOptions
   ): Promise<TResponse | undefined> {
-    if (!this.cache) throw new Error("'cache' property must be defined.");
+    if (!this.cache)
+      throw new CustomProviderError({
+        type: EnumCustomErrorType.Construction,
+        message: "'cache' property must be defined.",
+      });
 
     const cached = this.getFromCache<TResponse>(config.cacheKey);
     if (cached != undefined) return cached;

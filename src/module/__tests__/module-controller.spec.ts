@@ -1,5 +1,5 @@
 import {
-  createRegisterApiAndProvider,
+  createRegisterProvider,
   createRegisterController,
   TestController,
   TestProvider,
@@ -7,7 +7,7 @@ import {
 
 describe("Module Controller", () => {
   it("should register controller", () => {
-    const module = createRegisterApiAndProvider();
+    const module = createRegisterProvider();
 
     module.registerController(TestController, {
       provider: TestProvider,
@@ -19,7 +19,7 @@ describe("Module Controller", () => {
   });
 
   it("should register with key", () => {
-    const module = createRegisterApiAndProvider();
+    const module = createRegisterProvider();
     module.registerController(TestController, {
       key: "test_controller",
       provider: TestProvider,

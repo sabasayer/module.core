@@ -5,8 +5,7 @@ import {
   mockFetchResponseWithError,
   mockRejectResponse,
 } from "../__mocks__/fetch.mock";
-import { EnumRequestErrorType } from "../statics/request-error-type.enum";
-import { RequestError } from "../request-error";
+import { CustomServerError } from "../../custom-errors/custom-server-error";
 
 describe("Http Client Post Method", () => {
   fetchMock.enableMocks();
@@ -40,7 +39,7 @@ describe("Http Client Post Method", () => {
     const api = new FetchHTTPClient({ baseUrl: "test.com" });
 
     await expect(api.post("test")).rejects.toEqual(
-      new RequestError(EnumRequestErrorType.serverError, "Some server error")
+      new CustomServerError({ message: "Some server error" })
     );
   });
 
@@ -50,7 +49,7 @@ describe("Http Client Post Method", () => {
     const api = new FetchHTTPClient({ baseUrl: "test.com" });
 
     await expect(api.post("test")).rejects.toEqual(
-      new RequestError(EnumRequestErrorType.serverError, "500: Not found.")
+      new CustomServerError({ message: "500: Not found." })
     );
   });
 });

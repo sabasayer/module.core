@@ -5,11 +5,11 @@ import { ResolveDecorators } from "../decorators/resolve.decorators";
 import {
   createRegisterCache,
   createRegisterController,
-  TestApi,
+  TestHttpClient,
   TestCache,
   TestController,
   TestProvider,
-  createRegisterApi,
+  createRegisterHttpClient,
 } from "../__mocks__/module.mock";
 import { ICache } from "../../cache";
 import { createModule } from "../create-module/create-module";
@@ -25,7 +25,7 @@ describe("Resolve Decoratros", () => {
 
   const createRegisterApiAndUseResolve = () => {
     const module = createAndUseResolve();
-    return createRegisterApi(module);
+    return createRegisterHttpClient(module);
   };
 
   it("should resolve api", () => {
@@ -38,7 +38,7 @@ describe("Resolve Decoratros", () => {
 
     const test = new Test();
 
-    expect(test.api).toBeInstanceOf(TestApi);
+    expect(test.api).toBeInstanceOf(TestHttpClient);
   });
 
   it("should resolve api with class", () => {

@@ -5,8 +5,8 @@ import {
   mockFetchResponseWithError,
   mockFetchResponseWithTimeout,
 } from "../__mocks__/fetch.mock";
-import { EnumRequestErrorType } from "../statics/request-error-type.enum";
-import { RequestError } from "../request-error";
+import { CustomHttpClientError } from "@/custom-errors/custom-http-client-error";
+import { EnumCustomErrorType } from "@/custom-errors/statics/custom-error-type.enum";
 
 describe("Http Client", () => {
   fetchMock.enableMocks();
@@ -51,7 +51,7 @@ describe("Http Client", () => {
       abortController.abort();
 
       await expect(api.get("test", { abortController })).rejects.toEqual(
-        new RequestError(EnumRequestErrorType.aborted)
+        new CustomHttpClientError(EnumCustomErrorType.AbortedRequest)
       );
     });
 
@@ -65,7 +65,7 @@ describe("Http Client", () => {
 
       await expect(
         api.post("test", undefined, { abortController })
-      ).rejects.toEqual(new RequestError(EnumRequestErrorType.aborted));
+      ).rejects.toEqual(new CustomHttpClientError(EnumCustomErrorType.AbortedRequest));
     });
   });
 

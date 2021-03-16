@@ -13,6 +13,7 @@ import {
 } from "../provider/types/provider.interface";
 import {
   ICoreModule,
+  ModuleBootstrapOptions,
   RegisterControllerOptions,
   RegisterProviderOptions,
 } from "./core-module.interface";
@@ -26,8 +27,19 @@ export class ModuleCore implements ICoreModule {
   private providers = new Map<string, IProvider>();
   private controllers = new Map<string, IController>();
   private caches = new Map<string, ICache>();
+  private readonly providerSuffix = "Provider";
+  private readonly controllerSuffix = "Controller";
+  private readonly cacheSuffix = "Cache";
+  private readonly clientSuffix = "HttpClient";
 
-  bootstrap() {
+  bootstrap(options?: ModuleBootstrapOptions) {
+    if (options) {
+      this.registerHttpClientImplementation(
+        options.httpClient,
+        options.httpClientKey
+      );
+    }
+
     return this;
   }
 
@@ -37,11 +49,43 @@ export class ModuleCore implements ICoreModule {
     return this;
   }
 
+  /**
+   * One resolve for all types
+   * @param key must contain 'Provider' | 'Controller' | 'Cache' | 'HttpClient'
+   *  suffix to be resolved
+   */
+  resolve<T extends IProvider | IController | ICache>(
+    key:
+      | string
+      | IProviderConstructor
+      | IControllerConstructor<any>
+      | ICacheConstructor
+      | IHTTPClientConstuctor
+  ): T | undefined {
+    let name = this.getName(key);
+
+    if (name.includes(this.clientSuffix))
+      return this.resolveHttpClient(key as IHTTPClientConstuctor) as
+        | T
+        | undefined;
+
+    if (name.includes(this.providerSuffix))
+      return this.resolveProvider(key as IProviderConstructor) as T | undefined;
+
+    if (name.includes(this.controllerSuffix))
+      return this.resolveController(key as IControllerConstructor<any>) as
+        | T
+        | undefined;
+
+    if (name.includes(this.cacheSuffix))
+      return this.resolveCache(key as ICacheConstructor) as T | undefined;
+  }
+
   registerHttpClientImplementation(
     client: IHTTPClient,
     key: string | IHTTPClientConstuctor
   ) {
-    const name: string = typeof key === "string" ? key : key.name;
+    const name: string = this.getName(key);
     this.clients.set(name, client);
 
     return this;
@@ -133,5 +177,9 @@ export class ModuleCore implements ICoreModule {
     typeConstructor: new (...args: any[]) => any
   ) {
     return map.get(typeConstructor.name) as T | undefined;
+  }
+
+  private getName(key: string | (new (options?: any) => any)) {
+    return typeof key === "string" ? key : key.name;
   }
 }
