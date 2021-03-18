@@ -2,8 +2,8 @@ import { urlUtils } from "../utils/url.utils";
 import { IHTTPClient, IHTTPClientOptions } from "./index";
 import { CustomServerError } from "../custom-errors/custom-server-error";
 import { RequestOptions } from "./types/request-options.interface";
-import { CustomHttpClientError } from "@/custom-errors/custom-http-client-error";
-import { EnumCustomErrorType } from "@/custom-errors/statics/custom-error-type.enum";
+import { CustomHttpClientError } from "../custom-errors/custom-http-client-error";
+import { EnumCustomErrorType } from "../custom-errors/statics/custom-error-type.enum";
 
 export class FetchHTTPClient implements IHTTPClient {
   private baseUrl: string;

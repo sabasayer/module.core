@@ -1,6 +1,6 @@
 import { globalModule } from "@/global-module/global-module";
 import { defaultLocalization } from "@/localization/default-localization";
-import { EnumLayer } from "@/shared-types";
+import { EnumAppLayer } from "@/shared";
 import { CustomError } from "..";
 import { EnumCustomErrorType } from "../statics/custom-error-type.enum";
 
@@ -12,7 +12,7 @@ describe("Custom Error", () => {
     globalModule.setLocalization(defaultLocalization);
 
     const error = new CustomError({
-      layer: EnumLayer.Controller,
+      layer: EnumAppLayer.Controller,
       type: EnumCustomErrorType.Construction,
       message: "hi",
       translate: true,

@@ -1,4 +1,4 @@
-import { URLOptions } from "../../utils/url-options.interface";
+import { URLOptions } from "../../utils/types/url-options.interface";
 
 export interface IHTTPClientOptions extends Partial<URLOptions> {
   baseUrl?: string;

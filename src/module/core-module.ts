@@ -12,25 +12,33 @@ import {
   IProviderConstructor,
 } from "../provider/types/provider.interface";
 import {
+  AppLayerUnionType,
   ICoreModule,
+  KeyUnionType,
   ModuleBootstrapOptions,
   RegisterControllerOptions,
   RegisterProviderOptions,
 } from "./core-module.interface";
-import { IDecorators } from "./decorators/decorators.interface";
+import { IDecorator } from "../decorators/types/decorator.interface";
 import { ICache } from "../cache";
 import { ICacheConstructor } from "../cache/cache.interface";
 import { coreLogger } from "../logger/core.logger";
+import { globalModule } from "../global-module/global-module";
 
-export class ModuleCore implements ICoreModule {
-  private clients = new Map<string, IHTTPClient>();
-  private providers = new Map<string, IProvider>();
-  private controllers = new Map<string, IController>();
-  private caches = new Map<string, ICache>();
+export class CoreModule implements ICoreModule {
   private readonly providerSuffix = "Provider";
   private readonly controllerSuffix = "Controller";
   private readonly cacheSuffix = "Cache";
   private readonly clientSuffix = "HttpClient";
+
+  private clients = new Map<string, IHTTPClient>();
+  private providers = new Map<string, IProvider>();
+  private controllers = new Map<string, IController>();
+  private caches = new Map<string, ICache>();
+
+  constructor() {
+    globalModule.registerModule(this);
+  }
 
   bootstrap(options?: ModuleBootstrapOptions) {
     if (options) {
@@ -44,7 +52,7 @@ export class ModuleCore implements ICoreModule {
   }
 
   @coreLogger.logMethod()
-  useDecorators(...decorators: IDecorators[]) {
+  useDecorators(...decorators: IDecorator[]) {
     decorators.forEach((decorator) => decorator.setModule(this));
     return this;
   }
@@ -54,14 +62,7 @@ export class ModuleCore implements ICoreModule {
    * @param key must contain 'Provider' | 'Controller' | 'Cache' | 'HttpClient'
    *  suffix to be resolved
    */
-  resolve<T extends IProvider | IController | ICache>(
-    key:
-      | string
-      | IProviderConstructor
-      | IControllerConstructor<any>
-      | ICacheConstructor
-      | IHTTPClientConstuctor
-  ): T | undefined {
+  resolve<T extends AppLayerUnionType>(key: KeyUnionType): T | undefined {
     let name = this.getName(key);
 
     if (name.includes(this.clientSuffix))
@@ -81,11 +82,8 @@ export class ModuleCore implements ICoreModule {
       return this.resolveCache(key as ICacheConstructor) as T | undefined;
   }
 
-  registerHttpClientImplementation(
-    client: IHTTPClient,
-    key: string | IHTTPClientConstuctor
-  ) {
-    const name: string = this.getName(key);
+  registerHttpClientImplementation(client: IHTTPClient, key?: string) {
+    const name: string = this.getName(key ?? client.constructor.name);
     this.clients.set(name, client);
 
     return this;
@@ -132,12 +130,13 @@ export class ModuleCore implements ICoreModule {
 
   registerController<TProvider extends IProvider>(
     controller: IControllerConstructor<TProvider>,
-    options: RegisterControllerOptions
+    options?: RegisterControllerOptions
   ) {
-    const provider = this.resolveProvider(options.provider) as TProvider;
-    if (!provider) return this;
+    const provider = options?.provider
+      ? (this.resolveProvider(options.provider) as TProvider)
+      : undefined;
 
-    const name = options.key ?? controller.name;
+    const name = options?.key ?? controller.name;
     const controllerObj = new controller(provider);
     this.controllers.set(name, controllerObj);
 

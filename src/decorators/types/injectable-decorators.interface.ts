@@ -8,11 +8,11 @@ import {
 import {
   RegisterControllerOptions,
   RegisterProviderOptions,
-} from "../core-module.interface";
-import { IDecorators } from "./decorators.interface";
+} from "../../module/core-module.interface";
+import { IDecorator } from "./decorator.interface";
 import { ICacheConstructor } from "../../cache/cache.interface";
 
-export type IInjectableDecorators = IDecorators & {
+export type IInjectableDecorators = IDecorator & {
   client: (
     options: IHTTPClientOptions
   ) => (clientConstructor: IHTTPClientConstuctor) => void;

@@ -1,4 +1,4 @@
-import { EnumAppLayer } from "@/shared-types/app-layer.enum";
+import { EnumAppLayer } from "../shared/app-layer.enum";
 import { CustomError } from "./custom-error";
 import { CustomErrorConstructorOptions } from "./types/custom-error-constructor.options";
 

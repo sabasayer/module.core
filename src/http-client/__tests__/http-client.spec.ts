@@ -51,7 +51,7 @@ describe("Http Client", () => {
       abortController.abort();
 
       await expect(api.get("test", { abortController })).rejects.toEqual(
-        new CustomHttpClientError(EnumCustomErrorType.AbortedRequest)
+        new CustomHttpClientError({ type: EnumCustomErrorType.AbortedRequest })
       );
     });
 
@@ -65,7 +65,9 @@ describe("Http Client", () => {
 
       await expect(
         api.post("test", undefined, { abortController })
-      ).rejects.toEqual(new CustomHttpClientError(EnumCustomErrorType.AbortedRequest));
+      ).rejects.toEqual(
+        new CustomHttpClientError({ type: EnumCustomErrorType.AbortedRequest })
+      );
     });
   });
 

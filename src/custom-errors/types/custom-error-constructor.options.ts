@@ -1,8 +1,8 @@
-import { EnumLayer } from "@/shared-types";
+import { EnumAppLayer } from "../../shared";
 import { EnumCustomErrorType } from "..";
 
 export type CustomErrorConstructorOptions = {
-  layer: EnumLayer;
+  layer: EnumAppLayer;
   type: EnumCustomErrorType;
   message?: string;
   translate?: boolean;

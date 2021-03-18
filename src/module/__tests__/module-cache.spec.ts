@@ -1,5 +1,4 @@
-import { createModule } from "../create-module/create-module";
-import { TestCache } from "../__mocks__/module.mock";
+import { createModule, TestCache } from "../__mocks__/module.mock";
 
 describe("Module Cache Methods", () => {
   it("should return undefined at resolve when not registered", () => {

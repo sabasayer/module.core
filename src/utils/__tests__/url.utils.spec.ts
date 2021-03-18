@@ -1,4 +1,4 @@
-import { URLOptions } from "../url-options.interface";
+import { URLOptions } from "../types/url-options.interface";
 import { urlUtils } from "../url.utils";
 
 describe("URL Utils", () => {

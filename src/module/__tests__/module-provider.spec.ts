@@ -1,8 +1,8 @@
-import { createModule } from "../create-module/create-module";
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
 import { IProvider } from "../../provider/types/provider.interface";
 import {
+  createModule,
   createRegisterHttpClient,
   createRegisterProvider,
   TestProvider,

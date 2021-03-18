@@ -2,10 +2,11 @@ import { IHTTPClientOptions } from "../../http-client/types/http-client-options.
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
 import { IProvider } from "../../provider/types/provider.interface";
-import { createModule } from "../create-module/create-module";
-import { ICoreModule } from "../index";
+import { ICoreModule, ModuleCore } from "../index";
 import { ICache } from "../../cache";
-import { IRequestConfig } from "@/provider/types/request-config.interface";
+import { IRequestConfig } from "../../provider/types/request-config.interface";
+
+export class TestModule extends ModuleCore {}
 
 export class TestHttpClient implements IHTTPClient {
   constructor(options: IHTTPClientOptions) {}
@@ -42,7 +43,7 @@ export class TestProvider implements IProvider {
 }
 
 export class TestController implements IController {
-  constructor(provider: IProvider) {}
+  constructor(provider?: IProvider) {}
 }
 
 export class TestCache implements ICache {
@@ -56,6 +57,10 @@ export class TestCache implements ICache {
 
   clear() {}
 }
+
+export const createModule = () => {
+  return new TestModule();
+};
 
 export const createRegisterCache = () => {
   const module = createModule();

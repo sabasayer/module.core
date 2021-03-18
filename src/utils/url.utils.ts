@@ -1,4 +1,4 @@
-import { URLOptions } from "./url-options.interface";
+import { URLOptions } from "./types/url-options.interface";
 
 class URLUtils {
   createBaseUrl(options: URLOptions): string {

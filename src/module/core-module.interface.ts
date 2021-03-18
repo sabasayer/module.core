@@ -11,7 +11,7 @@ import {
   IProvider,
   IProviderConstructor,
 } from "../provider/types/provider.interface";
-import { IDecorators } from "./decorators/decorators.interface";
+import { IDecorator } from "../decorators/types/decorator.interface";
 import { ICache } from "../cache";
 import { ICacheConstructor } from "../cache/cache.interface";
 
@@ -21,30 +21,35 @@ export type RegisterProviderOptions = {
 };
 
 export type RegisterControllerOptions = {
-  provider: IProviderConstructor;
+  provider?: IProviderConstructor;
   key?: string;
 };
 
 export type ModuleBootstrapOptions<T = any> = {
   httpClient: IHTTPClient;
-  httpClientKey: string | IHTTPClientConstuctor;
+  httpClientKey?: string;
   config?: T;
 };
 
-export type ICoreModule = {
+export type KeyUnionType =
+  | string
+  | IProviderConstructor
+  | IControllerConstructor<any>
+  | ICacheConstructor
+  | IHTTPClientConstuctor;
+
+export type AppLayerUnionType = IProvider | IController | ICache | IHTTPClient;
+
+export type ModuleConstructor = new (options?: any) => ICoreModule;
+
+export type ICoreModule = object & {
   bootstrap: (
     options?: ModuleBootstrapOptions
   ) => Promise<ICoreModule> | ICoreModule;
 
-  useDecorators: (...decorators: IDecorators[]) => ICoreModule;
+  useDecorators: (...decorators: IDecorator[]) => ICoreModule;
 
-  resolve: <T extends IProvider | IController | ICache>(
-    key:
-      | string
-      | IProviderConstructor
-      | IControllerConstructor<any>
-      | ICacheConstructor
-  ) => T | undefined;
+  resolve: <T extends AppLayerUnionType>(key: KeyUnionType) => T | undefined;
 
   registerHttpClient: (
     client: IHTTPClientConstuctor,
@@ -53,7 +58,7 @@ export type ICoreModule = {
 
   registerHttpClientImplementation: (
     client: IHTTPClient,
-    key: string | IHTTPClientConstuctor
+    key?: string
   ) => ICoreModule;
 
   resolveHttpClient: <T extends IHTTPClient>(
@@ -71,7 +76,7 @@ export type ICoreModule = {
 
   registerController: <TProvider extends IProvider>(
     controller: IControllerConstructor<TProvider>,
-    options: RegisterControllerOptions
+    options?: RegisterControllerOptions
   ) => ICoreModule;
 
   resolveController: <T extends IController, TProvider extends IProvider>(

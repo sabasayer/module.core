@@ -1,7 +1,5 @@
 import { ICoreModule } from "./core-module.interface";
-import { ModuleCore } from "./core-module";
-import { createModule } from "./create-module/create-module";
+import { CoreModule } from "./core-module";
 
-export * from "./decorators/index";
 export type { ICoreModule };
-export { ModuleCore, createModule };
+export { CoreModule as ModuleCore };

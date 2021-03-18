@@ -6,8 +6,8 @@ import {
   IRequestConfig,
 } from "./types/request-config.interface";
 import { ICache } from "../cache";
-import { CustomProviderError } from "@/custom-errors/custom-provider-error";
-import { EnumCustomErrorType } from "@/custom-errors";
+import { CustomProviderError } from "../custom-errors/custom-provider-error";
+import { EnumCustomErrorType } from "../custom-errors";
 
 export class CoreProvider implements IProvider {
   private client: IHTTPClient;

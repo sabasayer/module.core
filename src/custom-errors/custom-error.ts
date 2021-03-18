@@ -1,5 +1,5 @@
-import { globalModule } from "@/global-module/global-module";
-import { EnumAppLayer } from "@/shared-types/app-layer.enum";
+import { globalModule } from "../global-module/global-module";
+import { EnumAppLayer } from "../shared/app-layer.enum";
 import { EnumCustomErrorType } from "./statics/custom-error-type.enum";
 import { CustomErrorConstructorOptions } from "./types/custom-error-constructor.options";
 import { ICustomError } from "./types/custom-error.interface";

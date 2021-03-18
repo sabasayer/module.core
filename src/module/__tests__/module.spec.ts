@@ -1,4 +1,3 @@
-import { createModule } from "../create-module/create-module";
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
 import {
@@ -9,13 +8,21 @@ import {
   TestCache,
   TestController,
   TestProvider,
+  createModule,
+  TestModule,
 } from "../__mocks__/module.mock";
+import { globalModule } from "@/global-module/global-module";
 
 describe("Module", () => {
-  it("should create module", () => {
+  beforeEach(() => {
+    globalModule.clear();
+  });
+
+  it("should register on constructor", () => {
     const module = createModule();
 
-    expect(module).toBeDefined();
+    const resolved = globalModule.getModule(TestModule);
+    expect(resolved).toEqual(module);
   });
 
   describe("bootstrap method", () => {
@@ -23,7 +30,7 @@ describe("Module", () => {
       const module = createModule();
       const client = new TestHttpClient({ baseUrl: "test" });
 
-      module.bootstrap({ httpClient: client, httpClientKey: TestHttpClient });
+      module.bootstrap({ httpClient: client });
 
       const resolvedClient = module.resolveHttpClient();
 
@@ -36,7 +43,7 @@ describe("Module", () => {
       const module = createModule();
       const client = new TestHttpClient({ baseUrl: "test.com" });
 
-      module.registerHttpClientImplementation(client, TestHttpClient);
+      module.registerHttpClientImplementation(client);
 
       const resolvedClient = module.resolveHttpClient(TestHttpClient);
 

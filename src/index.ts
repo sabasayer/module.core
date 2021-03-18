@@ -8,5 +8,6 @@ export * from "./mapper/index";
 export * from "./utils/index";
 export * from "./logger/index";
 export * from "./custom-errors/index";
-export * from "./shared-types/index";
+export * from "./shared/index";
 export * from "./localization/index";
+export * from "./decorators/index";

@@ -1,7 +1,7 @@
 import { IHTTPClient } from "../../http-client/index";
 import { IController } from "../../controller/index";
 import { IProvider } from "../../provider/index";
-import { ResolveDecorators } from "../decorators/resolve.decorators";
+import { ResolveDecorators } from "../resolve.decorators";
 import {
   createRegisterCache,
   createRegisterController,
@@ -10,29 +10,29 @@ import {
   TestController,
   TestProvider,
   createRegisterHttpClient,
-} from "../__mocks__/module.mock";
+  createModule,
+} from "../../module/__mocks__/module.mock";
 import { ICache } from "../../cache";
-import { createModule } from "../create-module/create-module";
 
 describe("Resolve Decoratros", () => {
-  const resolve = new ResolveDecorators();
+  const resolver = new ResolveDecorators();
 
   const createAndUseResolve = () => {
     const module = createModule();
-    module.useDecorators(resolve);
+    module.useDecorators(resolver);
     return module;
   };
 
-  const createRegisterApiAndUseResolve = () => {
+  const createClientAndUseResolve = () => {
     const module = createAndUseResolve();
     return createRegisterHttpClient(module);
   };
 
   it("should resolve api", () => {
-    createRegisterApiAndUseResolve();
+    createClientAndUseResolve();
 
     class Test {
-      @resolve.client()
+      @resolver.client()
       api!: IHTTPClient;
     }
 
@@ -42,7 +42,7 @@ describe("Resolve Decoratros", () => {
   });
 
   it("should resolve api with class", () => {
-    const module = createRegisterApiAndUseResolve();
+    const module = createClientAndUseResolve();
 
     class TestApi2 implements IHTTPClient {
       async get(url: string) {
@@ -62,7 +62,7 @@ describe("Resolve Decoratros", () => {
     module.registerHttpClient(TestApi2, {});
 
     class Test {
-      @resolve.client(TestApi2)
+      @resolver.client(TestApi2)
       api!: IHTTPClient;
     }
 
@@ -72,11 +72,11 @@ describe("Resolve Decoratros", () => {
   });
 
   it("should resolve provider", () => {
-    const module = createRegisterApiAndUseResolve();
+    const module = createClientAndUseResolve();
     module.registerProvider(TestProvider);
 
     class Test {
-      @resolve.provider(TestProvider)
+      @resolver.provider(TestProvider)
       provider!: IProvider;
     }
 
@@ -85,11 +85,11 @@ describe("Resolve Decoratros", () => {
   });
 
   it("should resolve provider with key", () => {
-    const module = createRegisterApiAndUseResolve();
+    const module = createClientAndUseResolve();
     module.registerProvider(TestProvider, { key: "test_prov" });
 
     class Test {
-      @resolve.provider("test_prov")
+      @resolver.provider("test_prov")
       provider!: IProvider;
     }
 
@@ -99,10 +99,10 @@ describe("Resolve Decoratros", () => {
 
   it("should resolve controller", () => {
     const module = createRegisterController();
-    module.useDecorators(resolve);
+    module.useDecorators(resolver);
 
     class Test {
-      @resolve.controller(TestController)
+      @resolver.controller(TestController)
       controller!: IController;
     }
 
@@ -112,10 +112,10 @@ describe("Resolve Decoratros", () => {
 
   it("should resolve controller with key", () => {
     const module = createRegisterController();
-    module.useDecorators(resolve);
+    module.useDecorators(resolver);
 
     class Test {
-      @resolve.controller("TestController")
+      @resolver.controller("TestController")
       controller!: IController;
     }
 
@@ -125,14 +125,27 @@ describe("Resolve Decoratros", () => {
 
   it("should resolve cache", () => {
     const module = createRegisterCache();
-    module.useDecorators(resolve);
+    module.useDecorators(resolver);
 
     class Test {
-      @resolve.cache(TestCache)
+      @resolver.cache(TestCache)
       cache!: ICache;
     }
 
     const test = new Test();
     expect(test.cache).toBeInstanceOf(TestCache);
+  });
+
+  it("should resolve provider with resolve method", () => {
+    const module = createClientAndUseResolve();
+    module.registerProvider(TestProvider);
+
+    class Test {
+      @resolver.resolve(TestProvider)
+      provider!: IProvider;
+    }
+
+    const test = new Test();
+    expect(test.provider).toBeInstanceOf(TestProvider);
   });
 });

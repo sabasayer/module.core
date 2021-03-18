@@ -3,14 +3,14 @@ import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
 import { IProvider } from "../../provider/types/provider.interface";
 import {
+  createModule,
   createRegisterProvider,
   TestHttpClient,
   TestProvider,
-} from "../__mocks__/module.mock";
-import { createModule } from "../create-module/create-module";
+} from "../../module/__mocks__/module.mock";
 import { ICache } from "../../cache";
 import { IRequestConfig } from "@/provider/types/request-config.interface";
-import { InjectableDecorators } from "../decorators";
+import { InjectableDecorators } from "..";
 
 describe("Inject Decorators", () => {
   const injectable = new InjectableDecorators();
@@ -95,7 +95,7 @@ describe("Inject Decorators", () => {
 
     @injectable.controller({ provider: TestProvider })
     class TestController implements IController {
-      constructor(provider: IProvider) {}
+      constructor(provider?: IProvider) {}
     }
 
     const controller = module.resolveController(TestController);

@@ -1,11 +1,11 @@
-import { EnumLayer } from "@/shared-types";
+import { EnumAppLayer } from "../shared";
 import { CustomError } from ".";
 import { CustomErrorConstructorOptions } from "./types/custom-error-constructor.options";
 
 export class CustomCacheError extends CustomError {
   constructor(options: Omit<CustomErrorConstructorOptions, "layer">) {
     super({
-      layer: EnumLayer.Cache,
+      layer: EnumAppLayer.Cache,
       ...options,
     });
   }
