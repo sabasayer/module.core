@@ -1,4 +1,4 @@
-import { defaultCloneUtil } from "../deafult-clone.util";
+import { defaultCloneUtil } from "../default-clone.util";
 
 describe("Default Clone Util", () => {
   it("should clone object ", () => {

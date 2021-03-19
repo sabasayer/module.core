@@ -2,6 +2,7 @@ import { createModule, TestModule } from "@/module/__mocks__/module.mock";
 import { globalModule } from "../global-module";
 import {
   mockCloneUtil,
+  mockEncyrpctionUtil,
   mockLocalization,
 } from "../__mocks__/global.module.mock";
 
@@ -31,9 +32,17 @@ describe("Global Module", () => {
     expect(resolved).toEqual(mockCloneUtil);
   });
 
+  it("shoul get registered encryption util", () => {
+    globalModule.setEncryptionUtil(mockEncyrpctionUtil);
+
+    const resolved = globalModule.getEncryptionUtil();
+    expect(resolved).toEqual(mockEncyrpctionUtil);
+  });
+
   it("should clear", () => {
     globalModule.setLocalization(mockLocalization);
     globalModule.setCloneUtil(mockCloneUtil);
+    globalModule.setEncryptionUtil(mockEncyrpctionUtil);
 
     const module = createModule();
     globalModule.registerModule(module);
@@ -43,9 +52,11 @@ describe("Global Module", () => {
     const resolvedLocalization = globalModule.getLocalization();
     const resolvedModule = globalModule.getModule(TestModule);
     const resolvedClone = globalModule.getCloneUtil();
+    const resolvedEncyription = globalModule.getEncryptionUtil();
 
     expect(resolvedLocalization).toBe(null);
     expect(resolvedClone).toBe(null);
+    expect(resolvedEncyription).toBe(null);
     expect(resolvedModule).toBe(undefined);
   });
 });

@@ -17,14 +17,20 @@ export type IMapper<Source, Target> = {
     targetValue?: MapperTargetValue<Target, Source, SourceField>
   ): IMapper<Source, Target>;
 
-  mapToTarget(source: Source): Target;
-  mapToSource(target: Target): Source;
+  mapToTarget(source: Source, index?: number, array?: Source[]): Target;
+  mapToSource(target: Target, index?: number, array?: Target[]): Source;
 };
+
+type MapperFunc<Source, Target, TargetField extends keyof Target> = (
+  source: Source,
+  index?: number,
+  array?: Source[]
+) => Target[TargetField];
 
 export type MapperFieldConfigurations<Source, Target> = {
   [TargetField in keyof Target]?:
     | keyof Source
-    | ((source: Source) => Target[TargetField]);
+    | MapperFunc<Source, Target, TargetField>;
 } &
   Object;
 
@@ -38,4 +44,4 @@ export type MapperTargetValue<
   Source,
   Target,
   TargetField extends keyof Target
-> = keyof Source | ((source: Source) => Target[TargetField]);
+> = keyof Source | MapperFunc<Source, Target, TargetField>;

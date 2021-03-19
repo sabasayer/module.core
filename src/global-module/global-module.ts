@@ -3,6 +3,7 @@ import { ILocalization } from "../localization/types/localization.interface";
 import { ICoreModule } from "../module";
 import { ModuleConstructor } from "../module/core-module.interface";
 import { isDevelopment } from "../utils/env.utils";
+import { IEncyrptionUtil } from "../utils/types/encryption-util.interface";
 
 declare global {
   interface Window {
@@ -14,6 +15,7 @@ class GlobalModule {
   private modules = new Map<string, ICoreModule>();
   private localization: ILocalization | null = null;
   private cloneUtil: ICloneUtil | null = null;
+  private encyrpctionUtil: IEncyrptionUtil | null = null;
 
   constructor() {
     if (isDevelopment()) window.globalModule = this;
@@ -45,9 +47,18 @@ class GlobalModule {
     return this.cloneUtil;
   }
 
+  setEncryptionUtil(util: IEncyrptionUtil) {
+    this.encyrpctionUtil = util;
+  }
+
+  getEncryptionUtil() {
+    return this.encyrpctionUtil;
+  }
+
   clear() {
     this.localization = null;
     this.cloneUtil = null;
+    this.encyrpctionUtil = null;
     this.modules = new Map();
   }
 }

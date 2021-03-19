@@ -52,32 +52,34 @@ export class CoreMapper<Source, Target> implements IMapper<Source, Target> {
     return this;
   }
 
-  mapToTarget(source: Source): Target {
-    return this.map(source, this.targetConfiguration);
+  mapToTarget(source: Source, index?: number, array?: Source[]): Target {
+    return this.map(this.targetConfiguration, source, index, array);
   }
 
-  mapToSource(target: Target): Source {
-    return this.map(target, this.sourceConfiguration);
+  mapToSource(target: Target, index?: number, array?: Target[]): Source {
+    return this.map(this.sourceConfiguration, target, index, array);
   }
 
   mapToTargetList(sources?: Source[]): Target[] | undefined {
-    return sources?.map((e) => this.mapToTarget(e));
+    return sources?.map((e, i, array) => this.mapToTarget(e, i, array));
   }
 
   mapToSourceList(targets?: Target[]): Source[] | undefined {
-    return targets?.map((e) => this.mapToSource(e));
+    return targets?.map((e, i, array) => this.mapToSource(e, i, array));
   }
 
   private map<TSource, TTarget>(
+    configuration: MapperConfiguration<TSource, TTarget>,
     source: TSource,
-    configuration: MapperConfiguration<TSource, TTarget>
+    index?: number,
+    array?: TSource[]
   ): TTarget {
     let target: unknown = {};
 
     const hasFieldConfig = Object.values(configuration.fieldConfigurations)
       .length;
 
-    this.mapByFieldConfig(source, target, configuration);
+    this.mapByFieldConfig({ source, target, configuration, index, array });
 
     if (!hasFieldConfig || configuration.canMapUndefinedFields) {
       this.mapAllFields(source, target, configuration);
@@ -86,19 +88,21 @@ export class CoreMapper<Source, Target> implements IMapper<Source, Target> {
     return target as TTarget;
   }
 
-  private mapByFieldConfig<TSource, TTarget>(
-    source: TSource,
-    target: unknown,
-    configuration: MapperConfiguration<TSource, TTarget>
-  ): void {
-    for (let targetKey in configuration.fieldConfigurations) {
+  private mapByFieldConfig<TSource, TTarget>(options: {
+    source: TSource;
+    target: unknown;
+    configuration: MapperConfiguration<TSource, TTarget>;
+    index?: number;
+    array?: TSource[];
+  }): void {
+    for (let targetKey in options.configuration.fieldConfigurations) {
       const config =
-        configuration.fieldConfigurations[targetKey as keyof TTarget];
+        options.configuration.fieldConfigurations[targetKey as keyof TTarget];
 
-      (target as TTarget)[targetKey as keyof TTarget] =
+      (options.target as TTarget)[targetKey as keyof TTarget] =
         typeof config === "function"
-          ? config(source)
-          : (source[config as keyof TSource] as any);
+          ? config(options.source, options.index, options.array)
+          : (options.source[config as keyof TSource] as any);
     }
   }
 

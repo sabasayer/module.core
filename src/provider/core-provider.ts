@@ -24,11 +24,13 @@ export class CoreProvider implements IProvider {
     data?: TRequest,
     options?: ProviderRequestOptions
   ): Promise<TResponse | undefined> {
+    this.validateRequest(config, data);
+
     let requestOptions = this.createRequestOptions(options);
 
     const computedUrl = this.createUrl(config.url);
 
-    return this.tryClientRequest(
+    const response = await this.tryClientRequest(
       () =>
         this.client.post<TRequest, TResponse>(
           computedUrl,
@@ -37,6 +39,9 @@ export class CoreProvider implements IProvider {
         ),
       options
     );
+
+    this.validateResponse<TRequest, TResponse>(config, response);
+    return response;
   }
 
   async cachablePost<TRequest = undefined, TResponse = undefined>(
@@ -147,5 +152,33 @@ export class CoreProvider implements IProvider {
     if (!options?.raceId) return;
 
     this.abortControllers.delete(options?.raceId);
+  }
+
+  private validateRequest<TRequest = undefined, TResponse = undefined>(
+    config: IRequestConfig<TRequest, TResponse>,
+    data: TRequest | undefined
+  ) {
+    try {
+      config.validateRequest?.(data);
+    } catch (e) {
+      throw new CustomProviderError({
+        type: EnumCustomErrorType.RequestValidation,
+        message: e,
+      });
+    }
+  }
+
+  private validateResponse<TRequest = undefined, TResponse = undefined>(
+    config: IRequestConfig<TRequest, TResponse>,
+    response: TResponse | undefined
+  ) {
+    try {
+      config.validateResponse?.(response);
+    } catch (e) {
+      throw new CustomProviderError({
+        type: EnumCustomErrorType.ResponseValidation,
+        message: e,
+      });
+    }
   }
 }

@@ -1,5 +1,12 @@
+import { globalModule } from "@/global-module/global-module";
+import { IEncyrptionUtil } from "@/utils/types/encryption-util.interface";
 import { SessionStorageCache } from "../session-storage-cache";
+
 describe("Session Storage Cache", () => {
+  beforeEach(() => {
+    globalModule.clear();
+  });
+
   it("should return null for not stored key", () => {
     const cache = new SessionStorageCache();
 
@@ -42,5 +49,40 @@ describe("Session Storage Cache", () => {
     const value2 = cache.get("num");
     expect(value).toBeNull();
     expect(value2).toBeNull();
+  });
+
+  it("should run registered ecryption algorithm", () => {
+    class TestEncryption implements IEncyrptionUtil {
+      encrypt(value: string) {
+        return value
+          .split("")
+          .map((e) => String.fromCharCode(e.charCodeAt(0) + 1))
+          .join("");
+      }
+
+      decrypt(value: string) {
+        return value
+          .split("")
+          .map((e) => String.fromCharCode(e.charCodeAt(0) - 1))
+          .join("");
+      }
+    }
+
+    const encryption = new TestEncryption();
+    const cache = new SessionStorageCache();
+
+    globalModule.setEncryptionUtil(encryption);
+
+    const key = "test";
+    const value = "ali";
+
+    cache.set(key, value);
+
+    const stored = sessionStorage.getItem(key);
+
+    const result = cache.get(key);
+
+    expect(stored).toBe("#bmj#");
+    expect(result).toBe(value);
   });
 });

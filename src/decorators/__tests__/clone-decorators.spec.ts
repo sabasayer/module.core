@@ -1,15 +1,15 @@
 import { globalModule } from "@/global-module/global-module";
 import { mockCloneUtil } from "@/global-module/__mocks__/global.module.mock";
-import { clone, cloneDeep } from "../clone.decorators";
+import { cloneArgs, cloneDeepArgs } from "../clone.decorators";
 
 describe("Clone Decorator", () => {
   class Test {
-    @clone()
+    @cloneArgs
     test(a: { id: number }) {
       return a;
     }
 
-    @cloneDeep()
+    @cloneDeepArgs
     test2(a: number) {
       return a;
     }

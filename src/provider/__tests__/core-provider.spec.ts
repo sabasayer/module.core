@@ -22,6 +22,7 @@ describe("Data Provider", () => {
   beforeEach(() => {
     fetchMock.mockClear();
   });
+
   it("should post using options", () => {
     mockFetchResponse({ id: 1 });
 
@@ -179,5 +180,41 @@ describe("Data Provider", () => {
     expect(firstResponse).toEqual(mockResponse);
     expect(secondResponse).toEqual(mockResponse);
     expect(fetchMock).toBeCalledTimes(1);
+  });
+
+  it("should validate request with validation function", async () => {
+    const provider = new CoreProvider(client);
+
+    type TestRequest = { model: { name: string } };
+    const config: IRequestConfig<TestRequest, number> = {
+      url: "test",
+      validateRequest: (req?: TestRequest): void => {
+        if (!req || req.model.name.length < 2) throw "error";
+      },
+    };
+
+    await expect(() => provider.post(config)).rejects.toEqual(
+      new CustomProviderError({
+        type: EnumCustomErrorType.RequestValidation,
+        message: "error",
+      })
+    );
+  });
+
+  it("should validate response with validation function", async () => {
+    const provider = new CoreProvider(client);
+    const config: IRequestConfig<number, number[]> = {
+      url: "test",
+      validateResponse: (req?: number[]) => {
+        if (!req?.length) throw "error";
+      },
+    };
+
+    await expect(() => provider.post(config)).rejects.toEqual(
+      new CustomProviderError({
+        type: EnumCustomErrorType.ResponseValidation,
+        message: "error",
+      })
+    );
   });
 });

@@ -161,4 +161,27 @@ describe("Core Mapper", () => {
     expect(mapped).toEqual({ date: "2021" });
     expect(mappedSource).toEqual({ date: "1998" });
   });
+
+  it("should access index and array on map function", () => {
+    interface Source {
+      name: string;
+    }
+
+    interface Target {
+      name: string;
+      index: number;
+      length: number;
+    }
+
+    const mapper = new CoreMapper<Source, Target>();
+
+    mapper.forTarget("index", (e, i) => i ?? 0);
+    mapper.forTarget("length", (e, i, array) => array?.length ?? 0);
+    mapper.forTarget("name", "name");
+
+    const mapped = mapper.mapToTargetList([{ name: "test" }]);
+    const expected: Target[] = [{ name: "test", index: 0, length: 1 }];
+
+    expect(mapped).toEqual(expected);
+  });
 });

@@ -1,5 +1,6 @@
 import { ILocalization } from "@/localization";
 import { ICloneUtil } from "@/utils/types/clone-util.interface";
+import { IEncyrptionUtil } from "@/utils/types/encryption-util.interface";
 
 class Testlocalization implements ILocalization {
     clear() {}
@@ -30,3 +31,10 @@ class Testlocalization implements ILocalization {
   }
 
   export const mockCloneUtil = new TestCloneUtil();
+
+  class TestEncyrption implements IEncyrptionUtil {
+    encrypt = (value: string) => "";
+    decrypt = (value: string) => "";
+  }
+
+  export const mockEncyrpctionUtil = new TestEncyrption();
