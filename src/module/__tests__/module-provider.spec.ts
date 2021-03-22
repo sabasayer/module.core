@@ -76,7 +76,9 @@ describe("Module Provider", () => {
       async get(url: string) {
         return null as any;
       }
-      async post(config:IRequestConfig) {
+      post<TRequest = undefined, TResponse = undefined>(
+        config: IRequestConfig<TRequest, TResponse>
+      ): Promise<TResponse | undefined> {
         return null as any;
       }
       async upload(url: string, formData: FormData) {

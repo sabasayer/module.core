@@ -2,11 +2,11 @@ import { IHTTPClientOptions } from "../../http-client/types/http-client-options.
 import { IHTTPClient } from "../../http-client/types/http-client.interface";
 import { IController } from "../../controller/controller.interface";
 import { IProvider } from "../../provider/types/provider.interface";
-import { ICoreModule, ModuleCore } from "../index";
+import { CoreModule, ICoreModule } from "../index";
 import { ICache } from "../../cache";
 import { IRequestConfig } from "../../provider/types/request-config.interface";
 
-export class TestModule extends ModuleCore {}
+export class TestModule extends CoreModule {}
 
 export class TestHttpClient implements IHTTPClient {
   constructor(options: IHTTPClientOptions) {}
@@ -29,7 +29,9 @@ export class TestHttpClient implements IHTTPClient {
 export class TestProvider implements IProvider {
   constructor(api: IHTTPClient) {}
 
-  post(config: IRequestConfig) {
+  post<TRequest = undefined, TResponse = undefined>(
+    config: IRequestConfig<TRequest, TResponse>
+  ): Promise<TResponse | undefined> {
     return null as any;
   }
 
