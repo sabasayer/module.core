@@ -21,7 +21,7 @@ export type RegisterProviderOptions = {
 };
 
 export type RegisterControllerOptions = {
-  provider?: IProviderConstructor;
+  provider?: IProviderConstructor | string;
   key?: string;
 };
 
