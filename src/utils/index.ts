@@ -1,6 +1,14 @@
-import { URLOptions } from "./types/url-options.interface";
 import { urlUtils } from "./url.utils";
 import { isDevelopment, isProduction } from "./env.utils";
+import { defaultCloneUtil } from "./default-clone.util";
+import { PerformanceUtil, browserPerformanceUtil } from "./performance.util";
 
-export type { URLOptions };
-export { urlUtils, isDevelopment, isProduction };
+export * from "./types";
+export {
+  urlUtils,
+  isDevelopment,
+  isProduction,
+  defaultCloneUtil,
+  browserPerformanceUtil,
+  PerformanceUtil,
+};

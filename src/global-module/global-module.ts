@@ -4,6 +4,7 @@ import { ICoreModule } from "../module";
 import { ModuleConstructor } from "../module/core-module.interface";
 import { isDevelopment } from "../utils/env.utils";
 import { IEncyrptionUtil } from "../utils/types/encryption-util.interface";
+import { IPerformanceUtil } from "@/utils";
 
 declare global {
   interface Window {
@@ -16,6 +17,7 @@ class GlobalModule {
   private localization: ILocalization | null = null;
   private cloneUtil: ICloneUtil | null = null;
   private encyrpctionUtil: IEncyrptionUtil | null = null;
+  private performanceUtil: IPerformanceUtil | null = null;
 
   constructor() {
     if (isDevelopment()) window.globalModule = this;
@@ -53,6 +55,14 @@ class GlobalModule {
 
   getEncryptionUtil() {
     return this.encyrpctionUtil;
+  }
+
+  setPerformanceUtil(util: IPerformanceUtil) {
+    this.performanceUtil = util;
+  }
+
+  getPerformanceUtil() {
+    return this.performanceUtil;
   }
 
   clear() {

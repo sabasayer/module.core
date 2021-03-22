@@ -4,6 +4,7 @@ import {
   mockCloneUtil,
   mockEncyrpctionUtil,
   mockLocalization,
+  mockPerformanceUtil,
 } from "../__mocks__/global.module.mock";
 
 describe("Global Module", () => {
@@ -37,6 +38,13 @@ describe("Global Module", () => {
 
     const resolved = globalModule.getEncryptionUtil();
     expect(resolved).toEqual(mockEncyrpctionUtil);
+  });
+
+  it("should get registered performance util", () => {
+
+    globalModule.setPerformanceUtil(mockPerformanceUtil);
+    const resolved = globalModule.getPerformanceUtil();
+    expect(resolved).toEqual(mockPerformanceUtil);
   });
 
   it("should clear", () => {

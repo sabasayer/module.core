@@ -41,7 +41,7 @@ export class CoreModule implements ICoreModule {
   }
 
   bootstrap(options?: ModuleBootstrapOptions) {
-    if (options) {
+    if (options) { 
       this.registerHttpClientImplementation(
         options.httpClient,
         options.httpClientKey
