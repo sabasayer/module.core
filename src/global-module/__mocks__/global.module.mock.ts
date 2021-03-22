@@ -19,7 +19,7 @@ class Testlocalization implements ILocalization {
   }
 
   export const mockLocalization = new Testlocalization();
-
+ 
   class TestCloneUtil implements ICloneUtil {
     clone(item: any) {
       return null as any;
