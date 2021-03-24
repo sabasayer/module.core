@@ -1,6 +1,7 @@
 import { ILocalization } from "@/localization";
-import { IPerformanceUtil } from "@/utils";
+import { IDateUtil, IPerformanceUtil } from "@/utils";
 import { ICloneUtil } from "@/utils/types/clone-util.interface";
+import { DateDuration } from "@/utils/types/date-util.interface";
 import { IEncyrptionUtil } from "@/utils/types/encryption-util.interface";
 
 class Testlocalization implements ILocalization {
@@ -47,3 +48,13 @@ class MockPerformanceUtil implements IPerformanceUtil {
 }
 
 export const mockPerformanceUtil = new MockPerformanceUtil();
+
+class DateUtil implements IDateUtil {
+  setDefaultFormat = (value: string) => undefined;
+  format = (value: string) => "";
+  formatISO = (value: Date) => "";
+  add = <T extends string | Date>(value: T, duration: DateDuration) =>
+    "" as any;
+}
+
+export const mockDateUtil = new DateUtil();

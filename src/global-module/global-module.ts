@@ -4,7 +4,7 @@ import { ICoreModule } from "../module";
 import { ModuleConstructor } from "../module/core-module.interface";
 import { isDevelopment } from "../utils/env.utils";
 import { IEncyrptionUtil } from "../utils/types/encryption-util.interface";
-import { IPerformanceUtil } from "@/utils";
+import { IDateUtil, IPerformanceUtil } from "@/utils";
 
 declare global {
   interface Window {
@@ -18,6 +18,7 @@ class GlobalModule {
   private cloneUtil: ICloneUtil | null = null;
   private encyrpctionUtil: IEncyrptionUtil | null = null;
   private performanceUtil: IPerformanceUtil | null = null;
+  private dateUtil: IDateUtil | null = null;
 
   constructor() {
     if (isDevelopment()) window.globalModule = this;
@@ -65,11 +66,21 @@ class GlobalModule {
     return this.performanceUtil;
   }
 
+  setDateUtil(util: IDateUtil) {
+    this.dateUtil = util;
+  }
+
+  getDateUtil() {
+    return this.dateUtil;
+  }
+
   clear() {
     this.localization = null;
     this.cloneUtil = null;
     this.encyrpctionUtil = null;
-    this.modules = new Map();
+    this.performanceUtil = null;
+    this.dateUtil = null;
+    this.modules.clear();
   }
 }
 

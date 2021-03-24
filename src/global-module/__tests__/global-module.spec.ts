@@ -2,6 +2,7 @@ import { createModule, TestModule } from "@/module/__mocks__/module.mock";
 import { globalModule } from "../global-module";
 import {
   mockCloneUtil,
+  mockDateUtil,
   mockEncyrpctionUtil,
   mockLocalization,
   mockPerformanceUtil,
@@ -41,16 +42,25 @@ describe("Global Module", () => {
   });
 
   it("should get registered performance util", () => {
-
     globalModule.setPerformanceUtil(mockPerformanceUtil);
+
     const resolved = globalModule.getPerformanceUtil();
     expect(resolved).toEqual(mockPerformanceUtil);
+  });
+
+  it("should get registered dateUtil", () => {
+    globalModule.setDateUtil(mockDateUtil);
+
+    const resolved = globalModule.getDateUtil();
+    expect(resolved).toEqual(mockDateUtil);
   });
 
   it("should clear", () => {
     globalModule.setLocalization(mockLocalization);
     globalModule.setCloneUtil(mockCloneUtil);
     globalModule.setEncryptionUtil(mockEncyrpctionUtil);
+    globalModule.setPerformanceUtil(mockPerformanceUtil);
+    globalModule.setDateUtil(mockDateUtil);
 
     const module = createModule();
     globalModule.registerModule(module);
@@ -61,10 +71,14 @@ describe("Global Module", () => {
     const resolvedModule = globalModule.getModule(TestModule);
     const resolvedClone = globalModule.getCloneUtil();
     const resolvedEncyription = globalModule.getEncryptionUtil();
+    const resolvedPerf = globalModule.getPerformanceUtil();
+    const resolvedDate = globalModule.getDateUtil();
 
     expect(resolvedLocalization).toBe(null);
     expect(resolvedClone).toBe(null);
     expect(resolvedEncyription).toBe(null);
+    expect(resolvedPerf).toBe(null);
+    expect(resolvedDate).toBe(null);
     expect(resolvedModule).toBe(undefined);
   });
 });

@@ -35,13 +35,14 @@ export class CoreModule implements ICoreModule {
   private providers = new Map<string, IProvider>();
   private controllers = new Map<string, IController>();
   private caches = new Map<string, ICache>();
+  private others = new Map<string, any>();
 
   constructor() {
     globalModule.registerModule(this);
   }
 
   bootstrap(options?: ModuleBootstrapOptions) {
-    if (options) { 
+    if (options) {
       this.registerHttpClientImplementation(
         options.httpClient,
         options.httpClientKey
@@ -54,6 +55,14 @@ export class CoreModule implements ICoreModule {
   @coreLogger.logMethod()
   useDecorators(...decorators: IDecorator[]) {
     decorators.forEach((decorator) => decorator.setModule(this));
+    return this;
+  }
+
+  register<T>(constructor: new () => T): ICoreModule {
+    const name = this.getName(constructor);
+    const obj = new constructor();
+    this.others.set(name, obj);
+
     return this;
   }
 
@@ -80,6 +89,8 @@ export class CoreModule implements ICoreModule {
 
     if (name.includes(this.cacheSuffix))
       return this.resolveCache(key as ICacheConstructor) as T | undefined;
+
+    return this.resolveOther<T>(key);
   }
 
   registerHttpClientImplementation(client: IHTTPClient, key?: string) {
@@ -169,6 +180,11 @@ export class CoreModule implements ICoreModule {
     this.providers.clear();
     this.controllers.clear();
     this.caches.clear();
+  }
+
+  private resolveOther<T>(key: KeyUnionType): T | undefined {
+    const name = this.getName(key);
+    return this.others.get(name) as T | undefined;
   }
 
   private resolveByConstructor<T>(

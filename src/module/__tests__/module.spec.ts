@@ -136,5 +136,25 @@ describe("Module", () => {
 
       expect(controller).toBeInstanceOf(TestController);
     });
+
+    it("should resolve any simple class instance", () => {
+      const module = createModule();
+
+      class TestClass {}
+
+      module.register(TestClass);
+      const resolved = module.resolve(TestClass);
+      expect(resolved).toBeInstanceOf(TestClass);
+    });
+
+    it("should resolve any simple class instance by key", () => {
+      const module = createModule();
+
+      class TestClass {}
+
+      module.register(TestClass);
+      const resolved = module.resolve("TestClass");
+      expect(resolved).toBeInstanceOf(TestClass);
+    });
   });
 });

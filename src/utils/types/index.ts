@@ -3,6 +3,7 @@ import { IEncyrptionUtil } from "./encryption-util.interface";
 import { IPerformance, IPerformanceEntry } from "./performace.interface";
 import { URLOptions } from "./url-options.interface";
 import { IPerformanceUtil } from "./performance-util.interface";
+import { IDateUtil, DateUnion, DateDuration } from "./date-util.interface";
 
 export {
   ICloneUtil,
@@ -10,5 +11,8 @@ export {
   IPerformanceUtil,
   IPerformance,
   IPerformanceEntry,
+  IDateUtil,
+  DateUnion,
+  DateDuration,
   URLOptions,
 };

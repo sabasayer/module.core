@@ -51,7 +51,7 @@ describe("Session Storage Cache", () => {
     expect(value2).toBeNull();
   });
 
-  it("should run registered ecryption algorithm", () => {
+  describe("Encrytion", () => {
     class TestEncryption implements IEncyrptionUtil {
       encrypt(value: string) {
         return value
@@ -68,21 +68,42 @@ describe("Session Storage Cache", () => {
       }
     }
 
-    const encryption = new TestEncryption();
-    const cache = new SessionStorageCache();
+    it("should run registered ecryption algorithm", () => {
+      const encryption = new TestEncryption();
+      const cache = new SessionStorageCache();
 
-    globalModule.setEncryptionUtil(encryption);
+      globalModule.setEncryptionUtil(encryption);
 
-    const key = "test";
-    const value = "ali";
+      const key = "test";
+      const value = "ali";
 
-    cache.set(key, value);
+      cache.set(key, value);
 
-    const stored = sessionStorage.getItem(key);
+      const stored = sessionStorage.getItem(key);
 
-    const result = cache.get(key);
+      const result = cache.get(key);
 
-    expect(stored).toBe("#bmj#");
-    expect(result).toBe(value);
+      expect(stored).toBe("#bmj#");
+      expect(result).toBe(value);
+    });
+
+    it("should run registered object ecryption algorithm", () => {
+      const encryption = new TestEncryption();
+      const cache = new SessionStorageCache();
+
+      globalModule.setEncryptionUtil(encryption);
+
+      const key = "test";
+      const value = { name: "ali" };
+
+      cache.set(key, value);
+
+      const stored = sessionStorage.getItem(key);
+
+      const result = cache.get(key);
+
+      expect(stored).toBe("|#obnf#;#bmj#~");
+      expect(result).toEqual(value);
+    });
   });
 });
