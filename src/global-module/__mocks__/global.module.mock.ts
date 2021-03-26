@@ -50,6 +50,8 @@ class MockPerformanceUtil implements IPerformanceUtil {
 export const mockPerformanceUtil = new MockPerformanceUtil();
 
 class DateUtil implements IDateUtil {
+  now = () => new Date();
+  nowISO = () => "";
   setDefaultFormat = (value: string) => undefined;
   format = (value: string) => "";
   formatISO = (value: Date) => "";

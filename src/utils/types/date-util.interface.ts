@@ -1,4 +1,6 @@
 export type IDateUtil = {
+  now(): Date;
+  nowISO(): string;
   setDefaultFormat(value: string): void;
   /**
    * @param value Date or valid date string
@@ -7,6 +9,16 @@ export type IDateUtil = {
   format(value: DateUnion, format?: string): string;
   formatISO(value: Date): string;
   add<T extends DateUnion>(value: T, duration: DateDuration): T;
+  set<T extends DateUnion>(
+    value: T,
+    values: {
+      hours?: number;
+      minutes?: number;
+      seconds?: number;
+      miliseconds?: number;
+    }
+  ): T;
+  clearTime<T extends DateUnion>(value: T): T;
 };
 
 /**
@@ -22,4 +34,14 @@ export type DateDuration = {
   hours?: number;
   minutes?: number;
   seconds?: number;
+};
+
+export type SetDateValues = {
+  year?: number;
+  month?: number;
+  date?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
+  milliseconds?: number;
 };
