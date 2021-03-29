@@ -21,7 +21,7 @@ Organizes the part between backend and presentation of frontEnd. So there is no 
 
 Lives in between from getting and sending data to backend  **<=>** rendering html, listening events.
 
-To be more spesific. Communicates with backend and frontEnd framework. (Vue, React or your own render code.
+To be more spesific. Communicates with backend and frontEnd framework. (Vue, React or your own render code)
 
 
 ### Table of contents
