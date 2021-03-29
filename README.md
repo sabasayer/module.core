@@ -19,7 +19,7 @@ Main motivation is to orginaze complicated enterprise level frontend projects th
 
 Organizes the part between backend and presentation of frontEnd. So there is no rendering part here. 
 
-Lives in between from getting and sending databackend  <=> rendering html, listening events.
+Lives in between from getting and sending data to backend  **<=>** rendering html, listening events.
 
 To be more spesific. Communicates with backend and frontEnd framework. (Vue, React or your own render code.
 
