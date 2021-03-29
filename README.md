@@ -24,6 +24,23 @@ Lives in between from getting and sending databackend  <=> rendering html, liste
 To be more spesific. Communicates with backend and frontEnd framework. (Vue, React or your own render code.
 
 
+### Table of contents
+- [Module Based FrontEnd Orginazor](#module-based-frontend-orginazor)
+  - [Features](#features)
+  - [Motivation](#motivation)
+    - [Table of contents](#table-of-contents)
+    - [Install](#install)
+  - [Layers](#layers)
+    - [Module](#module)
+    - [Global Module](#global-module)
+    - [HTTPClient](#httpclient)
+    - [Provider](#provider)
+    - [Controller](#controller)
+    - [Mapper](#mapper)
+    - [Cache](#cache)
+    - [Utilities](#utilities)
+
+
 
 ### [Install](#install)
 
