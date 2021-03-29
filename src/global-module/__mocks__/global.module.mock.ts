@@ -7,6 +7,11 @@ import {
   SetDateValues,
 } from "@/utils/types/date-util.interface";
 import { IEncyrptionUtil } from "@/utils/types/encryption-util.interface";
+import {
+  IObserver,
+  PublishType,
+  SubscribeOptions,
+} from "@/utils/types/observer.interface";
 
 class Testlocalization implements ILocalization {
   clear() {}
@@ -67,3 +72,13 @@ class DateUtil implements IDateUtil {
 }
 
 export const mockDateUtil = new DateUtil();
+
+export class MockObserver<T> implements IObserver<T> {
+  subscribe<T>(options: SubscribeOptions<T>) {
+    return 1;
+  }
+
+  unsubscribe(id: number) {}
+
+  publish(data: T, type: PublishType) {}
+}

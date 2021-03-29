@@ -5,6 +5,7 @@ import {
   mockDateUtil,
   mockEncyrpctionUtil,
   mockLocalization,
+  MockObserver,
   mockPerformanceUtil,
 } from "../__mocks__/global.module.mock";
 
@@ -55,30 +56,39 @@ describe("Global Module", () => {
     expect(resolved).toEqual(mockDateUtil);
   });
 
+  it("should create observer", () => {
+    globalModule.setObserver(MockObserver);
+    const observer = globalModule.createObserver<string>();
+    expect(observer).toBeInstanceOf(MockObserver);
+  });
+
   it("should clear", () => {
     globalModule.setLocalization(mockLocalization);
     globalModule.setCloneUtil(mockCloneUtil);
     globalModule.setEncryptionUtil(mockEncyrpctionUtil);
     globalModule.setPerformanceUtil(mockPerformanceUtil);
     globalModule.setDateUtil(mockDateUtil);
+    globalModule.setObserver(MockObserver);
 
     const module = createModule();
     globalModule.registerModule(module);
 
     globalModule.clear();
 
-    const resolvedLocalization = globalModule.getLocalization();
+    const localization = globalModule.getLocalization();
     const resolvedModule = globalModule.getModule(TestModule);
-    const resolvedClone = globalModule.getCloneUtil();
-    const resolvedEncyription = globalModule.getEncryptionUtil();
-    const resolvedPerf = globalModule.getPerformanceUtil();
-    const resolvedDate = globalModule.getDateUtil();
+    const clone = globalModule.getCloneUtil();
+    const encyription = globalModule.getEncryptionUtil();
+    const performance = globalModule.getPerformanceUtil();
+    const dateUtil = globalModule.getDateUtil();
+    const observer = globalModule.createObserver<string>();
 
-    expect(resolvedLocalization).toBe(null);
-    expect(resolvedClone).toBe(null);
-    expect(resolvedEncyription).toBe(null);
-    expect(resolvedPerf).toBe(null);
-    expect(resolvedDate).toBe(null);
+    expect(localization).toBe(null);
+    expect(clone).toBe(null);
+    expect(encyription).toBe(null);
+    expect(performance).toBe(null);
+    expect(dateUtil).toBe(null);
     expect(resolvedModule).toBe(undefined);
+    expect(observer).toBe(undefined);
   });
 });

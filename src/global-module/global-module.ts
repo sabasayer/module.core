@@ -5,6 +5,7 @@ import { ModuleConstructor } from "../module/core-module.interface";
 import { isDevelopment } from "../utils/env.utils";
 import { IEncyrptionUtil } from "../utils/types/encryption-util.interface";
 import { IDateUtil, IPerformanceUtil } from "@/utils";
+import { IObserver } from "@/utils/types/observer.interface";
 
 declare global {
   interface Window {
@@ -19,6 +20,7 @@ class GlobalModule {
   private encyrpctionUtil: IEncyrptionUtil | null = null;
   private performanceUtil: IPerformanceUtil | null = null;
   private dateUtil: IDateUtil | null = null;
+  private observer: (new () => IObserver<any>) | null = null;
 
   constructor() {
     if (isDevelopment()) window.globalModule = this;
@@ -35,6 +37,7 @@ class GlobalModule {
 
   registerModule(module: ICoreModule) {
     this.modules.set(module.constructor.name, module);
+    return this;
   }
 
   getModule(constructor: ModuleConstructor) {
@@ -52,6 +55,7 @@ class GlobalModule {
 
   setEncryptionUtil(util: IEncyrptionUtil) {
     this.encyrpctionUtil = util;
+    return this;
   }
 
   getEncryptionUtil() {
@@ -60,6 +64,7 @@ class GlobalModule {
 
   setPerformanceUtil(util: IPerformanceUtil) {
     this.performanceUtil = util;
+    return this;
   }
 
   getPerformanceUtil() {
@@ -68,10 +73,22 @@ class GlobalModule {
 
   setDateUtil(util: IDateUtil) {
     this.dateUtil = util;
+    return this;
   }
 
   getDateUtil() {
     return this.dateUtil;
+  }
+
+  setObserver<T>(observer: new () => IObserver<T>) {
+    this.observer = observer;
+    return this;
+  }
+
+  createObserver<T>() {
+    if (!this.observer) return;
+
+    return new this.observer() as IObserver<T>;
   }
 
   clear() {
@@ -80,6 +97,7 @@ class GlobalModule {
     this.encyrpctionUtil = null;
     this.performanceUtil = null;
     this.dateUtil = null;
+    this.observer = null;
     this.modules.clear();
   }
 }
