@@ -1,5 +1,5 @@
 import { IDateUtil } from "./types";
-import { format, formatISO, add, parseISO, set } from "date-fns";
+import { format, formatISO, add, parseISO, parse, set } from "date-fns";
 import {
   DateDuration,
   DateUnion,
@@ -7,10 +7,12 @@ import {
 } from "./types/date-util.interface";
 
 class DefaultDateUtil implements IDateUtil {
-  private defaultFormat: string | null = null;
+  private readonly timeFormat = "HH:mm:ss";
+  private readonly timeFormatShort = "HH:mm";
+  private defaultDateFormat: string | null = null;
 
-  setDefaultFormat(value: string) {
-    this.defaultFormat = value;
+  setDefaultDateFormat(value: string) {
+    this.defaultDateFormat = value;
   }
 
   now = () => new Date();
@@ -18,14 +20,22 @@ class DefaultDateUtil implements IDateUtil {
     return this.formatISO(this.now());
   }
 
-  format(value: string | Date, dateFormat?: string) { 
+  format(value: string | Date, dateFormat?: string) {
     const date = this.getDate(value);
 
-    return format(date, dateFormat ?? this.defaultFormat ?? "");
+    return format(date, dateFormat ?? this.defaultDateFormat ?? "");
   }
 
   formatISO(value: Date): string {
     return formatISO(value).substr(0, 19);
+  }
+
+  formatTime(value: DateUnion): string {
+    const date = this.getDate(value);
+    const timeFormat = date.getSeconds()
+      ? this.timeFormat
+      : this.timeFormatShort;
+    return format(date, timeFormat);
   }
 
   add<T extends DateUnion>(value: T, duration: DateDuration): T {
@@ -34,6 +44,14 @@ class DefaultDateUtil implements IDateUtil {
 
   set<T extends DateUnion>(value: T, values: SetDateValues): T {
     return this.mutateDateUnion(value, (date) => set(date, values));
+  }
+
+  setTimeSpan<T extends DateUnion>(value: T, timeSpan: string): T {
+    return this.mutateDateUnion(value, (date) => {
+      const format =
+        timeSpan.length > 5 ? this.timeFormat : this.timeFormatShort;
+      return parse(timeSpan, format, date);
+    });
   }
 
   clearTime<T extends DateUnion>(value: T): T {

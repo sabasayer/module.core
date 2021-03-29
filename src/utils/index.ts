@@ -12,7 +12,7 @@ export {
   isProduction,
   defaultCloneUtil,
   defaultEncryptUtil,
-  browserPerformanceUtil,
   defaultDateUtil,
+  browserPerformanceUtil,
   PerformanceUtil,
 };

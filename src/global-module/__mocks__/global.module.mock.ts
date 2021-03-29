@@ -1,7 +1,11 @@
 import { ILocalization } from "@/localization";
 import { IDateUtil, IPerformanceUtil } from "@/utils";
 import { ICloneUtil } from "@/utils/types/clone-util.interface";
-import { DateDuration } from "@/utils/types/date-util.interface";
+import {
+  DateDuration,
+  DateUnion,
+  SetDateValues,
+} from "@/utils/types/date-util.interface";
 import { IEncyrptionUtil } from "@/utils/types/encryption-util.interface";
 
 class Testlocalization implements ILocalization {
@@ -52,11 +56,14 @@ export const mockPerformanceUtil = new MockPerformanceUtil();
 class DateUtil implements IDateUtil {
   now = () => new Date();
   nowISO = () => "";
-  setDefaultFormat = (value: string) => undefined;
+  setDefaultDateFormat = (value: string) => undefined;
   format = (value: string) => "";
   formatISO = (value: Date) => "";
-  add = <T extends string | Date>(value: T, duration: DateDuration) =>
-    "" as any;
+  formatTime = (value: DateUnion) => "";
+  add = <T extends DateUnion>(value: T, duration: DateDuration) => "" as any;
+  clearTime = <T extends DateUnion>(value: T) => "" as any;
+  set = <T extends DateUnion>(value: T, values: SetDateValues) => "" as any;
+  setTimeSpan = <T extends DateUnion>(value: T, timeSpan: string) => "" as any;
 }
 
 export const mockDateUtil = new DateUtil();

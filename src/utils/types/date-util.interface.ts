@@ -1,23 +1,13 @@
 export type IDateUtil = {
   now(): Date;
   nowISO(): string;
-  setDefaultFormat(value: string): void;
-  /**
-   * @param value Date or valid date string
-   * @param format formatter like 'yyyy/MM/ddd'
-   */
+  setDefaultDateFormat(value: string): void;
   format(value: DateUnion, format?: string): string;
   formatISO(value: Date): string;
+  formatTime(value: DateUnion): string;
   add<T extends DateUnion>(value: T, duration: DateDuration): T;
-  set<T extends DateUnion>(
-    value: T,
-    values: {
-      hours?: number;
-      minutes?: number;
-      seconds?: number;
-      miliseconds?: number;
-    }
-  ): T;
+  set<T extends DateUnion>(value: T, values: SetDateValues): T;
+  setTimeSpan<T extends DateUnion>(value: T, timeSpan: string): T;
   clearTime<T extends DateUnion>(value: T): T;
 };
 

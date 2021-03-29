@@ -66,7 +66,7 @@ describe("Default Date Util", () => {
     });
 
     it("should format iso string with defaultFormat set", () => {
-      defaultDateUtil.setDefaultFormat("dd.MM.yyyy hh:mm:ss");
+      defaultDateUtil.setDefaultDateFormat("dd.MM.yyyy hh:mm:ss");
 
       const result = defaultDateUtil.format("2011-02-01T01:02:03");
       expect(result).toBe("01.02.2011 01:02:03");
@@ -150,6 +150,38 @@ describe("Default Date Util", () => {
       "should clear time of date. date= %j, expected= %j",
       (date: DateUnion, expected: DateUnion) => {
         const result = defaultDateUtil.clearTime(date);
+        expect(result).toEqual(expected);
+      }
+    );
+  });
+
+  describe("Set Time Span", () => {
+    const cases: [DateUnion, string, DateUnion][] = [
+      [new Date(2020, 0, 1), "05:10:20", new Date(2020, 0, 1, 5, 10, 20)],
+      [new Date(2020, 0, 1), "05:10", new Date(2020, 0, 1, 5, 10)],
+      ["2020-01-01T00:00:00", "05:10:20", "2020-01-01T05:10:20"],
+    ];
+
+    it.each(cases)(
+      "should set time span of date. date = %j, timespan = %s, expected = %j",
+      (date: DateUnion, time: string, expected: DateUnion) => {
+        const result = defaultDateUtil.setTimeSpan(date, time);
+        expect(result).toEqual(expected);
+      }
+    );
+  });
+
+  describe("Format Time", () => {
+    const cases: [DateUnion, string][] = [
+      [new Date(2020, 0, 1, 1, 12, 23), "01:12:23"],
+      ["2020-01-01T01:12:23", "01:12:23"],
+      ["2020-01-01T01:12:00", "01:12"],
+    ];
+
+    it.each(cases)(
+      "should format date to time. date = %j, expected = %s",
+      (date: DateUnion, expected: string) => {
+        const result = defaultDateUtil.formatTime(date);
         expect(result).toEqual(expected);
       }
     );
