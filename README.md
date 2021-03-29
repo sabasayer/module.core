@@ -3,8 +3,6 @@
 Every module is a project. Which can use other modules and can be used from other modules. 
 Modules can have isolated or shared dependencies.
 
-) 
-
 ## Features
 
 - Dependecy Injection with decorators
