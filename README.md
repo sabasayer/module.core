@@ -17,7 +17,7 @@ Main motivation is to orginaze complicated enterprise level frontend projects th
 
 Organizes the part between backend and presentation of frontEnd. So there is no rendering part here. 
 
-Lives in between from getting and sending data to backend  **<=>** rendering html, listening events.
+Sits in between two side, from getting and sending data to backend to rendering html, listening events.
 
 To be more spesific. Communicates with backend and frontEnd framework. (Vue, React or your own render code)
 
@@ -36,6 +36,8 @@ To be more spesific. Communicates with backend and frontEnd framework. (Vue, Rea
     - [Controller](#controller)
     - [Mapper](#mapper)
     - [Cache](#cache)
+    - [Action Guard](#action-guard)
+    - [Unique List](#unique-list)
     - [Utilities](#utilities)
 
 
@@ -60,8 +62,8 @@ Keeps track of dependinces and provides them. Create a class that extends **Core
 ```Typescript
 class MyModule extends CoreModule {
 	bootstrap(options?:ModuleBootstrapOptions){
-    //module spesific configurations
 		super.bootstrap(options);
+    //module spesific configurations
 	}
 }
 
@@ -74,7 +76,7 @@ export {myModule};
 
 ```
 
-Create DI Decorators if you want to use. 
+Create Dependency Injection Decorators if you want to use them. 
 
 ```Typescript
 export const xhResolve = new ResolveDecorators();
@@ -257,7 +259,44 @@ const mapped = mapper.mapToTarget({ first: "orange", second: 231 });
 
 ### [Cache](#cache)
 
-Implements **ICache** interface. There are two implementations. **MemoryCache** **SessionStorageCache**
+Implements **ICache** interface. There are two implementations. **MemoryCache**, **SessionStorageCache**
+
+
+### [Action Guard](#action-guard)
+
+Define an ActionGuard and run for validation.
+ 
+
+```Typescript
+const actionGuard = createActionGuard((options:number) => {
+  if(options > 10) throw "Cannot be bigger than 10";
+
+  return true;
+}));
+
+....
+
+const res = await actionGuard.validate(12);
+// res = { valid: false, errorMessage: 'Cannot be bigger than 10' }
+
+const res2 = await actionGuard.validate(5);
+//res = { valid: true}
+
+```
+
+### [Unique List](#unique-list)
+
+Create an array that adds and removes item by provided compare funciton
+
+```Typescript
+const list = createUniqueList(
+  (a: number, b: number) => a === b,
+  [1, 2, 3]
+);
+
+list.push(2);
+//list = [1,2,3]
+```
 
 
 ### [Utilities](#utilities)

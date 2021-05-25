@@ -11,3 +11,4 @@ export * from "./custom-errors/index";
 export * from "./shared/index";
 export * from "./localization/index";
 export * from "./decorators/index";
+export * from "./action-guard/action-guard";
