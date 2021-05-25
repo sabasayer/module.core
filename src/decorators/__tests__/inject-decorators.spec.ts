@@ -55,7 +55,7 @@ describe("Inject Decorators", () => {
       async get(url: string) {
         return null as any;
       }
-      async post(config: IRequestConfig) {
+      async post(config: IRequestConfig<any,any>) {
         return null as any;
       }
       async upload(url: string, formData: FormData) {
@@ -77,7 +77,7 @@ describe("Inject Decorators", () => {
       async get(url: string) {
         return null as any;
       }
-      async post(config: IRequestConfig) {
+      async post(config: IRequestConfig<any,any>) {
         return null as any;
       }
       async upload(url: string, formData: FormData) {
