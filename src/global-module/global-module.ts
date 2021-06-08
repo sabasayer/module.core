@@ -2,14 +2,13 @@ import { ICloneUtil } from "../utils/types/clone-util.interface";
 import { ILocalization } from "../localization/types/localization.interface";
 import { ICoreModule } from "../module";
 import { ModuleConstructor } from "../module/core-module.interface";
-import { isDevelopment } from "../utils/env.utils";
 import { IEncyrptionUtil } from "../utils/types/encryption-util.interface";
 import { IDateUtil, IPerformanceUtil } from "@/utils";
 import { IObserver } from "@/utils/types/observer.interface";
 
 declare global {
   interface Window {
-    globalModule?: GlobalModule;
+    $globalModule?: GlobalModule;
   }
 }
 
@@ -21,10 +20,6 @@ class GlobalModule {
   private performanceUtil: IPerformanceUtil | null = null;
   private dateUtil: IDateUtil | null = null;
   private observer: (new () => IObserver<any>) | null = null;
-
-  constructor() {
-    if (isDevelopment()) window.globalModule = this;
-  }
 
   setLocalization(localization: ILocalization) {
     this.localization = localization;
@@ -102,4 +97,12 @@ class GlobalModule {
   }
 }
 
-export const globalModule = new GlobalModule();
+const createGlobalModule = (): GlobalModule => {
+  let globalModule = window.$globalModule;
+
+  if (!globalModule) globalModule = window.$globalModule = new GlobalModule();
+
+  return globalModule;
+};
+
+export const globalModule = createGlobalModule();
