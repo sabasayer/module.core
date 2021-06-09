@@ -7,12 +7,14 @@ import {
 } from "../__mocks__/fetch.mock";
 import { CustomHttpClientError } from "@/custom-errors/custom-http-client-error";
 import { EnumCustomErrorType } from "@/custom-errors/statics/custom-error-type.enum";
+import { globalModule } from "@/global-module/global-module";
 
 describe("Http Client", () => {
   fetchMock.enableMocks();
 
   beforeEach(() => {
     fetchMock.mockClear();
+    globalModule.clear();
   });
 
   describe("Upload", () => {
@@ -150,6 +152,29 @@ describe("Http Client", () => {
         method: "GET",
         headers: {
           "x-app-key": "123Asd",
+        },
+      });
+    });
+
+    it("should merge with shared header", () => {
+      mockFetchResponse({ data: 1 });
+
+      const client = new FetchHTTPClient({
+        baseUrl: "http://test.com",
+        headers: {
+          initial: "1",
+        },
+      });
+
+      globalModule.addToSharedHeaders({ shared: "2" });
+
+      client.get("get");
+
+      expect(fetchMock).toBeCalledWith("http://test.com/get", {
+        method: "GET",
+        headers: {
+          initial: "1",
+          shared: "2",
         },
       });
     });

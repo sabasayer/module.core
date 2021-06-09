@@ -4,6 +4,7 @@ import { CustomServerError } from "../custom-errors/custom-server-error";
 import { RequestOptions } from "./types/request-options.interface";
 import { CustomHttpClientError } from "../custom-errors/custom-http-client-error";
 import { EnumCustomErrorType } from "../custom-errors/statics/custom-error-type.enum";
+import { globalModule } from "../global-module/global-module";
 
 export class FetchHTTPClient implements IHTTPClient {
   private baseUrl: string;
@@ -110,10 +111,15 @@ export class FetchHTTPClient implements IHTTPClient {
     const body = data ? JSON.stringify(data) : undefined;
     return {
       method,
-      headers: this.headers,
+      headers: this.getHeaders(),
       body: body,
       signal: abortController?.signal,
     };
+  }
+
+  private getHeaders() {
+    const merged = { ...globalModule.getSharedHeaders(), ...this.headers };
+    if (Object.keys(merged).length) return merged;
   }
 
   private async handlePost<TRequest, TResponse = undefined>(options: {

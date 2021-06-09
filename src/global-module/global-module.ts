@@ -20,6 +20,7 @@ class GlobalModule {
   private performanceUtil: IPerformanceUtil | null = null;
   private dateUtil: IDateUtil | null = null;
   private observer: (new () => IObserver<any>) | null = null;
+  private sharedHeaders: Record<string, string> = {};
 
   setLocalization(localization: ILocalization) {
     this.localization = localization;
@@ -86,6 +87,18 @@ class GlobalModule {
     return new this.observer() as IObserver<T>;
   }
 
+  addToSharedHeaders(header: Record<string, string>) {
+    this.sharedHeaders = { ...this.sharedHeaders, ...header };
+  }
+
+  getSharedHeaders() {
+    return this.sharedHeaders;
+  }
+
+  removeSharedHeaders(...keys: string[]) {
+    keys.forEach((key) => delete this.sharedHeaders[key]);
+  }
+
   clear() {
     this.localization = null;
     this.cloneUtil = null;
@@ -93,6 +106,7 @@ class GlobalModule {
     this.performanceUtil = null;
     this.dateUtil = null;
     this.observer = null;
+    this.sharedHeaders = {};
     this.modules.clear();
   }
 }

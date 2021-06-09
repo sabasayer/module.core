@@ -62,6 +62,27 @@ describe("Global Module", () => {
     expect(observer).toBeInstanceOf(MockObserver);
   });
 
+  it("should add to shared headers", () => {
+    globalModule.addToSharedHeaders({ test: '1' });
+    const headers = globalModule.getSharedHeaders();
+    expect(headers).toEqual({ test: '1' });
+  });
+
+  it("should combine shared headers", () => {
+    globalModule.addToSharedHeaders({ test: '1' });
+    globalModule.addToSharedHeaders({ test2: '2' });
+    const headers = globalModule.getSharedHeaders();
+    expect(headers).toEqual({ test: '1', test2: '2' });
+  });
+
+  it("should remove shared headers by key",() => {
+    globalModule.addToSharedHeaders({ test: '1' });
+    globalModule.addToSharedHeaders({ test2: '2' });
+    globalModule.removeSharedHeaders("test");
+    const headers = globalModule.getSharedHeaders();
+    expect(headers).toEqual({ test2: '2' });
+  })
+
   it("should clear", () => {
     globalModule.setLocalization(mockLocalization);
     globalModule.setCloneUtil(mockCloneUtil);
@@ -69,6 +90,7 @@ describe("Global Module", () => {
     globalModule.setPerformanceUtil(mockPerformanceUtil);
     globalModule.setDateUtil(mockDateUtil);
     globalModule.setObserver(MockObserver);
+    globalModule.addToSharedHeaders({ test: '1' });
 
     const module = createModule();
     globalModule.registerModule(module);
@@ -82,6 +104,7 @@ describe("Global Module", () => {
     const performance = globalModule.getPerformanceUtil();
     const dateUtil = globalModule.getDateUtil();
     const observer = globalModule.createObserver<string>();
+    const headers = globalModule.getSharedHeaders();
 
     expect(localization).toBe(null);
     expect(clone).toBe(null);
@@ -90,5 +113,6 @@ describe("Global Module", () => {
     expect(dateUtil).toBe(null);
     expect(resolvedModule).toBe(undefined);
     expect(observer).toBe(undefined);
+    expect(headers).toEqual({});
   });
 });
