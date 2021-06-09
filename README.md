@@ -141,6 +141,8 @@ globalModule is the top level parent container. It contains some utility classes
 - EncryptionUtil
 - PerformanceUtil
 - DateUtil
+- Observer
+- SharedHeaders
 
 These classes instances must be registered to globalModule before everything. There are default implementations, also you can write your own implementation and register their instances.
 
@@ -301,7 +303,7 @@ list.push(2);
 
 ### [Utilities](#utilities)
 
-Utility classes for making your life easier. Some other classes uses these utility classes if theye are registered to globalModule
+Utility classes for making your life easier. Some of them used by other classes if theye are registered to globalModule.
 
 
 | Utility          | Default             | Explanation                                                              |
@@ -311,3 +313,5 @@ Utility classes for making your life easier. Some other classes uses these utili
 | IDateUtil        | defaultDateUtil     | date functions                                                           |
 | IEncryptUtil     | defaultEncryptUtil  | Encrypt and decrypt data. Used by sessionStorageCache                    |
 | IPerformanceUtil | performanceUtil     | Measure performance of code blocks. Used by measurePerformace decorator. |
+| IObserver        | Observer            | publish subscribe data.                                                  |
+| UniqueList       | UniqueList          | create Unique arrays.                                                    |
