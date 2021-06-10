@@ -1,4 +1,4 @@
-import { ValidationResult } from "@/shared";
+import { ValidationResult } from "../shared";
 
 export type ValidatorFunc<T> = (options: T) => boolean | Promise<boolean>;
 
