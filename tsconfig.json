@@ -5,6 +5,7 @@
     "noUnusedLocals": true,
     "noUncheckedIndexedAccess": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "module": "esnext",

@@ -16,8 +16,8 @@ import { ICache } from "../../cache";
 import { InjectableDecorators } from "..";
 
 describe("Resolve Decoratros", () => {
-  const resolver = new ResolveDecorators();
-  const injectable = new InjectableDecorators();
+  let resolver = new ResolveDecorators();
+  let injectable = new InjectableDecorators();
 
   const createAndUseResolve = () => {
     const module = createModule();
@@ -29,6 +29,11 @@ describe("Resolve Decoratros", () => {
     const module = createAndUseResolve();
     return createRegisterHttpClient(module);
   };
+
+  beforeEach(() => {
+    resolver = new ResolveDecorators();
+    injectable = new InjectableDecorators();
+  });
 
   it("should resolve api", () => {
     createClientAndUseResolve();
@@ -156,8 +161,7 @@ describe("Resolve Decoratros", () => {
       }
     }
 
-    const controller =
-      module.resolveController(TestController);
+    const controller = module.resolveController(TestController);
 
     expect(controller?.cache).toBeInstanceOf(TestCache);
   });

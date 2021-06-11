@@ -41,7 +41,7 @@ export type KeyUnionType =
 
 export type AppLayerUnionType = IProvider | IController | ICache | IHTTPClient;
 
-export type ModuleConstructor = new (options?: any) => ICoreModule;
+export type ModuleConstructor = (new (options?: any) => ICoreModule) & Function;
 
 export type ICoreModule = object & {
   bootstrap: (

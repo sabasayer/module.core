@@ -5,4 +5,4 @@ export type IController = {};
 export type IControllerConstructor<
   TController extends IController,
   TProvider extends IProvider | undefined
-> = new (provider?: TProvider) => TController;
+> = new (provider?: TProvider, ...args: any[]) => TController;

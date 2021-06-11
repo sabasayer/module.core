@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
 import {
   IHTTPClient,
@@ -38,6 +39,11 @@ export class CoreModule implements ICoreModule {
   private others = new Map<string, any>();
 
   constructor() {
+    const registeredModule = globalModule.getModule(
+      this.constructor as new () => CoreModule
+    );
+    if (registeredModule) return registeredModule as CoreModule;
+    
     globalModule.registerModule(this);
   }
 
