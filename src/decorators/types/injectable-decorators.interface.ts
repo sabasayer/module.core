@@ -1,6 +1,9 @@
 import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
 import { IHTTPClientConstuctor } from "../../http-client/types/http-client.interface";
-import { IControllerConstructor } from "../../controller/controller.interface";
+import {
+  IController,
+  IControllerConstructor,
+} from "../../controller/controller.interface";
 import {
   IProvider,
   IProviderConstructor,
@@ -21,8 +24,8 @@ export type IInjectableDecorators = IDecorator & {
   ) => (providerConstructor: IProviderConstructor) => void;
   controller: (
     options: RegisterControllerOptions
-  ) => <TProvider extends IProvider>(
-    controllerConstructor: IControllerConstructor<TProvider>
+  ) => <TController extends IController, TProvider extends IProvider>(
+    controllerConstructor: IControllerConstructor<IController, TProvider>
   ) => void;
   cache: (key?: string) => (cacheConstructor: ICacheConstructor) => void;
 };
