@@ -1,6 +1,9 @@
 import { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
 import { IHTTPClientConstuctor } from "../http-client/types/http-client.interface";
-import { IControllerConstructor } from "../controller/controller.interface";
+import {
+  IController,
+  IControllerConstructor,
+} from "../controller/controller.interface";
 import {
   IProvider,
   IProviderConstructor,
@@ -29,8 +32,8 @@ export class InjectableDecorators implements IInjectableDecorators {
     };
   }
   controller(options: RegisterControllerOptions) {
-    return <TProvider extends IProvider>(
-      controllerConstructor: IControllerConstructor<TProvider>
+    return <TController extends IController, TProvider extends IProvider>(
+      controllerConstructor: IControllerConstructor<TController, TProvider>
     ) => {
       this.module?.registerController(controllerConstructor, options);
     };

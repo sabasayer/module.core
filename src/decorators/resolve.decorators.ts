@@ -1,5 +1,5 @@
 import { IHTTPClientConstuctor } from "../http-client/types/http-client.interface";
-import { IControllerConstructor } from "../controller/index";
+import { IController, IControllerConstructor } from "../controller/index";
 import { IProvider, IProviderConstructor } from "../provider/index";
 import { ICoreModule } from "../module/index";
 import { IResolveDecorators } from "./types/resolve-decorators.interface";
@@ -14,62 +14,62 @@ export class ResolveDecorators implements IResolveDecorators {
   }
 
   resolve(injectableKey: KeyUnionType) {
-    return (target: any, key: string | symbol) => {
-      const clientObj = this.module?.resolve(injectableKey);
+    return (target: any, key: string | symbol): any => {
+      const obj = this.module?.resolve(injectableKey);
 
-      if (!clientObj) return;
+      if (!obj) return;
 
-      this.defineProperty(target, key, clientObj);
+      return this.defineProperty(obj);
     };
   }
 
   client(client?: IHTTPClientConstuctor) {
-    return (target: any, key: string | symbol) => {
+    return (target: any, key: string | symbol): any => {
       const clientObj = this.module?.resolveHttpClient(client);
 
       if (!clientObj) return;
 
-      this.defineProperty(target, key, clientObj);
+      return this.defineProperty(clientObj);
     };
   }
 
   provider(provider: IProviderConstructor | string) {
-    return (target: any, key: string | symbol) => {
+    return (target: any, key: string | symbol): any => {
       const providerObj = this.module?.resolveProvider(provider);
 
       if (!providerObj) return;
 
-      this.defineProperty(target, key, providerObj);
+      return this.defineProperty(providerObj);
     };
   }
 
-  controller<TProvider extends IProvider>(
-    controller: IControllerConstructor<TProvider> | string
+  controller<TController extends IController, TProvider extends IProvider>(
+    controller: IControllerConstructor<TController, TProvider> | string
   ) {
-    return (target: any, key: string | symbol) => {
+    return (target: any, key: string | symbol): any => {
       const controllerObj = this.module?.resolveController(controller);
 
       if (!controllerObj) return;
 
-      this.defineProperty(target, key, controllerObj);
+      return this.defineProperty(controllerObj);
     };
   }
 
   cache(cache: ICacheConstructor | string) {
-    return (target: any, key: string | symbol) => {
+    return (target: any, key: string | symbol): any => {
       const cacheObj = this.module?.resolveCache(cache);
 
       if (!cacheObj) return;
 
-      this.defineProperty(target, key, cacheObj);
+      return this.defineProperty(cacheObj);
     };
   }
 
-  private defineProperty(target: any, key: string | symbol, newValue: any) {
-    Object.defineProperty(target, key, {
-      get: () => newValue,
-      enumerable: false,
-      configurable: true,
-    });
+  private defineProperty(newValue: any) {
+    return {
+      get() {
+        return newValue;
+      },
+    };
   }
 }

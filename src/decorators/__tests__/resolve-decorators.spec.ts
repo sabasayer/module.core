@@ -13,9 +13,11 @@ import {
   createModule,
 } from "../../module/__mocks__/module.mock";
 import { ICache } from "../../cache";
+import { InjectableDecorators } from "..";
 
 describe("Resolve Decoratros", () => {
   const resolver = new ResolveDecorators();
+  const injectable = new InjectableDecorators();
 
   const createAndUseResolve = () => {
     const module = createModule();
@@ -134,6 +136,30 @@ describe("Resolve Decoratros", () => {
 
     const test = new Test();
     expect(test.cache).toBeInstanceOf(TestCache);
+  });
+
+  it("should resolve prop at an injectable class", () => {
+    const module = createClientAndUseResolve();
+    module.useDecorators(injectable);
+    module.registerCache(TestCache);
+    module.registerProvider(TestProvider);
+
+    @injectable.controller({ provider: TestProvider })
+    class TestController implements IController {
+      @resolver.cache(TestCache)
+      cache?: ICache;
+
+      constructor(private provider?: TestProvider) {}
+
+      get() {
+        return this.provider?.get("");
+      }
+    }
+
+    const controller =
+      module.resolveController(TestController);
+
+    expect(controller?.cache).toBeInstanceOf(TestCache);
   });
 
   it("should resolve provider with resolve method", () => {

@@ -83,7 +83,7 @@ export class CoreModule implements ICoreModule {
       return this.resolveProvider(key as IProviderConstructor) as T | undefined;
 
     if (name.includes(this.controllerSuffix))
-      return this.resolveController(key as IControllerConstructor<any>) as
+      return this.resolveController(key as IControllerConstructor<any, any>) as
         | T
         | undefined;
 
@@ -139,8 +139,11 @@ export class CoreModule implements ICoreModule {
     else return this.resolveByConstructor<T>(this.providers, key);
   }
 
-  registerController<TProvider extends IProvider>(
-    controller: IControllerConstructor<TProvider>,
+  registerController<
+    TController extends IController,
+    TProvider extends IProvider
+  >(
+    controller: IControllerConstructor<TController, TProvider>,
     options?: RegisterControllerOptions
   ) {
     const provider = options?.provider
@@ -155,7 +158,7 @@ export class CoreModule implements ICoreModule {
   }
 
   resolveController<T extends IController, TProvider extends IProvider>(
-    key: string | IControllerConstructor<TProvider>
+    key: string | IControllerConstructor<T, TProvider>
   ) {
     if (typeof key === "string") return this.controllers.get(key) as T;
     return this.resolveByConstructor<T>(this.controllers, key);
