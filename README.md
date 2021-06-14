@@ -1,32 +1,8 @@
-# Module Based FrontEnd Orginazor
-
-Every module is a project. Which can use other modules and can be used from other modules. 
-Modules can have isolated or shared dependencies.
-
-## Features
-
-- Dependecy Injection with decorators
-- Layers for organization. (HttpClient, DataProvider, Controller, Mapper, Cache ...)
-- Utility classes.
-- Most dependencies uses Interfaces including utility classes. So you can write your own implementation or use default implementations.
-
-
-## Motivation
-
-Main motivation is to orginaze complicated enterprise level frontend projects that has many different modules that differs from each other in a way that business logic or application logic.
-
-Organizes the part between backend and presentation of frontEnd. So there is no rendering part here. 
-
-Sits in between two side, from getting and sending data to backend to rendering html, listening events.
-
-To be more spesific. Communicates with backend and frontEnd framework. (Vue, React or your own render code)
-
-
 ### Table of contents
+
 - [Module Based FrontEnd Orginazor](#module-based-frontend-orginazor)
   - [Features](#features)
   - [Motivation](#motivation)
-    - [Table of contents](#table-of-contents)
     - [Install](#install)
   - [Layers](#layers)
     - [Module](#module)
@@ -37,10 +13,29 @@ To be more spesific. Communicates with backend and frontEnd framework. (Vue, Rea
     - [Mapper](#mapper)
     - [Cache](#cache)
     - [Action Guard](#action-guard)
-    - [Unique List](#unique-list)
     - [Utilities](#utilities)
 
+# Module Based FrontEnd Orginazor
 
+Every module is a project. Which can use other modules and can be used from other modules.
+Modules can have isolated or shared dependencies.
+
+## Features
+
+- Dependecy Injection with decorators
+- Layers for organization. (HttpClient, DataProvider, Controller, Mapper, Cache ...)
+- Utility classes.
+- Most dependencies uses Interfaces including utility classes. So you can write your own implementation or use default implementations.
+
+## Motivation
+
+Main motivation is to orginaze complicated enterprise level frontend projects that has many different modules that differs from each other in a way that business logic or application logic.
+
+Organizes the part between backend and presentation of frontEnd. So there is no rendering part here.
+
+Sits in between two side, from getting and sending data to backend to rendering html, listening events.
+
+To be more spesific. Communicates with backend and frontEnd framework. (Vue, React or your own render code)
 
 ### [Install](#install)
 
@@ -52,19 +47,18 @@ yarn:
 
 `yarn @sabasayer/module.core`
 
- 
 ## [Layers](#layers)
 
 ### [Module](#module)
 
-Keeps track of dependinces and provides them. Create a class that extends **CoreModule** . 
+Keeps track of dependinces and provides them. Create a class that extends **CoreModule** .
 
 ```Typescript
 class MyModule extends CoreModule {
-	bootstrap(options?:ModuleBootstrapOptions){
-		super.bootstrap(options);
+  bootstrap(options?:ModuleBootstrapOptions){
+    super.bootstrap(options);
     //module spesific configurations
-	}
+  }
 }
 
 const myModule = new MyModule();
@@ -76,7 +70,7 @@ export {myModule};
 
 ```
 
-Create Dependency Injection Decorators if you want to use them. 
+Create Dependency Injection Decorators if you want to use them.
 
 ```Typescript
 export const xhResolve = new ResolveDecorators();
@@ -87,11 +81,11 @@ Use Decorators
 
 ```Typescript
 export class SomeNormalClass {
-	@xResolve.controller(XController)
-	controller:IXController;
+  @xResolve.controller(XController)
+  controller:IXController;
 
-	@yResolve.resolve(YController)
-	yController:IYController;
+  @yResolve.resolve(YController)
+  yController:IYController;
 }
 ```
 
@@ -106,36 +100,34 @@ Use resolve decorator or module resolve functions
 
 ```Typescript
 const someFunction = () => {
-	const xController = xModule.resolveController(XController);
-	const yController = yModule.resolve(XController)
+  const xController = xModule.resolveController(XController);
+  const yController = yModule.resolve(XController)
 }
 ```
 
-Mocking dependincies for testing. 
+Mocking dependincies for testing.
 
 ```Typescript
 describe("some test",()=>{
-	beforeEach(()=> {
-		myModule.clear()	
-	})
+  beforeEach(()=> {
+    myModule.clear()
+  })
 
-	it("should work",() => {
-		class TestXController implements IXController{
-			someFunc(){.}
-		}
+  it("should work",() => {
+    class TestXController implements IXController{
+      someFunc(){}
+    }
 
-		myModule.registerController(TestXController,{key:'XController'});
-
-		....
-		
-	})
+    myModule.registerController(TestXController,{key:'XController'});
+    ....
+  })
 })
 ```
-
 
 ### [Global Module](#globalModule)
 
 globalModule is the top level parent container. It contains some utility classes like :
+
 - Localization
 - CloneUtil
 - EncryptionUtil
@@ -151,7 +143,6 @@ globalModule.setLocalization(defaultLocalization)
 globalModule.setCloneUtil(customCloneUtil);
 ...
 ```
-
 
 ### [HTTPClient](#httpClient)
 
@@ -178,10 +169,9 @@ otherModule.bootstrap(httpClient:fetchClient);
 
 ```
 
-
 ### [Provider](#provider)
 
-Communicates with HTTPClient. I suggest that create one provider for each entity. implements **IProvider** but extending from **CoreProvider** is highly suggested. 
+Communicates with HTTPClient. I suggest that create one provider for each entity. implements **IProvider** but extending from **CoreProvider** is highly suggested.
 
 ```Typescript
 @injectable.provider()
@@ -212,10 +202,9 @@ export const signOutRequestConfig: IRequestConfig<SignOutRequest, string> = {
 
 ```
 
-
 ### [Controller](#controller)
 
-Presentation layer must communicates with controllers only for data transfers. Caching, mapping etc. is handled by controller. Controller mostly uses other classes. 
+Presentation layer must communicates with controllers only for data transfers. Caching, mapping etc. is handled by controller. Controller mostly uses other classes.
 
 ```Typescript
 
@@ -230,7 +219,6 @@ export class AuthController implements IController {
 }
 
 ```
-
 
 ### [Mapper](#mapper)
 
@@ -258,16 +246,13 @@ mapper
 const mapped = mapper.mapToTarget({ first: "orange", second: 231 });
 ```
 
-
 ### [Cache](#cache)
 
 Implements **ICache** interface. There are two implementations. **MemoryCache**, **SessionStorageCache**
 
-
 ### [Action Guard](#action-guard)
 
 Define an ActionGuard and run for validation.
- 
 
 ```Typescript
 const actionGuard = createActionGuard((options:number) => {
@@ -286,32 +271,15 @@ const res2 = await actionGuard.validate(5);
 
 ```
 
-### [Unique List](#unique-list)
-
-Create an array that adds and removes item by provided compare funciton
-
-```Typescript
-const list = createUniqueList(
-  (a: number, b: number) => a === b,
-  [1, 2, 3]
-);
-
-list.push(2);
-//list = [1,2,3]
-```
-
-
 ### [Utilities](#utilities)
 
 Utility classes for making your life easier. Some of them used by other classes if theye are registered to globalModule.
-
 
 | Utility          | Default             | Explanation                                                              |
 | ---------------- | ------------------- | ------------------------------------------------------------------------ |
 | ICLoneUtil       | defaultCloneUtil    | clone, cloneDeep values. Used by clone decorator                         |
 | ILocalization    | defaultLocalization | translate strings. Used by CustomErrors.                                 |
 | IDateUtil        | defaultDateUtil     | date functions                                                           |
-| IEncryptUtil     | defaultEncryptUtil  | Encrypt and decrypt data. Used by sessionStorageCache                    |
+| IEncryptUtil     | defaultEncryptUtil  | Encrypt and decrypt data. Used by Cache utils                            |
 | IPerformanceUtil | performanceUtil     | Measure performance of code blocks. Used by measurePerformace decorator. |
 | IObserver        | Observer            | publish subscribe data.                                                  |
-| UniqueList       | UniqueList          | create Unique arrays.                                                    |
