@@ -1,4 +1,4 @@
-import { IAbortController } from "./abort-controller.interface";
+import type { IAbortController } from "./abort-controller.interface";
 
 export type RequestOptions = {
   abortController?: IAbortController;

@@ -1,5 +1,5 @@
-import { EnumAppLayer } from "../../shared";
-import { EnumCustomErrorType } from "..";
+import type { EnumAppLayer } from "../../shared";
+import type { EnumCustomErrorType } from "..";
 
 export type CustomErrorConstructorOptions = {
   layer: EnumAppLayer;

@@ -1,5 +1,5 @@
-import { LocalizationTranslations } from "./types/localization-translations.interface";
-import { ILocalization } from "./types/localization.interface";
+import type { LocalizationTranslations } from "./types/localization-translations.interface";
+import type { ILocalization } from "./types/localization.interface";
 
 class DefaultLocalization implements ILocalization {
   private lang: string = "";

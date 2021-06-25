@@ -1,6 +1,6 @@
-import { IHTTPClient } from "../../http-client/index";
-import { IController } from "../../controller/index";
-import { IProvider } from "../../provider/index";
+import type { IHTTPClient } from "../../http-client/index";
+import type { IController } from "../../controller/index";
+import type { IProvider } from "../../provider/index";
 import { ResolveDecorators } from "../resolve.decorators";
 import {
   createRegisterCache,
@@ -12,7 +12,7 @@ import {
   createRegisterHttpClient,
   createModule,
 } from "../../module/__mocks__/module.mock";
-import { ICache } from "../../cache";
+import type { ICache } from "../../cache";
 import { InjectableDecorators } from "..";
 
 describe("Resolve Decoratros", () => {
@@ -52,18 +52,18 @@ describe("Resolve Decoratros", () => {
     const module = createClientAndUseResolve();
 
     class TestApi2 implements IHTTPClient {
-      async get(url: string) {
+      async get() {
         return null as any;
       }
-      async post(url: string) {
+      async post() {
         return null as any;
       }
-      async upload(url: string, formData: FormData) {
+      async upload() {
         return null as any;
       }
 
-      removeHeader(key: string) {}
-      setHeader(key: string) {}
+      removeHeader() {}
+      setHeader() {}
     }
 
     module.registerHttpClient(TestApi2, {});

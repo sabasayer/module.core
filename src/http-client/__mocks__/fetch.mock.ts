@@ -39,6 +39,6 @@ export const mockFetchResponseWithTimeout = (
 
 export const mockRejectResponse = (error: Error) => {
   return fetchMock.mockRejectOnce(
-    () => new Promise((resolve, reject) => reject(error))
+    () => new Promise((_, reject) => reject(error))
   );
 };

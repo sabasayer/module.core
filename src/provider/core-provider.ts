@@ -1,11 +1,11 @@
-import { IAbortController, IHTTPClient, RequestOptions } from "../http-client";
-import { IProvider } from ".";
-import { ProviderRequestOptions } from "./types/provider-request-options.interface";
-import {
+import type { IAbortController, IHTTPClient, RequestOptions } from "../http-client";
+import type { IProvider } from ".";
+import type { ProviderRequestOptions } from "./types/provider-request-options.interface";
+import type {
   ICachableRequestConfig,
   IRequestConfig,
 } from "./types/request-config.interface";
-import { ICache } from "../cache";
+import type { ICache } from "../cache";
 import { CustomProviderError } from "../custom-errors/custom-provider-error";
 import { EnumCustomErrorType } from "../custom-errors";
 

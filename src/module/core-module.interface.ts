@@ -1,19 +1,19 @@
-import { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
-import {
+import type { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
+import type {
   IHTTPClient,
   IHTTPClientConstuctor,
 } from "../http-client/types/http-client.interface";
-import {
+import type {
   IController,
   IControllerConstructor,
 } from "../controller/controller.interface";
-import {
+import type {
   IProvider,
   IProviderConstructor,
 } from "../provider/types/provider.interface";
-import { IDecorator } from "../decorators/types/decorator.interface";
-import { ICache } from "../cache";
-import { ICacheConstructor } from "../cache/cache.interface";
+import type { IDecorator } from "../decorators/types/decorator.interface";
+import type { ICache } from "../cache";
+import type { ICacheConstructor } from "../cache/cache.interface";
 
 export type RegisterProviderOptions = {
   key?: string;

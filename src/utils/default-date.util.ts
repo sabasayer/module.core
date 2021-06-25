@@ -1,6 +1,6 @@
-import { IDateUtil } from "./types";
+import type { IDateUtil } from "./types";
 import { format, formatISO, add, parseISO, parse, set } from "date-fns";
-import {
+import type {
   DateDuration,
   DateUnion,
   SetDateValues,

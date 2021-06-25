@@ -1,8 +1,8 @@
 import { globalModule } from "../global-module/global-module";
-import { EnumAppLayer } from "../shared/app-layer.enum";
-import { EnumCustomErrorType } from "./statics/custom-error-type.enum";
-import { CustomErrorConstructorOptions } from "./types/custom-error-constructor.options";
-import { ICustomError } from "./types/custom-error.interface";
+import type { EnumAppLayer } from "../shared/app-layer.enum";
+import type { EnumCustomErrorType } from "./statics/custom-error-type.enum";
+import type { CustomErrorConstructorOptions } from "./types/custom-error-constructor.options";
+import type { ICustomError } from "./types/custom-error.interface";
 
 export class CustomError extends Error implements ICustomError {
   layer: EnumAppLayer;

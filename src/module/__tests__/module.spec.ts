@@ -1,5 +1,4 @@
-import { IHTTPClient } from "../../http-client/types/http-client.interface";
-import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
+import type { IHTTPClient } from "../../http-client/types/http-client.interface";
 import {
   createRegisterHttpClient,
   createRegisterProvider,
@@ -61,18 +60,18 @@ describe("Module", () => {
       const module = createRegisterHttpClient();
 
       class TestApi2 implements IHTTPClient {
-        constructor(options: IHTTPClientOptions) {}
-        async get(url: string) {
+        constructor() {}
+        async get() {
           return null as any;
         }
-        async post(url: string) {
+        async post() {
           return null as any;
         }
-        async upload(url: string, formData: FormData) {
+        async upload() {
           return null as any;
         }
-        removeHeader(key: string) {}
-        setHeader(key: string) {}
+        removeHeader() {}
+        setHeader() {}
       }
 
       module.registerHttpClient(TestApi2, {});

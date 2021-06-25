@@ -1,61 +1,61 @@
-import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
-import { IHTTPClient } from "../../http-client/types/http-client.interface";
-import { IController } from "../../controller/controller.interface";
-import { IProvider } from "../../provider/types/provider.interface";
+import type { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
+import type { IHTTPClient } from "../../http-client/types/http-client.interface";
+import type { IController } from "../../controller/controller.interface";
+import type { IProvider } from "../../provider/types/provider.interface";
 import { CoreModule, ICoreModule } from "../index";
-import { ICache } from "../../cache";
-import { IRequestConfig } from "../../provider/types/request-config.interface";
+import type { ICache } from "../../cache";
+import type { IRequestConfig } from "../../provider/types/request-config.interface";
 
 export class TestModule extends CoreModule {}
 
 export class TestHttpClient implements IHTTPClient {
-  constructor(options: IHTTPClientOptions) {}
+  constructor(_: IHTTPClientOptions) {}
 
-  async get<TResponse = null>(url: string): Promise<TResponse> {
+  async get<TResponse = null>(_: string): Promise<TResponse> {
     return null as any;
   }
 
-  async post(url: string) {
+  async post(_: string) {
     return null as any;
   }
-  async upload(url: string, formData: FormData) {
+  async upload(_: string, __: FormData) {
     return null as any;
   }
 
-  setHeader(key: string) {}
-  removeHeader(key: string) {}
+  setHeader(_: string) {}
+  removeHeader(_: string) {}
 }
 
 export class TestProvider implements IProvider {
-  constructor(api: IHTTPClient) {}
+  constructor(_: IHTTPClient) {}
 
   post<TRequest = undefined, TResponse = undefined>(
-    config: IRequestConfig<TRequest, TResponse>
+    _: IRequestConfig<TRequest, TResponse>
   ): Promise<TResponse | undefined> {
     return null as any;
   }
 
-  get(url: string) {
+  get(_: string) {
     return null as any;
   }
 
-  upload(url: string, formData: FormData) {
+  upload(_: string, __: FormData) {
     return null as any;
   }
 }
 
 export class TestController implements IController {
-  constructor(provider?: IProvider) {}
+  constructor(_?: IProvider) {}
 }
 
 export class TestCache implements ICache {
-  get<T>(key: string) {
+  get(_: string) {
     return null as any;
   }
 
-  set(key: string, value: any) {}
+  set(_: string, __: any) {}
 
-  remove(key: string) {}
+  remove(_: string) {}
 
   clear() {}
 }

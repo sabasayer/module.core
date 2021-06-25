@@ -1,4 +1,4 @@
-import { ICloneUtil } from "./types/clone-util.interface";
+import type { ICloneUtil } from "./types/clone-util.interface";
 import cloneDeep from "lodash/cloneDeep";
 
 class DefaultCloneUtil implements ICloneUtil {

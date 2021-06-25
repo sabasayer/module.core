@@ -1,3 +1,3 @@
-import {ValidationResult} from './validation-result'
+import type {ValidationResult} from './validation-result'
 
 export {ValidationResult}

@@ -2,8 +2,8 @@ import { globalModule } from "../global-module/global-module";
 
 const cloneDecorator = (
   deep: boolean,
-  target: any,
-  propertyKey: string | symbol,
+  _: any,
+  __: string | symbol,
   descriptor: PropertyDescriptor
 ): PropertyDescriptor => {
   const originalMethod = descriptor.value;

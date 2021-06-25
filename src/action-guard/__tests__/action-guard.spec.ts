@@ -1,4 +1,4 @@
-import { ValidationResult } from "@/shared";
+import type { ValidationResult } from "@/shared";
 import { createActionGuard, ValidatorFunc } from "../action-guard";
 
 describe("Action Guard", () => {

@@ -4,6 +4,7 @@
   "main": "dist/index.js",
   "author": "salihbaki",
   "license": "MIT",
+  "type": "module",
   "keywords": [
     "typescript",
     "javascript",

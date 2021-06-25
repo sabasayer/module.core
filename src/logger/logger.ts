@@ -1,4 +1,4 @@
-import { ILogger } from "./logger.interface";
+import type { ILogger } from "./logger.interface";
 
 export class Logger implements ILogger {
   private logStyle = "";

@@ -5,7 +5,7 @@ import {
 } from "@/http-client/__mocks__/fetch.mock";
 import { CoreProvider } from "../core-provider";
 import fetchMock from "jest-fetch-mock";
-import {
+import type {
   ICachableRequestConfig,
   IRequestConfig,
 } from "../types/request-config.interface";

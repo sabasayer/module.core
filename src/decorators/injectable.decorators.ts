@@ -1,20 +1,20 @@
-import { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
-import { IHTTPClientConstuctor } from "../http-client/types/http-client.interface";
-import {
+import type { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
+import type { IHTTPClientConstuctor } from "../http-client/types/http-client.interface";
+import type {
   IController,
   IControllerConstructor,
 } from "../controller/controller.interface";
-import {
+import type {
   IProvider,
   IProviderConstructor,
 } from "../provider/types/provider.interface";
-import {
+import type {
   ICoreModule,
   RegisterControllerOptions,
   RegisterProviderOptions,
 } from "../module/core-module.interface";
-import { IInjectableDecorators } from "./types/injectable-decorators.interface";
-import { ICacheConstructor } from "../cache/cache.interface";
+import type { IInjectableDecorators } from "./types/injectable-decorators.interface";
+import type { ICacheConstructor } from "../cache/cache.interface";
 
 export class InjectableDecorators implements IInjectableDecorators {
   private module: ICoreModule | null = null;

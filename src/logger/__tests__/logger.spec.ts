@@ -110,7 +110,7 @@ describe("Logger", () => {
     });
     class Test {
       @logger.logMethod()
-      get(id: number, name: string) {}
+      get(_: number, __: string) {}
     }
 
     new Test().get(1, "ali");

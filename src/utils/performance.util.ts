@@ -1,5 +1,5 @@
-import { IPerformanceUtil } from "./types";
-import { IPerformance } from "./types/performace.interface";
+import type { IPerformanceUtil } from "./types";
+import type { IPerformance } from "./types/performace.interface";
 
 export class PerformanceUtil implements IPerformanceUtil {
   constructor(private performance: IPerformance) {}

@@ -1,2 +1,3 @@
-const fs = require("fs");
-fs.rmdirSync(`${__dirname}/dist`, { recursive: true });
+import fs from "fs";
+
+fs.rmdirSync(new URL("/dist", import.meta.url), { recursive: true });

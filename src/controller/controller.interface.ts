@@ -1,4 +1,4 @@
-import { IProvider } from "../provider/types/provider.interface";
+import type { IProvider } from "../provider/types/provider.interface";
 
 export type IController = {};
 

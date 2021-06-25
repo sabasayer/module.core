@@ -1,6 +1,6 @@
 import mockConsole from "jest-mock-console";
 import { PerformanceUtil } from "../performance.util";
-import { IPerformance } from "../types/performace.interface";
+import type { IPerformance } from "../types/performace.interface";
 
 describe("Performance", () => {
   const restore = mockConsole();
@@ -14,11 +14,11 @@ describe("Performance", () => {
   });
 
   class MockPerformance implements IPerformance {
-    mark(name: string) {}
-    measure(name: string) {}
+    mark(_: string) {}
+    measure(_: string) {}
     clearMarks() {}
     clearMeasures() {}
-    getEntriesByName(name: string) {
+    getEntriesByName(_: string) {
       return [];
     }
   }

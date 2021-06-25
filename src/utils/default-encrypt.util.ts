@@ -1,4 +1,4 @@
-import { IEncyrptionUtil } from "./types";
+import type { IEncyrptionUtil } from "./types";
 
 class DefaultEncryptUtil implements IEncyrptionUtil {
   encrypt(value: string) {

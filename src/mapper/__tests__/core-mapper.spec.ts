@@ -175,8 +175,8 @@ describe("Core Mapper", () => {
 
     const mapper = new CoreMapper<Source, Target>();
 
-    mapper.forTarget("index", (e, i) => i ?? 0);
-    mapper.forTarget("length", (e, i, array) => array?.length ?? 0);
+    mapper.forTarget("index", (_, i) => i ?? 0);
+    mapper.forTarget("length", (_, __, array) => array?.length ?? 0);
     mapper.forTarget("name", "name");
 
     const mapped = mapper.mapToTargetList([{ name: "test" }]);

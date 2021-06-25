@@ -1,19 +1,19 @@
-import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
-import { IHTTPClientConstuctor } from "../../http-client/types/http-client.interface";
-import {
+import type { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
+import type { IHTTPClientConstuctor } from "../../http-client/types/http-client.interface";
+import type {
   IController,
   IControllerConstructor,
 } from "../../controller/controller.interface";
-import {
+import type {
   IProvider,
   IProviderConstructor,
 } from "../../provider/types/provider.interface";
-import {
+import type {
   RegisterControllerOptions,
   RegisterProviderOptions,
 } from "../../module/core-module.interface";
-import { IDecorator } from "./decorator.interface";
-import { ICacheConstructor } from "../../cache/cache.interface";
+import type { IDecorator } from "./decorator.interface";
+import type { ICacheConstructor } from "../../cache/cache.interface";
 
 export type IInjectableDecorators = IDecorator & {
   client: (
@@ -25,7 +25,7 @@ export type IInjectableDecorators = IDecorator & {
   controller: (
     options: RegisterControllerOptions
   ) => <TController extends IController, TProvider extends IProvider>(
-    controllerConstructor: IControllerConstructor<IController, TProvider>
+    controllerConstructor: IControllerConstructor<TController, TProvider>
   ) => void;
   cache: (key?: string) => (cacheConstructor: ICacheConstructor) => void;
 };

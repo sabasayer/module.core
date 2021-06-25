@@ -1,10 +1,10 @@
-import { ICloneUtil } from "../utils/types/clone-util.interface";
-import { ILocalization } from "../localization/types/localization.interface";
-import { ICoreModule } from "../module";
-import { ModuleConstructor } from "../module/core-module.interface";
-import { IEncyrptionUtil } from "../utils/types/encryption-util.interface";
-import { IDateUtil, IPerformanceUtil } from "../utils";
-import { IObserver } from "../utils/types/observer.interface";
+import type { ICloneUtil } from "../utils/types/clone-util.interface";
+import type { ILocalization } from "../localization/types/localization.interface";
+import type { ICoreModule } from "../module";
+import type { ModuleConstructor } from "../module/core-module.interface";
+import type { IEncyrptionUtil } from "../utils/types/encryption-util.interface";
+import type { IDateUtil, IPerformanceUtil } from "../utils";
+import type { IObserver } from "../utils/types/observer.interface";
 
 declare global {
   interface Window {

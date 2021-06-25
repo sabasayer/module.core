@@ -1,15 +1,13 @@
-import { IHTTPClientOptions } from "../../http-client/types/http-client-options.interface";
-import { IHTTPClient } from "../../http-client/types/http-client.interface";
-import { IController } from "../../controller/controller.interface";
-import { IProvider } from "../../provider/types/provider.interface";
+import type { IHTTPClient } from "../../http-client/types/http-client.interface";
+import type { IController } from "../../controller/controller.interface";
+import type { IProvider } from "../../provider/types/provider.interface";
 import {
   createModule,
   createRegisterProvider,
   TestHttpClient,
   TestProvider,
 } from "../../module/__mocks__/module.mock";
-import { ICache } from "../../cache";
-import { IRequestConfig } from "@/provider/types/request-config.interface";
+import type { ICache } from "../../cache";
 import { InjectableDecorators } from "..";
 
 describe("Inject Decorators", () => {
@@ -26,18 +24,18 @@ describe("Inject Decorators", () => {
 
     @injectable.client({})
     class TestApi implements IHTTPClient {
-      constructor(options: IHTTPClientOptions) {}
-      async get(url: string) {
+      constructor() {}
+      async get() {
         return null as any;
       }
-      async post(url: string) {
+      async post() {
         return null as any;
       }
-      async upload(url: string, formData: FormData) {
+      async upload() {
         return null as any;
       }
-      setHeader(key: string) {}
-      removeHeader(key: string) {}
+      setHeader() {}
+      removeHeader() {}
     }
 
     const api = module.resolveHttpClient();
@@ -51,14 +49,14 @@ describe("Inject Decorators", () => {
 
     @injectable.provider()
     class TestProvider implements IProvider {
-      constructor(api: IHTTPClient) {}
-      async get(url: string) {
+      constructor() {}
+      async get() {
         return null as any;
       }
-      async post(config: IRequestConfig<any,any>) {
+      async post() {
         return null as any;
       }
-      async upload(url: string, formData: FormData) {
+      async upload() {
         return null as any;
       }
     }
@@ -73,14 +71,14 @@ describe("Inject Decorators", () => {
 
     @injectable.provider({ key: "test_p", client: TestHttpClient })
     class TestProvider implements IProvider {
-      constructor(api: IHTTPClient) {}
-      async get(url: string) {
+      constructor() {}
+      async get() {
         return null as any;
       }
-      async post(config: IRequestConfig<any,any>) {
+      async post() {
         return null as any;
       }
-      async upload(url: string, formData: FormData) {
+      async upload() {
         return null as any;
       }
     }
@@ -95,7 +93,7 @@ describe("Inject Decorators", () => {
 
     @injectable.controller({ provider: TestProvider })
     class TestController implements IController {
-      constructor(provider?: IProvider) {}
+      constructor() {}
     }
 
     const controller = module.resolveController(TestController);
@@ -109,13 +107,13 @@ describe("Inject Decorators", () => {
 
     @injectable.cache()
     class TestCache implements ICache {
-      get<T>(key: string) {
+      get() {
         return null as any;
       }
 
-      set(key: string, value: any) {}
+      set() {}
 
-      remove(key: string) {}
+      remove() {}
 
       clear() {}
     }

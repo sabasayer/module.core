@@ -1,5 +1,5 @@
 import { globalModule } from "@/global-module/global-module";
-import { IEncyrptionUtil } from "@/utils/types/encryption-util.interface";
+import type { IEncyrptionUtil } from "@/utils/types/encryption-util.interface";
 import { SessionStorageCache } from "../session-storage-cache";
 
 describe("Session Storage Cache", () => {

@@ -1,6 +1,6 @@
-import { IAbortController } from "./abort-controller.interface";
-import { IHTTPClientOptions } from "./http-client-options.interface";
-import { RequestOptions } from "./request-options.interface";
+import type { IAbortController } from "./abort-controller.interface";
+import type { IHTTPClientOptions } from "./http-client-options.interface";
+import type { RequestOptions } from "./request-options.interface";
 
 export type IHTTPClient = {
   get: <TResponse = undefined>(

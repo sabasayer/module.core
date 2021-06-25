@@ -1,6 +1,6 @@
 import { globalModule } from "../global-module/global-module";
 import { SessionStorageUtil } from "@sabasayer/utils";
-import { ICache } from ".";
+import type { ICache } from ".";
 
 export class SessionStorageCache implements ICache {
   set<T>(key: string, value: T) {

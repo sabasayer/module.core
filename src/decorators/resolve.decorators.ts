@@ -1,10 +1,10 @@
-import { IHTTPClientConstuctor } from "../http-client/types/http-client.interface";
-import { IController, IControllerConstructor } from "../controller/index";
-import { IProvider, IProviderConstructor } from "../provider/index";
-import { ICoreModule } from "../module/index";
-import { IResolveDecorators } from "./types/resolve-decorators.interface";
-import { ICacheConstructor } from "../cache/cache.interface";
-import { KeyUnionType } from "../module/core-module.interface";
+import type { IHTTPClientConstuctor } from "../http-client/types/http-client.interface";
+import type { IController, IControllerConstructor } from "../controller/index";
+import type { IProvider, IProviderConstructor } from "../provider/index";
+import type { ICoreModule } from "../module/index";
+import type { IResolveDecorators } from "./types/resolve-decorators.interface";
+import type { ICacheConstructor } from "../cache/cache.interface";
+import type { KeyUnionType } from "../module/core-module.interface";
 
 export class ResolveDecorators implements IResolveDecorators {
   private module: ICoreModule | null = null;
@@ -14,7 +14,7 @@ export class ResolveDecorators implements IResolveDecorators {
   }
 
   resolve(injectableKey: KeyUnionType) {
-    return (target: any, key: string | symbol): any => {
+    return (_: any, __: string | symbol): any => {
       const obj = this.module?.resolve(injectableKey);
 
       if (!obj) return;
@@ -24,7 +24,7 @@ export class ResolveDecorators implements IResolveDecorators {
   }
 
   client(client?: IHTTPClientConstuctor) {
-    return (target: any, key: string | symbol): any => {
+    return (_: any, __: string | symbol): any => {
       const clientObj = this.module?.resolveHttpClient(client);
 
       if (!clientObj) return;
@@ -34,7 +34,7 @@ export class ResolveDecorators implements IResolveDecorators {
   }
 
   provider(provider: IProviderConstructor | string) {
-    return (target: any, key: string | symbol): any => {
+    return (_: any, __: string | symbol): any => {
       const providerObj = this.module?.resolveProvider(provider);
 
       if (!providerObj) return;
@@ -46,7 +46,7 @@ export class ResolveDecorators implements IResolveDecorators {
   controller<TController extends IController, TProvider extends IProvider>(
     controller: IControllerConstructor<TController, TProvider> | string
   ) {
-    return (target: any, key: string | symbol): any => {
+    return (_: any, __: string | symbol): any => {
       const controllerObj = this.module?.resolveController(controller);
 
       if (!controllerObj) return;
@@ -56,7 +56,7 @@ export class ResolveDecorators implements IResolveDecorators {
   }
 
   cache(cache: ICacheConstructor | string) {
-    return (target: any, key: string | symbol): any => {
+    return (_: any, __: string | symbol): any => {
       const cacheObj = this.module?.resolveCache(cache);
 
       if (!cacheObj) return;

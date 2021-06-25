@@ -1,4 +1,4 @@
-import { ICache } from "./cache.interface";
+import type { ICache } from "./cache.interface";
 
 export class MemoryCache implements ICache {
   private store = new Map<string, any>();

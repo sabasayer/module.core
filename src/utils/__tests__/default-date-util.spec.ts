@@ -1,5 +1,5 @@
 import { defaultDateUtil } from "../default-date.util";
-import {
+import type {
   DateDuration,
   DateUnion,
   SetDateValues,

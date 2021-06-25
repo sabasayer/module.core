@@ -1,13 +1,13 @@
-import { ILocalization } from "@/localization";
-import { IDateUtil, IPerformanceUtil } from "@/utils";
-import { ICloneUtil } from "@/utils/types/clone-util.interface";
-import {
+import type { ILocalization } from "@/localization";
+import type { IDateUtil, IPerformanceUtil } from "@/utils";
+import type { ICloneUtil } from "@/utils/types/clone-util.interface";
+import type {
   DateDuration,
   DateUnion,
   SetDateValues,
 } from "@/utils/types/date-util.interface";
-import { IEncyrptionUtil } from "@/utils/types/encryption-util.interface";
-import {
+import type { IEncyrptionUtil } from "@/utils/types/encryption-util.interface";
+import type {
   IObserver,
   PublishType,
   SubscribeOptions,
@@ -18,13 +18,13 @@ class Testlocalization implements ILocalization {
   getLang() {
     return null;
   }
-  setLang(lang: string) {
+  setLang(_: string) {
     return this;
   }
-  setTranslations(t: any) {
+  setTranslations(_: any) {
     return this;
   }
-  translate(t: string) {
+  translate(_: string) {
     return null;
   }
 }
@@ -32,11 +32,11 @@ class Testlocalization implements ILocalization {
 export const mockLocalization = new Testlocalization();
 
 class TestCloneUtil implements ICloneUtil {
-  clone(item: any) {
+  clone(_: any) {
     return null as any;
   }
 
-  cloneDeep(item: any) {
+  cloneDeep(_: any) {
     return null as any;
   }
 }
@@ -44,14 +44,14 @@ class TestCloneUtil implements ICloneUtil {
 export const mockCloneUtil = new TestCloneUtil();
 
 class TestEncyrption implements IEncyrptionUtil {
-  encrypt = (value: string) => "";
-  decrypt = (value: string) => "";
+  encrypt = (_: string) => "";
+  decrypt = (_: string) => "";
 }
 
 export const mockEncyrpctionUtil = new TestEncyrption();
 
 class MockPerformanceUtil implements IPerformanceUtil {
-  measureFunc(body: Function, name: string) {
+  measureFunc(_: Function, name: string) {
     console.log(name);
   }
 }
@@ -61,24 +61,24 @@ export const mockPerformanceUtil = new MockPerformanceUtil();
 class DateUtil implements IDateUtil {
   now = () => new Date();
   nowISO = () => "";
-  setDefaultDateFormat = (value: string) => undefined;
-  format = (value: string) => "";
-  formatISO = (value: Date) => "";
-  formatTime = (value: DateUnion) => "";
-  add = <T extends DateUnion>(value: T, duration: DateDuration) => "" as any;
-  clearTime = <T extends DateUnion>(value: T) => "" as any;
-  set = <T extends DateUnion>(value: T, values: SetDateValues) => "" as any;
-  setTimeSpan = <T extends DateUnion>(value: T, timeSpan: string) => "" as any;
+  setDefaultDateFormat = (_: string) => undefined;
+  format = (_: string) => "";
+  formatISO = (_: Date) => "";
+  formatTime = (_: DateUnion) => "";
+  add = <T extends DateUnion>(_: T, __: DateDuration) => "" as any;
+  clearTime = <T extends DateUnion>(_: T) => "" as any;
+  set = <T extends DateUnion>(_: T, __: SetDateValues) => "" as any;
+  setTimeSpan = <T extends DateUnion>(_: T, __: string) => "" as any;
 }
 
 export const mockDateUtil = new DateUtil();
 
 export class MockObserver<T> implements IObserver<T> {
-  subscribe<T>(options: SubscribeOptions<T>) {
+  subscribe<T>(_: SubscribeOptions<T>) {
     return 1;
   }
 
-  unsubscribe(id: number) {}
+  unsubscribe(_: number) {}
 
-  publish(data: T, type: PublishType) {}
+  publish(_: T, __: PublishType) {}
 }
