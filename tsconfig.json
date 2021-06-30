@@ -19,6 +19,7 @@
     "declarationDir": "dist",
     "sourceMap": false,
     "baseUrl": ".",
+    "allowJs": true,
     "types": ["jest", "node"],
     "paths": {
       "@/*": ["src/*"]

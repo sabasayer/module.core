@@ -1,6 +1,6 @@
 {
   "name": "@sabasayer/module.core",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "dist/index.js",
   "author": "salihbaki",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "dev": "parcel src/index.ts",
     "build": "node pre-build.js && tsc --project tsconfig.prod.json",
     "test": "jest",
+    "test-clear": "jest --clearCache",
     "pre-publish": "npm run test && npm run build",
     "npm-publish": "npm publish --access public"
   },
@@ -35,7 +36,7 @@
     "reflect-metadata": "^0.1.13"
   },
   "dependencies": {
-    "@sabasayer/utils": "^1.2.4",
+    "@sabasayer/utils": "^1.3.2",
     "date-fns": "^2.19.0",
     "lodash.clonedeep": "4.5.0"
   },

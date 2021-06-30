@@ -1,5 +1,5 @@
 import { globalModule } from "../global-module/global-module";
-import { SessionStorageUtil } from "@sabasayer/utils";
+import { sessionStorageUtil } from "@sabasayer/utils";
 import type { ICache } from ".";
 
 export class SessionStorageCache implements ICache {
@@ -9,11 +9,11 @@ export class SessionStorageCache implements ICache {
     stringValue =
       globalModule.getEncryptionUtil()?.encrypt(stringValue) ?? stringValue;
 
-    SessionStorageUtil.setItem(key, stringValue);
+    sessionStorageUtil.setItem(key, stringValue);
   }
 
   get<T>(key: string) {
-    let value = SessionStorageUtil.getItem(key);
+    let value = sessionStorageUtil.getItem(key);
     if (!value) return null;
 
     value = globalModule.getEncryptionUtil()?.decrypt(value) ?? value;
@@ -22,10 +22,10 @@ export class SessionStorageCache implements ICache {
   }
 
   remove(key: string) {
-    SessionStorageUtil.removeItem(key);
+    sessionStorageUtil.removeItem(key);
   }
 
   clear() {
-    SessionStorageUtil.clear();
+    sessionStorageUtil.clear();
   }
 }
