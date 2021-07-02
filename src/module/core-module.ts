@@ -43,7 +43,7 @@ export class CoreModule implements ICoreModule {
       this.constructor as new () => CoreModule
     );
     if (registeredModule) return registeredModule as CoreModule;
-    
+
     globalModule.registerModule(this);
   }
 
@@ -75,9 +75,9 @@ export class CoreModule implements ICoreModule {
   /**
    * One resolve for all types
    * @param key must contain 'Provider' | 'Controller' | 'Cache' | 'HttpClient'
-   *  suffix to be resolved
+   * suffix to be resolved
    */
-  resolve<T extends AppLayerUnionType>(key: KeyUnionType): T | undefined {
+  resolve<T extends AppLayerUnionType>(key: KeyUnionType<T>): T | undefined {
     let name = this.getName(key);
 
     if (name.includes(this.clientSuffix))
@@ -189,6 +189,7 @@ export class CoreModule implements ICoreModule {
     this.providers.clear();
     this.controllers.clear();
     this.caches.clear();
+    this.others.clear();
   }
 
   private resolveOther<T>(key: KeyUnionType): T | undefined {

@@ -84,17 +84,23 @@ describe("Module", () => {
     it("should clear all registered types", () => {
       const module = createRegisterController();
       module.registerCache(TestCache);
+
+      class Test {}
+
+      module.register(Test);
       module.clear();
 
       const api = module.resolveHttpClient();
       const provider = module.resolveProvider(TestProvider);
       const controller = module.resolveController(TestController);
       const cache = module.resolveCache(TestCache);
+      const other = module.resolve(Test);
 
       expect(api).toBeUndefined();
       expect(provider).toBeUndefined();
       expect(controller).toBeUndefined();
       expect(cache).toBeUndefined();
+      expect(other).toBeUndefined();
     });
   });
 

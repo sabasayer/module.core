@@ -31,13 +31,13 @@ export type ModuleBootstrapOptions<T = any> = {
   config?: T;
 };
 
-export type KeyUnionType =
+export type KeyUnionType<T = any> =
   | string
   | IProviderConstructor
   | IControllerConstructor<any, any>
   | ICacheConstructor
   | IHTTPClientConstuctor
-  | (new () => any);
+  | (new () => T);
 
 export type AppLayerUnionType = IProvider | IController | ICache | IHTTPClient;
 
@@ -50,7 +50,7 @@ export type ICoreModule = object & {
 
   useDecorators: (...decorators: IDecorator[]) => ICoreModule;
 
-  resolve: <T extends AppLayerUnionType>(key: KeyUnionType) => T | undefined;
+  resolve: <T extends AppLayerUnionType>(key: KeyUnionType<T>) => T | undefined;
   register: <T>(constructor: new () => T) => ICoreModule;
 
   registerHttpClient: (
