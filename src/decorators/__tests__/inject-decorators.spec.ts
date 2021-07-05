@@ -122,4 +122,14 @@ describe("Inject Decorators", () => {
 
     expect(cache).toBeInstanceOf(TestCache);
   });
+
+  it("should register any other class with decorator", () => {
+    const module = createModule();
+
+    @injectable.other()
+    class Test {}
+
+    const resolved = module.resolve(Test);
+    expect(resolved).toBeInstanceOf(Test);
+  });
 });

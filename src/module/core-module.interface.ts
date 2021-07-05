@@ -51,7 +51,7 @@ export type ICoreModule = object & {
   useDecorators: (...decorators: IDecorator[]) => ICoreModule;
 
   resolve: <T extends AppLayerUnionType>(key: KeyUnionType<T>) => T | undefined;
-  register: <T>(constructor: new () => T) => ICoreModule;
+  register: <T>(constructor: new () => T, key?: string) => ICoreModule;
 
   registerHttpClient: (
     client: IHTTPClientConstuctor,

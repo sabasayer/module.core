@@ -64,8 +64,8 @@ export class CoreModule implements ICoreModule {
     return this;
   }
 
-  register<T>(constructor: new () => T): ICoreModule {
-    const name = this.getName(constructor);
+  register<T>(constructor: new () => T, key?: string): ICoreModule {
+    const name = this.getName(key ?? constructor);
     const obj = new constructor();
     this.others.set(name, obj);
 

@@ -43,4 +43,9 @@ export class InjectableDecorators implements IInjectableDecorators {
       this.module?.registerCache(cacheConstructor, key);
     };
   }
+  other(key?: string) {
+    return (cacheConstructor: new () => any) => {
+      this.module?.register(cacheConstructor, key);
+    };
+  }
 }
