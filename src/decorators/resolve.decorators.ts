@@ -3,7 +3,6 @@ import type { IController, IControllerConstructor } from "../controller/index";
 import type { IProvider, IProviderConstructor } from "../provider/index";
 import type { ICoreModule } from "../module/index";
 import type { IResolveDecorators } from "./types/resolve-decorators.interface";
-import type { ICacheConstructor } from "../cache/cache.interface";
 import type { KeyUnionType } from "../module/core-module.interface";
 
 export class ResolveDecorators implements IResolveDecorators {
@@ -52,16 +51,6 @@ export class ResolveDecorators implements IResolveDecorators {
       if (!controllerObj) return;
 
       return this.defineProperty(controllerObj);
-    };
-  }
-
-  cache(cache: ICacheConstructor | string) {
-    return (_: any, __: string | symbol): any => {
-      const cacheObj = this.module?.resolveCache(cache);
-
-      if (!cacheObj) return;
-
-      return this.defineProperty(cacheObj);
     };
   }
 

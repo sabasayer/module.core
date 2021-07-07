@@ -7,7 +7,6 @@ import {
   TestHttpClient,
   TestProvider,
 } from "../../module/__mocks__/module.mock";
-import type { ICache } from "../../cache";
 import { InjectableDecorators } from "..";
 
 describe("Inject Decorators", () => {
@@ -65,13 +64,21 @@ describe("Inject Decorators", () => {
     expect(provider).toBeInstanceOf(TestProvider);
   });
 
-  it("should register provider with options", () => {
+  it("should register provider with options and dependencies", () => {
     const module = createAndUseInject();
     module.registerHttpClient(TestHttpClient, {});
 
+    class Test {}
+    module.register(Test);
+
     @injectable.provider({ key: "test_p", client: TestHttpClient })
     class TestProvider implements IProvider {
-      constructor() {}
+      test: Test;
+      client: IHTTPClient;
+      constructor(client: IHTTPClient, test: Test) {
+        this.test = test;
+        this.client = client;
+      }
       async get() {
         return null as any;
       }
@@ -83,8 +90,10 @@ describe("Inject Decorators", () => {
       }
     }
 
-    const provider = module.resolveProvider("test_p");
+    const provider = module.resolveProvider<TestProvider>("test_p");
     expect(provider).toBeInstanceOf(TestProvider);
+    expect(provider?.client).toBeInstanceOf(TestHttpClient);
+    expect(provider?.test).toBeInstanceOf(Test);
   });
 
   it("should register controller with decorator", () => {
@@ -101,35 +110,54 @@ describe("Inject Decorators", () => {
     expect(controller).toBeInstanceOf(TestController);
   });
 
-  it("should register cache with decorator", () => {
-    const module = createModule();
+  it("should register controller with dependencies", () => {
+    const module = createRegisterProvider();
     module.useDecorators(injectable);
 
-    @injectable.cache()
-    class TestCache implements ICache {
-      get() {
-        return null as any;
+    class Test {}
+    module.register(Test);
+
+    @injectable.controller({ provider: TestProvider })
+    class TestController implements IController {
+      provider?: IProvider;
+      test?: Test;
+      constructor(provider?: TestProvider, test?: Test) {
+        this.provider = provider;
+        this.test = test;
       }
-
-      set() {}
-
-      remove() {}
-
-      clear() {}
     }
 
-    const cache = module.resolveCache(TestCache);
+    const controller = module.resolveController(TestController);
 
-    expect(cache).toBeInstanceOf(TestCache);
+    expect(controller?.provider).toBeInstanceOf(TestProvider);
+    expect(controller?.test).toBeInstanceOf(Test);
   });
 
   it("should register any other class with decorator", () => {
-    const module = createModule();
+    const module = createAndUseInject();
 
     @injectable.other()
     class Test {}
 
     const resolved = module.resolve(Test);
     expect(resolved).toBeInstanceOf(Test);
+  });
+
+  it("should register any other class with dependencies injected", () => {
+    const module = createAndUseInject();
+
+    @injectable.other()
+    class DepClass {}
+
+    @injectable.other()
+    class Test {
+      dep: DepClass;
+      constructor(dep: DepClass) {
+        this.dep = dep;
+      }
+    }
+
+    const resolved = module.resolve(Test);
+    expect(resolved?.dep).toBeInstanceOf(DepClass);
   });
 });

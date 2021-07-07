@@ -14,16 +14,22 @@ import type {
 import type { IDecorator } from "../decorators/types/decorator.interface";
 import type { ICache } from "../cache";
 import type { ICacheConstructor } from "../cache/cache.interface";
+import type { IClassConstructor } from "@/shared";
+
+export type RegisterClassOptions = {
+  key?: string;
+  dependencies?: (IClassConstructor | string)[];
+};
 
 export type RegisterProviderOptions = {
   key?: string;
   client?: IHTTPClientConstuctor;
-};
+} & RegisterClassOptions;
 
 export type RegisterControllerOptions = {
   provider?: IProviderConstructor | string;
   key?: string;
-};
+} & RegisterClassOptions;
 
 export type ModuleBootstrapOptions<T = any> = {
   httpClient: IHTTPClient;
@@ -51,14 +57,19 @@ export type ICoreModule = object & {
   useDecorators: (...decorators: IDecorator[]) => ICoreModule;
 
   resolve: <T extends AppLayerUnionType>(key: KeyUnionType<T>) => T | undefined;
-  register: <T>(constructor: new () => T, key?: string) => ICoreModule;
+  register: <T>(
+    constructor: new (...args: any[]) => T,
+    options?: RegisterClassOptions
+  ) => ICoreModule;
+
+  registerInstance: <T extends object>(obj: T, key?: string) => ICoreModule;
 
   registerHttpClient: (
     client: IHTTPClientConstuctor,
     options: IHTTPClientOptions
   ) => ICoreModule;
 
-  registerHttpClientImplementation: (
+  registerHttpClientInstance: (
     client: IHTTPClient,
     key?: string
   ) => ICoreModule;
@@ -86,12 +97,6 @@ export type ICoreModule = object & {
 
   resolveController: <T extends IController, TProvider extends IProvider>(
     key: string | IControllerConstructor<T, TProvider>
-  ) => T | undefined;
-
-  registerCache: (cache: ICacheConstructor, key?: string) => ICoreModule;
-
-  resolveCache: <T extends ICache>(
-    key: string | ICacheConstructor
   ) => T | undefined;
 
   clear: () => void;

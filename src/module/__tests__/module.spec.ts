@@ -4,7 +4,6 @@ import {
   createRegisterProvider,
   createRegisterController,
   TestHttpClient,
-  TestCache,
   TestController,
   TestProvider,
   createModule,
@@ -42,7 +41,7 @@ describe("Module", () => {
       const module = createModule();
       const client = new TestHttpClient({ baseUrl: "test.com" });
 
-      module.registerHttpClientImplementation(client);
+      module.registerHttpClientInstance(client);
 
       const resolvedClient = module.resolveHttpClient(TestHttpClient);
 
@@ -83,7 +82,6 @@ describe("Module", () => {
 
     it("should clear all registered types", () => {
       const module = createRegisterController();
-      module.registerCache(TestCache);
 
       class Test {}
 
@@ -93,13 +91,11 @@ describe("Module", () => {
       const api = module.resolveHttpClient();
       const provider = module.resolveProvider(TestProvider);
       const controller = module.resolveController(TestController);
-      const cache = module.resolveCache(TestCache);
       const other = module.resolve(Test);
 
       expect(api).toBeUndefined();
       expect(provider).toBeUndefined();
       expect(controller).toBeUndefined();
-      expect(cache).toBeUndefined();
       expect(other).toBeUndefined();
     });
   });
@@ -113,15 +109,6 @@ describe("Module", () => {
       expect(client).toBeInstanceOf(TestHttpClient);
     });
 
-    it("should resolve Cache", () => {
-      const module = createModule();
-      module.registerCache(TestCache);
-
-      const cache = module.resolve(TestCache);
-
-      expect(cache).toBeInstanceOf(TestCache);
-    });
-
     it("should resolve Provider", () => {
       const module = createRegisterHttpClient();
 
@@ -130,6 +117,19 @@ describe("Module", () => {
       const provider = module.resolve(TestProvider);
 
       expect(provider).toBeInstanceOf(TestProvider);
+    });
+
+    it("should resolve Provider with dependencies", () => {
+      const module = createRegisterHttpClient();
+
+      class Test {
+        constructor() {}
+      }
+      module.register(Test);
+      module.registerProvider(TestProvider, { dependencies: [Test] });
+
+      const provider = module.resolve(TestProvider);
+      expect(provider?.args?.[0]).toBeInstanceOf(Test);
     });
 
     it("should resolve Controller", () => {
@@ -142,6 +142,24 @@ describe("Module", () => {
       expect(controller).toBeInstanceOf(TestController);
     });
 
+    it("should resolve Controller with dependencies", () => {
+      const module = createRegisterProvider();
+
+      class Test {
+        constructor() {}
+      }
+
+      module.register(Test);
+
+      module.registerController(TestController, {
+        provider: TestProvider,
+        dependencies: [Test],
+      });
+      const controller = module.resolve(TestController);
+
+      expect(controller?.args?.[0]).toBeInstanceOf(Test);
+    });
+
     it("should resolve any simple class instance", () => {
       const module = createModule();
 
@@ -152,6 +170,17 @@ describe("Module", () => {
       expect(resolved).toBeInstanceOf(TestClass);
     });
 
+    it("should register and resolve class instance", () => {
+      const module = createModule();
+
+      class TestClass {}
+      const instance = new TestClass();
+      module.registerInstance(instance);
+
+      const resolved = module.resolve(TestClass);
+      expect(resolved).toEqual(instance);
+    });
+
     it("should resolve any simple class instance by key", () => {
       const module = createModule();
 
@@ -160,6 +189,42 @@ describe("Module", () => {
       module.register(TestClass);
       const resolved = module.resolve("TestClass");
       expect(resolved).toBeInstanceOf(TestClass);
+    });
+
+    it("should resolve any simple class with dependencies at constructor", () => {
+      const module = createModule();
+
+      class DepClass {}
+      class TestClass {
+        dep: DepClass;
+        constructor(dep: DepClass) {
+          this.dep = dep;
+        }
+      }
+
+      module.register(DepClass);
+      module.register(TestClass, { dependencies: [DepClass] });
+
+      const resolved = module.resolve(TestClass);
+      expect(resolved?.dep).toBeInstanceOf(DepClass);
+    });
+
+    it("should resolve any simple class with dependency strings at constructor", () => {
+      const module = createModule();
+
+      class DepClass {}
+      class TestClass {
+        dep: DepClass;
+        constructor(dep: DepClass) {
+          this.dep = dep;
+        }
+      }
+
+      module.register(DepClass);
+      module.register(TestClass, { dependencies: ["DepClass"] });
+
+      const resolved = module.resolve(TestClass);
+      expect(resolved?.dep).toBeInstanceOf(DepClass);
     });
   });
 });

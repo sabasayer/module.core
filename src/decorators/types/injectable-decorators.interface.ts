@@ -13,19 +13,19 @@ import type {
   RegisterProviderOptions,
 } from "../../module/core-module.interface";
 import type { IDecorator } from "./decorator.interface";
-import type { ICacheConstructor } from "../../cache/cache.interface";
+import type { IClassConstructor } from "@/shared";
 
 export type IInjectableDecorators = IDecorator & {
   client: (
     options: IHTTPClientOptions
   ) => (clientConstructor: IHTTPClientConstuctor) => void;
   provider: (
-    options?: RegisterProviderOptions
+    options?: Omit<RegisterProviderOptions, "dependencies">
   ) => (providerConstructor: IProviderConstructor) => void;
   controller: (
-    options: RegisterControllerOptions
+    options: Omit<RegisterControllerOptions, "dependencies">
   ) => <TController extends IController, TProvider extends IProvider>(
     controllerConstructor: IControllerConstructor<TController, TProvider>
   ) => void;
-  cache: (key?: string) => (cacheConstructor: ICacheConstructor) => void;
+  other: (key?: string) => (constructor: IClassConstructor) => void;
 };

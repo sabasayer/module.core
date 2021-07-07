@@ -27,7 +27,10 @@ export class TestHttpClient implements IHTTPClient {
 }
 
 export class TestProvider implements IProvider {
-  constructor(_: IHTTPClient) {}
+  args: any[] | undefined;
+  constructor(_: IHTTPClient, ...args: any[]) {
+    this.args = args;
+  }
 
   post<TRequest = undefined, TResponse = undefined>(
     _: IRequestConfig<TRequest, TResponse>
@@ -45,7 +48,11 @@ export class TestProvider implements IProvider {
 }
 
 export class TestController implements IController {
-  constructor(_?: IProvider) {}
+  args: any[] | undefined;
+
+  constructor(_?: IProvider, ...args: any[]) {
+    this.args = args;
+  }
 }
 
 export class TestCache implements ICache {
@@ -61,13 +68,9 @@ export class TestCache implements ICache {
 }
 
 export const createModule = () => {
-  return new TestModule();
-};
-
-export const createRegisterCache = () => {
-  const module = createModule();
-  module.registerCache(TestCache);
-  return module;
+  const testModule = new TestModule();
+  testModule.clear();
+  return testModule;
 };
 
 export const createRegisterHttpClient = (moduleArg?: ICoreModule) => {

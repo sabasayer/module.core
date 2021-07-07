@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 import type { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
 import type { IHTTPClientConstuctor } from "../http-client/types/http-client.interface";
 import type {
@@ -14,7 +16,11 @@ import type {
   RegisterProviderOptions,
 } from "../module/core-module.interface";
 import type { IInjectableDecorators } from "./types/injectable-decorators.interface";
-import type { ICacheConstructor } from "../cache/cache.interface";
+import type { IClassConstructor } from "@/shared";
+import {
+  getConstructorArgNames,
+  getConstructorArgNamesAfterFirst,
+} from "@/decorators/reflection.helper";
 
 export class InjectableDecorators implements IInjectableDecorators {
   private module: ICoreModule | null = null;
@@ -26,26 +32,28 @@ export class InjectableDecorators implements IInjectableDecorators {
       this.module?.registerHttpClient(clientConstructor, options);
     };
   }
-  provider(options?: RegisterProviderOptions) {
-    return (providerConstructor: IProviderConstructor) => {
-      this.module?.registerProvider(providerConstructor, options);
+  provider(options?: Omit<RegisterProviderOptions, "dependencies">) {
+    return (target: IProviderConstructor) => {
+      const dependencies = getConstructorArgNamesAfterFirst(target);
+      this.module?.registerProvider(target, { ...options, dependencies });
     };
   }
-  controller(options: RegisterControllerOptions) {
+  controller(options: Omit<RegisterControllerOptions, "dependencies">) {
     return <TController extends IController, TProvider extends IProvider>(
-      controllerConstructor: IControllerConstructor<TController, TProvider>
+      target: IControllerConstructor<TController, TProvider>
     ) => {
-      this.module?.registerController(controllerConstructor, options);
+      const dependencies = getConstructorArgNames(target);
+      this.module?.registerController(target, { ...options, dependencies });
     };
   }
-  cache(key?: string) {
-    return (cacheConstructor: ICacheConstructor) => {
-      this.module?.registerCache(cacheConstructor, key);
-    };
-  }
+
   other(key?: string) {
-    return (cacheConstructor: new () => any) => {
-      this.module?.register(cacheConstructor, key);
+    return (target: IClassConstructor) => {
+      const dependencies = getConstructorArgNames(target);
+      this.module?.register(target, {
+        key,
+        dependencies,
+      });
     };
   }
 }

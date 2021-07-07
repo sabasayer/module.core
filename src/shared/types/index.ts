@@ -1,3 +1,4 @@
-import type {ValidationResult} from './validation-result'
+import type { ValidationResult } from "./validation-result";
+import type { IClassConstructor } from "./class-constructor";
 
-export {ValidationResult}
+export { ValidationResult, IClassConstructor };

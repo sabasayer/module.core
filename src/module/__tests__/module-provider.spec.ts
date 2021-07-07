@@ -12,8 +12,9 @@ import type { IRequestConfig } from "@/provider/types/request-config.interface";
 describe("Module Provider", () => {
   it("should throw error if api is not registered", () => {
     const module = createModule();
+    module.registerProvider(TestProvider);
 
-    expect(() => module.registerProvider(TestProvider)).toThrowError(
+    expect(() => module.resolveProvider(TestProvider)).toThrowError(
       "Http-Client is not registered."
     );
   });
@@ -89,6 +90,7 @@ describe("Module Provider", () => {
     module.registerHttpClient(TestApi2, {});
 
     module.registerProvider(TestProvider2, { client: TestApi2 });
+    module.resolveProvider(TestProvider2);
 
     expect(isInstanceOfTestApi2).toBe(true);
   });

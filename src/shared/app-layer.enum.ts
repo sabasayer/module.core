@@ -1,5 +1,6 @@
 export enum EnumAppLayer{
     Server = 'Server',
+    Module = 'Module',
     HttpClient = 'HttpClient',
     Provider = 'Provider',
     Controller = 'Controller',

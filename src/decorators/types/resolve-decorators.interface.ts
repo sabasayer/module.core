@@ -1,8 +1,10 @@
 import type { IHTTPClientConstuctor } from "../../http-client/types/http-client.interface";
-import type { IController, IControllerConstructor } from "../../controller/index";
+import type {
+  IController,
+  IControllerConstructor,
+} from "../../controller/index";
 import type { IProvider, IProviderConstructor } from "../../provider/index";
 import type { IDecorator } from "./decorator.interface";
-import type { ICacheConstructor } from "../../cache/cache.interface";
 import type { KeyUnionType } from "../../module/core-module.interface";
 
 type PropDecoratorFunc = (target: any, key: string | symbol) => void;
@@ -14,5 +16,4 @@ export type IResolveDecorators = IDecorator & {
   controller: <TController extends IController, TProvider extends IProvider>(
     controller: IControllerConstructor<TController, TProvider> | string
   ) => PropDecoratorFunc;
-  cache: (cache: ICacheConstructor | string) => PropDecoratorFunc;
 };

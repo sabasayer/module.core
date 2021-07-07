@@ -3,21 +3,16 @@ import type { IController } from "../../controller/index";
 import type { IProvider } from "../../provider/index";
 import { ResolveDecorators } from "../resolve.decorators";
 import {
-  createRegisterCache,
   createRegisterController,
   TestHttpClient,
-  TestCache,
   TestController,
   TestProvider,
   createRegisterHttpClient,
   createModule,
 } from "../../module/__mocks__/module.mock";
-import type { ICache } from "../../cache";
-import { InjectableDecorators } from "..";
 
 describe("Resolve Decoratros", () => {
   let resolver = new ResolveDecorators();
-  let injectable = new InjectableDecorators();
 
   const createAndUseResolve = () => {
     const module = createModule();
@@ -32,7 +27,6 @@ describe("Resolve Decoratros", () => {
 
   beforeEach(() => {
     resolver = new ResolveDecorators();
-    injectable = new InjectableDecorators();
   });
 
   it("should resolve api", () => {
@@ -128,42 +122,6 @@ describe("Resolve Decoratros", () => {
 
     const test = new Test();
     expect(test.controller).toBeInstanceOf(TestController);
-  });
-
-  it("should resolve cache", () => {
-    const module = createRegisterCache();
-    module.useDecorators(resolver);
-
-    class Test {
-      @resolver.cache(TestCache)
-      cache!: ICache;
-    }
-
-    const test = new Test();
-    expect(test.cache).toBeInstanceOf(TestCache);
-  });
-
-  it("should resolve prop at an injectable class", () => {
-    const module = createClientAndUseResolve();
-    module.useDecorators(injectable);
-    module.registerCache(TestCache);
-    module.registerProvider(TestProvider);
-
-    @injectable.controller({ provider: TestProvider })
-    class TestController implements IController {
-      @resolver.cache(TestCache)
-      cache?: ICache;
-
-      constructor(private provider?: TestProvider) {}
-
-      get() {
-        return this.provider?.get("");
-      }
-    }
-
-    const controller = module.resolveController(TestController);
-
-    expect(controller?.cache).toBeInstanceOf(TestCache);
   });
 
   it("should resolve provider with resolve method", () => {
