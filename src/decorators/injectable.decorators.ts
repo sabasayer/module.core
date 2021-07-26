@@ -1,5 +1,3 @@
-import "reflect-metadata";
-
 import type { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
 import type { IHTTPClientConstuctor } from "../http-client/types/http-client.interface";
 import type {
@@ -13,11 +11,11 @@ import type {
   RegisterProviderOptions,
 } from "../module/core-module.interface";
 import type { IInjectableDecorators } from "./types/injectable-decorators.interface";
-import type { IClassConstructor } from "@/shared";
+import type { IClassConstructor } from "../shared";
 import {
   getConstructorArgNames,
   getConstructorArgNamesAfterFirst,
-} from "@/decorators/reflection.helper";
+} from "../decorators/reflection.helper";
 
 export class InjectableDecorators implements IInjectableDecorators {
   private module: ICoreModule | null = null;

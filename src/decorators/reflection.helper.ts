@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import type { IClassConstructor } from "@/shared";
+import type { IClassConstructor } from "../shared";
 
 export const INJECTION_TOKEN_METADATA_KEY = "injectionTokens";
 

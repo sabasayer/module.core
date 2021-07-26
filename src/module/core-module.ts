@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import type { IHTTPClientOptions } from "../http-client/types/http-client-options.interface";
 import type {
   IHTTPClient,
@@ -24,9 +23,8 @@ import type {
 import type { IDecorator } from "../decorators/types/decorator.interface";
 import { coreLogger } from "../logger/core.logger";
 import { globalModule } from "../global-module/global-module";
-import { EnumCustomErrorType } from "@/custom-errors";
-import { CustomModuleError } from "@/custom-errors/custom-module-error";
-import type { IClassConstructor } from "@/shared";
+import { EnumCustomErrorType, CustomModuleError } from "../custom-errors";
+import type { IClassConstructor } from "../shared";
 
 type OtherConstructorOptions = {
   constructor: new (...args: any[]) => any;

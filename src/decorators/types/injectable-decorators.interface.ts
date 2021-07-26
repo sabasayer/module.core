@@ -10,7 +10,7 @@ import type {
   RegisterProviderOptions,
 } from "../../module/core-module.interface";
 import type { IDecorator } from "./decorator.interface";
-import type { IClassConstructor } from "@/shared";
+import type { IClassConstructor } from "../../shared";
 
 export type IInjectableDecorators = IDecorator & {
   client: (

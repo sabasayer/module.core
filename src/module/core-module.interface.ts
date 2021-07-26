@@ -14,7 +14,7 @@ import type {
 import type { IDecorator } from "../decorators/types/decorator.interface";
 import type { ICache } from "../cache";
 import type { ICacheConstructor } from "../cache/cache.interface";
-import type { IClassConstructor } from "@/shared";
+import type { IClassConstructor } from "../shared";
 
 export type RegisterClassOptions = {
   key?: string;

@@ -5,6 +5,7 @@ import { CustomProviderError } from "./custom-provider-error";
 import { CustomControllerError } from "./custom-controller-error";
 import { CustomCacheError } from "./custom-cache-error";
 import { CustomLogicError } from "./custom-logic-error";
+import { CustomModuleError } from "./custom-module-error";
 import { EnumCustomErrorType } from "./statics/custom-error-type.enum";
 
 export {
@@ -15,5 +16,6 @@ export {
   CustomCacheError,
   CustomControllerError,
   CustomLogicError,
+  CustomModuleError,
   EnumCustomErrorType,
 };

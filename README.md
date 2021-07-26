@@ -64,28 +64,32 @@ class MyModule extends CoreModule {
 const myModule = new MyModule();
 
 //(optional)register decorators for dependency Injection
-myModule.useDecorators(xInjectable,xResolve);
+myModule.useDecorators(xInjectable);
 
 export {myModule};
 
 ```
 
-Create Dependency Injection Decorators if you want to use them.
+Create Dependency Injection Decorator if you want to use them.
 
 ```Typescript
-export const xhResolve = new ResolveDecorators();
 export const xInjectable = new InjectableDecorators();
 ```
 
-Use Decorators
+Use injectable decorator to inject dependencies.
+You can use **class** or **@inject** decorator with token to inject.
 
 ```Typescript
+@injectable.other('A')
 export class SomeNormalClass {
-  @xResolve.controller(XController)
-  controller:IXController;
+  constructor(private xController:XController,private yController:YControlller)
+  {}
+}
 
-  @yResolve.resolve(YController)
-  yController:IYController;
+
+@injectable.other()
+export class OtherClass{
+  constructor(@inject('A') private someNormalClass:any)
 }
 ```
 
@@ -96,7 +100,7 @@ myModule.bootstrap({httpClient,config:myConfig});
 otherModule.bootstrap({httpClient,config:otherConfig})
 ```
 
-Use resolve decorator or module resolve functions
+Use module resolve functions, or class constructor arguments.
 
 ```Typescript
 const someFunction = () => {
@@ -173,6 +177,8 @@ otherModule.bootstrap(httpClient:fetchClient);
 
 Communicates with HTTPClient. I suggest that create one provider for each entity. implements **IProvider** but extending from **CoreProvider** is highly suggested.
 
+Auto injects first registered HttpClient as dependency.
+
 ```Typescript
 @injectable.provider()
 export class AuthProvider extends BaseProvider {
@@ -209,7 +215,7 @@ Presentation layer must communicates with controllers only for data transfers. C
 ```Typescript
 
 
-@injectable.controller({ provider: AuthProvider })
+@injectable.controller()
 export class AuthController implements IController {
   constructor(private provider: AuthProvider) {}
 
