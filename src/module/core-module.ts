@@ -44,8 +44,7 @@ type ProviderConstructorOptions = {
 } & OtherConstructorOptions;
 
 type ControllerConstructorOptions = {
-  constructor: IControllerConstructor<any, any>;
-  provider?: string;
+  constructor: IControllerConstructor<any>;
 } & OtherConstructorOptions;
 
 export class CoreModule implements ICoreModule {
@@ -127,7 +126,7 @@ export class CoreModule implements ICoreModule {
       return this.resolveProvider(key as IProviderConstructor) as T | undefined;
 
     if (this.isController(name))
-      return this.resolveController(key as IControllerConstructor<any, any>) as
+      return this.resolveController(key as IControllerConstructor<any>) as
         | T
         | undefined;
 
@@ -235,35 +234,24 @@ export class CoreModule implements ICoreModule {
     );
   }
 
-  registerController<
-    TController extends IController,
-    TProvider extends IProvider
-  >(
-    controller: IControllerConstructor<TController, TProvider>,
+  registerController<TController extends IController>(
+    controller: IControllerConstructor<TController>,
     options?: RegisterControllerOptions
   ) {
     const name = options?.key ?? controller.name;
 
-    const providerName = options?.provider
-      ? this.getName(options.provider)
-      : undefined;
-
     let dependencies = options?.dependencies;
-
-    if (providerName && dependencies)
-      dependencies = dependencies.filter((e) => !this.isProvider(e));
 
     this.controllerConstructors.set(name, {
       constructor: controller,
-      provider: providerName,
       dependencies: dependencies,
     });
 
     return this;
   }
 
-  resolveController<T extends IController, TProvider extends IProvider>(
-    key: string | IControllerConstructor<T, TProvider>
+  resolveController<T extends IController>(
+    key: string | IControllerConstructor<T>
   ): T | undefined {
     const instance = this.resolveControllerInstance(key);
     if (instance) return instance;
@@ -271,28 +259,18 @@ export class CoreModule implements ICoreModule {
     return this.createControllerInstance(key) as T;
   }
 
-  private resolveControllerInstance<
-    T extends IController,
-    TProvider extends IProvider
-  >(key: string | IControllerConstructor<T, TProvider>) {
+  private resolveControllerInstance<T extends IController>(
+    key: string | IControllerConstructor<T>
+  ) {
     if (typeof key === "string") return this.controllers.get(key) as T;
     return this.resolveByConstructor<T>(this.controllers, key);
   }
 
-  private createControllerInstance(
-    key: string | IControllerConstructor<any, any>
-  ) {
+  private createControllerInstance(key: string | IControllerConstructor<any>) {
     return this.createInstance(
       this.controllerConstructors,
       this.controllers,
-      key,
-      (dependencies: any[], constructorObj: ControllerConstructorOptions) => {
-        const provider = constructorObj?.provider
-          ? this.resolveProvider(constructorObj.provider)
-          : undefined;
-
-        return [provider, ...dependencies];
-      }
+      key
     );
   }
 
@@ -372,7 +350,7 @@ export class CoreModule implements ICoreModule {
     return this.getName(key).includes(this.providerSuffix);
   }
 
-  private isController(key: string | IControllerConstructor<any, any>) {
+  private isController(key: string | IControllerConstructor<any>) {
     return this.getName(key).includes(this.controllerSuffix);
   }
 

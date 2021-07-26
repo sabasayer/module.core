@@ -88,7 +88,7 @@ export const createRegisterProvider = () => {
 export const createRegisterController = () => {
   const module = createRegisterProvider();
   module.registerController(TestController, {
-    provider: TestProvider,
+    dependencies: [TestProvider],
   });
   return module;
 };

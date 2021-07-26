@@ -4,10 +4,7 @@ import type {
   IController,
   IControllerConstructor,
 } from "../../controller/controller.interface";
-import type {
-  IProvider,
-  IProviderConstructor,
-} from "../../provider/types/provider.interface";
+import type { IProviderConstructor } from "../../provider/types/provider.interface";
 import type {
   RegisterControllerOptions,
   RegisterProviderOptions,
@@ -23,9 +20,9 @@ export type IInjectableDecorators = IDecorator & {
     options?: Omit<RegisterProviderOptions, "dependencies">
   ) => (providerConstructor: IProviderConstructor) => void;
   controller: (
-    options: Omit<RegisterControllerOptions, "dependencies">
-  ) => <TController extends IController, TProvider extends IProvider>(
-    controllerConstructor: IControllerConstructor<TController, TProvider>
+    options?: Omit<RegisterControllerOptions, "dependencies">
+  ) => <TController extends IController>(
+    controllerConstructor: IControllerConstructor<TController>
   ) => void;
   other: (key?: string) => (constructor: IClassConstructor) => void;
 };

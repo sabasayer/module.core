@@ -135,7 +135,7 @@ describe("Module", () => {
     it("should resolve Controller", () => {
       const module = createRegisterProvider();
 
-      module.registerController(TestController, { provider: TestProvider });
+      module.registerController(TestController, { dependencies: [TestProvider] });
 
       const controller = module.resolve(TestController);
 
@@ -152,8 +152,7 @@ describe("Module", () => {
       module.register(Test);
 
       module.registerController(TestController, {
-        provider: TestProvider,
-        dependencies: [Test],
+        dependencies: [TestProvider, Test],
       });
       const controller = module.resolve(TestController);
 

@@ -6,10 +6,7 @@ import type {
   IController,
   IControllerConstructor,
 } from "../controller/controller.interface";
-import type {
-  IProvider,
-  IProviderConstructor,
-} from "../provider/types/provider.interface";
+import type { IProviderConstructor } from "../provider/types/provider.interface";
 import type {
   ICoreModule,
   RegisterControllerOptions,
@@ -38,9 +35,9 @@ export class InjectableDecorators implements IInjectableDecorators {
       this.module?.registerProvider(target, { ...options, dependencies });
     };
   }
-  controller(options: Omit<RegisterControllerOptions, "dependencies">) {
-    return <TController extends IController, TProvider extends IProvider>(
-      target: IControllerConstructor<TController, TProvider>
+  controller(options?: Omit<RegisterControllerOptions, "dependencies">) {
+    return <TController extends IController>(
+      target: IControllerConstructor<TController>
     ) => {
       const dependencies = getConstructorArgNames(target);
       this.module?.registerController(target, { ...options, dependencies });

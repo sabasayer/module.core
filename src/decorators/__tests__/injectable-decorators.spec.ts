@@ -8,8 +8,9 @@ import {
   TestProvider,
 } from "../../module/__mocks__/module.mock";
 import { InjectableDecorators } from "..";
+import { inject } from "../inject.decorator";
 
-describe("Inject Decorators", () => {
+describe("Injectable Decorators", () => {
   const injectable = new InjectableDecorators();
 
   const createAndUseInject = () => {
@@ -100,7 +101,7 @@ describe("Inject Decorators", () => {
     const module = createRegisterProvider();
     module.useDecorators(injectable);
 
-    @injectable.controller({ provider: TestProvider })
+    @injectable.controller()
     class TestController implements IController {
       constructor() {}
     }
@@ -117,7 +118,7 @@ describe("Inject Decorators", () => {
     class Test {}
     module.register(Test);
 
-    @injectable.controller({ provider: TestProvider })
+    @injectable.controller()
     class TestController implements IController {
       provider?: IProvider;
       test?: Test;
@@ -132,6 +133,7 @@ describe("Inject Decorators", () => {
     expect(controller?.provider).toBeInstanceOf(TestProvider);
     expect(controller?.test).toBeInstanceOf(Test);
   });
+
 
   it("should register any other class with decorator", () => {
     const module = createAndUseInject();
@@ -152,7 +154,25 @@ describe("Inject Decorators", () => {
     @injectable.other()
     class Test {
       dep: DepClass;
-      constructor(dep: DepClass) {
+      constructor(dep: DepClass,_?:string) {
+        this.dep = dep;
+      }
+    }
+
+    const resolved = module.resolve(Test);
+    expect(resolved?.dep).toBeInstanceOf(DepClass);
+  });
+
+  it("should register with token", () => {
+    const module = createAndUseInject();
+
+    @injectable.other("A1")
+    class DepClass {}
+
+    @injectable.other()
+    class Test {
+      dep: DepClass;
+      constructor(@inject("A1") dep: any) {
         this.dep = dep;
       }
     }

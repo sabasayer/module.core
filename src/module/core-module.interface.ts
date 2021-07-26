@@ -27,7 +27,6 @@ export type RegisterProviderOptions = {
 } & RegisterClassOptions;
 
 export type RegisterControllerOptions = {
-  provider?: IProviderConstructor | string;
   key?: string;
 } & RegisterClassOptions;
 
@@ -40,7 +39,7 @@ export type ModuleBootstrapOptions<T = any> = {
 export type KeyUnionType<T = any> =
   | string
   | IProviderConstructor
-  | IControllerConstructor<any, any>
+  | IControllerConstructor<any>
   | ICacheConstructor
   | IHTTPClientConstuctor
   | (new () => T);
@@ -87,16 +86,13 @@ export type ICoreModule = object & {
     key: string | IProviderConstructor
   ) => T | undefined;
 
-  registerController: <
-    TController extends IController,
-    TProvider extends IProvider
-  >(
-    controller: IControllerConstructor<TController, TProvider>,
+  registerController: <TController extends IController>(
+    controller: IControllerConstructor<TController>,
     options?: RegisterControllerOptions
   ) => ICoreModule;
 
-  resolveController: <T extends IController, TProvider extends IProvider>(
-    key: string | IControllerConstructor<T, TProvider>
+  resolveController: <T extends IController>(
+    key: string | IControllerConstructor<T>
   ) => T | undefined;
 
   clear: () => void;
