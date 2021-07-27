@@ -134,7 +134,6 @@ describe("Injectable Decorators", () => {
     expect(controller?.test).toBeInstanceOf(Test);
   });
 
-
   it("should register any other class with decorator", () => {
     const module = createAndUseInject();
 
@@ -154,7 +153,7 @@ describe("Injectable Decorators", () => {
     @injectable.other()
     class Test {
       dep: DepClass;
-      constructor(dep: DepClass,_?:string) {
+      constructor(dep: DepClass) {
         this.dep = dep;
       }
     }

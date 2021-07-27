@@ -10,6 +10,7 @@ import {
   TestModule,
 } from "../__mocks__/module.mock";
 import { globalModule } from "@/global-module/global-module";
+import { CustomModuleError, EnumCustomErrorType } from "@/custom-errors";
 
 describe("Module", () => {
   beforeEach(() => {
@@ -88,15 +89,10 @@ describe("Module", () => {
       module.register(Test);
       module.clear();
 
-      const api = module.resolveHttpClient();
-      const provider = module.resolveProvider(TestProvider);
-      const controller = module.resolveController(TestController);
-      const other = module.resolve(Test);
-
-      expect(api).toBeUndefined();
-      expect(provider).toBeUndefined();
-      expect(controller).toBeUndefined();
-      expect(other).toBeUndefined();
+      expect(() => module.resolveHttpClient()).toThrow();
+      expect(() => module.resolveProvider(TestProvider)).toThrow();
+      expect(() => module.resolveController(TestController)).toThrow();
+      expect(() => module.resolve(Test)).toThrow();
     });
   });
 
@@ -135,7 +131,9 @@ describe("Module", () => {
     it("should resolve Controller", () => {
       const module = createRegisterProvider();
 
-      module.registerController(TestController, { dependencies: [TestProvider] });
+      module.registerController(TestController, {
+        dependencies: [TestProvider],
+      });
 
       const controller = module.resolve(TestController);
 
@@ -224,6 +222,17 @@ describe("Module", () => {
 
       const resolved = module.resolve(TestClass);
       expect(resolved?.dep).toBeInstanceOf(DepClass);
+    });
+
+    it("should throw error if cannot resolve because not registered", async () => {
+      const module = createModule();
+
+      expect(() => module.resolve("test")).toThrow(
+        new CustomModuleError({
+          type: EnumCustomErrorType.Construction,
+          message: 'There is no class registered with key "test"',
+        })
+      );
     });
   });
 });

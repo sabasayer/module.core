@@ -112,21 +112,17 @@ export class CoreModule implements ICoreModule {
    * Checks 'Provider' | 'Controller' | 'HttpClient' suffix for key or name of class.
    * @param key
    */
-  resolve<T extends AppLayerUnionType>(key: KeyUnionType<T>): T | undefined {
+  resolve<T extends AppLayerUnionType>(key: KeyUnionType<T>): T {
     let name = this.getName(key);
 
     if (this.isClient(name))
-      return this.resolveHttpClient(key as IHTTPClientConstuctor) as
-        | T
-        | undefined;
+      return this.resolveHttpClient(key as IHTTPClientConstuctor) as T;
 
     if (this.isProvider(name))
-      return this.resolveProvider(key as IProviderConstructor) as T | undefined;
+      return this.resolveProvider(key as IProviderConstructor) as T;
 
     if (this.isController(name))
-      return this.resolveController(key as IControllerConstructor<any>) as
-        | T
-        | undefined;
+      return this.resolveController(key as IControllerConstructor<any>) as T;
 
     return this.resolveOther<T>(key);
   }
@@ -150,7 +146,7 @@ export class CoreModule implements ICoreModule {
 
   resolveHttpClient<T extends IHTTPClient>(
     client?: IHTTPClientConstuctor | string
-  ): T | undefined {
+  ): T {
     let instance = this.resolveHttpClientInstance(client);
     if (instance) return instance;
 
@@ -167,11 +163,13 @@ export class CoreModule implements ICoreModule {
   }
 
   private createHttpClientInstance(client?: IHTTPClientConstuctor | string) {
+    const name = client ? this.getName(client) : "HttpClient";
+
     const constructorObj = client
-      ? this.clientConstructors.get(this.getName(client))
+      ? this.clientConstructors.get(name)
       : this.clientConstructors.values().next().value;
 
-    if (!constructorObj) return;
+    if (!constructorObj) this.throwNotRegisteredError(name);
 
     const instance = new constructorObj.constructor(constructorObj.options);
     this.registerHttpClientInstance(instance);
@@ -198,9 +196,7 @@ export class CoreModule implements ICoreModule {
     return this;
   }
 
-  resolveProvider<T extends IProvider>(
-    key: string | IProviderConstructor
-  ): T | undefined {
+  resolveProvider<T extends IProvider>(key: string | IProviderConstructor): T {
     const instance = this.resolveProviderInstance<T>(key);
     if (instance) return instance;
 
@@ -221,12 +217,6 @@ export class CoreModule implements ICoreModule {
       key,
       (dependencies: any[], constructorObj: ProviderConstructorOptions) => {
         const client = this.resolveHttpClient(constructorObj.client);
-        if (!client)
-          throw new CustomModuleError({
-            message: "Http-Client is not registered.",
-            type: EnumCustomErrorType.Construction,
-          });
-
         return [client, ...dependencies];
       }
     );
@@ -250,7 +240,7 @@ export class CoreModule implements ICoreModule {
 
   resolveController<T extends IController>(
     key: string | IControllerConstructor<T>
-  ): T | undefined {
+  ): T {
     const instance = this.resolveControllerInstance(key);
     if (instance) return instance;
 
@@ -287,7 +277,7 @@ export class CoreModule implements ICoreModule {
     this.others.clear();
   }
 
-  private resolveOther<T>(key: KeyUnionType): T | undefined {
+  private resolveOther<T>(key: KeyUnionType): T {
     const instance = this.resolveOtherInstance<T>(key);
     if (instance) return instance;
 
@@ -311,7 +301,7 @@ export class CoreModule implements ICoreModule {
   ) {
     const name = this.getName(key);
     const constructorObj = constructorMap.get(name);
-    if (!constructorObj) return;
+    if (!constructorObj) this.throwNotRegisteredError(name);
 
     let dependencies = this.resolveDependencies(
       constructorObj.dependencies ?? []
@@ -354,5 +344,12 @@ export class CoreModule implements ICoreModule {
 
   private isClient(key: string | IHTTPClientConstuctor) {
     return this.getName(key).includes(this.clientSuffix);
+  }
+
+  private throwNotRegisteredError(key: string): never {
+    throw new CustomModuleError({
+      type: EnumCustomErrorType.Construction,
+      message: `There is no class registered with key "${key}"`,
+    });
   }
 }

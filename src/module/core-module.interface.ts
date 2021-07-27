@@ -55,7 +55,7 @@ export type ICoreModule = object & {
 
   useDecorators: (...decorators: IDecorator[]) => ICoreModule;
 
-  resolve: <T extends AppLayerUnionType>(key: KeyUnionType<T>) => T | undefined;
+  resolve: <T extends AppLayerUnionType>(key: KeyUnionType<T>) => T;
   register: <T>(
     constructor: new (...args: any[]) => T,
     options?: RegisterClassOptions
@@ -75,7 +75,7 @@ export type ICoreModule = object & {
 
   resolveHttpClient: <T extends IHTTPClient>(
     client?: IHTTPClientConstuctor
-  ) => T | undefined;
+  ) => T;
 
   registerProvider: (
     provider: IProviderConstructor,
@@ -84,7 +84,7 @@ export type ICoreModule = object & {
 
   resolveProvider: <T extends IProvider>(
     key: string | IProviderConstructor
-  ) => T | undefined;
+  ) => T;
 
   registerController: <TController extends IController>(
     controller: IControllerConstructor<TController>,
@@ -93,7 +93,7 @@ export type ICoreModule = object & {
 
   resolveController: <T extends IController>(
     key: string | IControllerConstructor<T>
-  ) => T | undefined;
+  ) => T;
 
   clear: () => void;
 };

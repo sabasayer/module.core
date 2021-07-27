@@ -15,7 +15,7 @@ describe("Module Provider", () => {
     module.registerProvider(TestProvider);
 
     expect(() => module.resolveProvider(TestProvider)).toThrowError(
-      "Http-Client is not registered."
+      'There is no class registered with key "HttpClient"'
     );
   });
 
