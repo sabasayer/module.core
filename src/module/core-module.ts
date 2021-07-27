@@ -25,7 +25,7 @@ import { coreLogger } from "../logger/core.logger";
 import { globalModule } from "../global-module/global-module";
 import { EnumCustomErrorType, CustomModuleError } from "../custom-errors";
 import type { IClassConstructor } from "../shared";
-import { EnumLocalizationKeys } from "@/localization/statics/localization-keys.enum";
+import { EnumLocalizationKeys } from "../localization/statics/localization-keys.enum";
 
 type OtherConstructorOptions = {
   constructor: new (...args: any[]) => any;

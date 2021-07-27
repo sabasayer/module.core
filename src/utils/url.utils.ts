@@ -1,4 +1,4 @@
-import { EnumLocalizationKeys } from "@/localization/statics/localization-keys.enum";
+import { EnumLocalizationKeys } from "../localization/statics/localization-keys.enum";
 import { CustomHttpClientError, EnumCustomErrorType } from "../custom-errors";
 import type { URLOptions } from "./types/url-options.interface";
 
