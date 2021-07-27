@@ -22,6 +22,18 @@ describe("Default Localization", () => {
     expect(res).toBe("Merhaba");
   });
 
+  it("should translate with arguments", () => {
+    defaultLocalization.setLang("tr");
+    defaultLocalization.setTranslations({
+      tr: {
+        hello: "Merhaba %s %s",
+      },
+    });
+
+    const res = defaultLocalization.translate("hello", "salih", "baki");
+    expect(res).toBe("Merhaba salih baki");
+  });
+
   it("should return null for non existence translation", () => {
     defaultLocalization.setLang("en");
 

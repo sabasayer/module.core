@@ -1,3 +1,5 @@
+import { EnumLocalizationKeys } from "@/localization/statics/localization-keys.enum";
+import { CustomHttpClientError, EnumCustomErrorType } from "../custom-errors";
 import type { URLOptions } from "./types/url-options.interface";
 
 class URLUtils {
@@ -9,7 +11,12 @@ class URLUtils {
       ? options.hostName
       : options.hostNames?.[currentHost];
 
-    if (!hostName) throw "hostName or proper hostNames must be defined";
+    if (!hostName)
+      throw new CustomHttpClientError({
+        type: EnumCustomErrorType.Construction,
+        message: EnumLocalizationKeys.HostNameError,
+        translate: true,
+      });
 
     const joined = [protocol, hostName, options.languagePrefix, options.prefix]
       .filter((e) => e)

@@ -1,3 +1,5 @@
+import { globalModule } from "@/global-module/global-module";
+import { defaultLocalization, EnumLocalizationKeys } from "@/localization";
 import type { URLOptions } from "../types/url-options.interface";
 import { urlUtils } from "../url.utils";
 
@@ -67,8 +69,14 @@ describe("URL Utils", () => {
   );
 
   it("should throw error if hostName and hostNames is not defined", () => {
-    expect(() => urlUtils.createBaseUrl({})).toThrowError(
-      "hostName or proper hostNames must be defined"
-    );
+    defaultLocalization.setLang("en-us");
+    defaultLocalization.setTranslations({
+      "en-us": {
+        [EnumLocalizationKeys.HostNameError]: "error",
+      },
+    });
+    globalModule.setLocalization(defaultLocalization);
+
+    expect(() => urlUtils.createBaseUrl({})).toThrowError("error");
   });
 });

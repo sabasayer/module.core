@@ -13,7 +13,9 @@ export class CustomError extends Error implements ICustomError {
 
     if (options.translate)
       message =
-        globalModule.getLocalization()?.translate(options.message) ?? "";
+        globalModule
+          .getLocalization()
+          ?.translate(options.message, ...(options.translateArgs ?? [])) ?? "";
 
     super(message);
     this.layer = options.layer;

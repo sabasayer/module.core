@@ -10,7 +10,7 @@ import {
   TestModule,
 } from "../__mocks__/module.mock";
 import { globalModule } from "@/global-module/global-module";
-import { CustomModuleError, EnumCustomErrorType } from "@/custom-errors";
+import { defaultLocalization, EnumLocalizationKeys } from "@/localization";
 
 describe("Module", () => {
   beforeEach(() => {
@@ -226,13 +226,15 @@ describe("Module", () => {
 
     it("should throw error if cannot resolve because not registered", async () => {
       const module = createModule();
+      defaultLocalization.setLang("en-us");
+      defaultLocalization.setTranslations({
+        "en-us": {
+          [EnumLocalizationKeys.NotRegisteredError]: "error %s",
+        },
+      });
+      globalModule.setLocalization(defaultLocalization);
 
-      expect(() => module.resolve("test")).toThrow(
-        new CustomModuleError({
-          type: EnumCustomErrorType.Construction,
-          message: 'There is no class registered with key "test"',
-        })
-      );
+      expect(() => module.resolve("test")).toThrowError('error test');
     });
   });
 });

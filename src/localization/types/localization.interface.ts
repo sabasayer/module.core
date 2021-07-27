@@ -3,7 +3,7 @@ export type ILocalization = {
   getLang(): string | null;
 
   setTranslations(translations: any): ILocalization;
-  translate(text?: string): string | null;
+  translate(text?: string, ...args: string[]): string | null;
 
   clear(): void;
 };

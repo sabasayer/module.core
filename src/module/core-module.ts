@@ -25,6 +25,7 @@ import { coreLogger } from "../logger/core.logger";
 import { globalModule } from "../global-module/global-module";
 import { EnumCustomErrorType, CustomModuleError } from "../custom-errors";
 import type { IClassConstructor } from "../shared";
+import { EnumLocalizationKeys } from "@/localization/statics/localization-keys.enum";
 
 type OtherConstructorOptions = {
   constructor: new (...args: any[]) => any;
@@ -349,7 +350,9 @@ export class CoreModule implements ICoreModule {
   private throwNotRegisteredError(key: string): never {
     throw new CustomModuleError({
       type: EnumCustomErrorType.Construction,
-      message: `There is no class registered with key "${key}"`,
+      message: EnumLocalizationKeys.NotRegisteredError,
+      translateArgs: [key],
+      translate: true,
     });
   }
 }

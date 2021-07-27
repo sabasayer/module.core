@@ -8,14 +8,24 @@ import {
   TestProvider,
 } from "../__mocks__/module.mock";
 import type { IRequestConfig } from "@/provider/types/request-config.interface";
+import { defaultLocalization, EnumLocalizationKeys } from "@/localization";
+import { globalModule } from "@/global-module/global-module";
 
 describe("Module Provider", () => {
   it("should throw error if api is not registered", () => {
     const module = createModule();
     module.registerProvider(TestProvider);
 
+    defaultLocalization.setLang("en-us");
+    defaultLocalization.setTranslations({
+      "en-us": {
+        [EnumLocalizationKeys.NotRegisteredError]: "error %s",
+      },
+    });
+    globalModule.setLocalization(defaultLocalization);
+
     expect(() => module.resolveProvider(TestProvider)).toThrowError(
-      'There is no class registered with key "HttpClient"'
+      "error HttpClient"
     );
   });
 

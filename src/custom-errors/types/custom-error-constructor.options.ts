@@ -6,4 +6,5 @@ export type CustomErrorConstructorOptions = {
   type: EnumCustomErrorType;
   message?: string;
   translate?: boolean;
+  translateArgs?: string[];
 };

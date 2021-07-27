@@ -1,9 +1,10 @@
+import { defaultTranslations } from "./statics/translations.const";
 import type { LocalizationTranslations } from "./types/localization-translations.interface";
 import type { ILocalization } from "./types/localization.interface";
 
 class DefaultLocalization implements ILocalization {
   private lang: string = "";
-  private translations: LocalizationTranslations = {};
+  private translations: LocalizationTranslations = defaultTranslations;
 
   setLang(lang: string) {
     this.lang = lang;
@@ -25,9 +26,17 @@ class DefaultLocalization implements ILocalization {
     return this;
   }
 
-  translate(text?: string) {
+  translate(text?: string, ...args: string[]) {
     if (!text) return null;
-    return this.translations[this.lang]?.[text] ?? null;
+    let res = this.translations[this.lang]?.[text] ?? null;
+
+    if (!res) return res;
+
+    if (args.length) {
+      args.forEach((e) => res && (res = res.replace("%s", e)));
+    }
+
+    return res;
   }
 
   clear() {
