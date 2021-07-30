@@ -14,7 +14,7 @@ export class ActionGuard<T> {
     } catch (error) {
       return {
         valid: false,
-        errorMessage: error?.toString(),
+        error: error,
       };
     }
   }

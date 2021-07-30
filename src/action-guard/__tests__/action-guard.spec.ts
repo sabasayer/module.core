@@ -37,7 +37,7 @@ describe("Action Guard", () => {
   it("should return throw error", async () => {
     const error = "Error";
     const actionGuard = createActionGuard((options: number) => {
-      if (options < 10) throw error;
+      if (options < 10) throw new Error(error);
 
       return true;
     });
@@ -45,7 +45,7 @@ describe("Action Guard", () => {
     const res = await actionGuard.validate(8);
     const expected: ValidationResult = {
       valid: false,
-      errorMessage: error,
+      error: new Error("Error"),
     };
     expect(res).toEqual(expected);
   });
