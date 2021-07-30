@@ -1,4 +1,5 @@
-import type { ValidationResult } from "@/shared";
+import { CustomError, EnumCustomErrorType } from "@/custom-errors";
+import { EnumAppLayer, ValidationResult } from "@/shared";
 import { createActionGuard, ValidatorFunc } from "../action-guard";
 
 describe("Action Guard", () => {
@@ -35,9 +36,13 @@ describe("Action Guard", () => {
   );
 
   it("should return throw error", async () => {
-    const error = "Error";
+    const error = new CustomError({
+      message: "Error",
+      type: EnumCustomErrorType.Permission,
+      layer: EnumAppLayer.Logic,
+    });
     const actionGuard = createActionGuard((options: number) => {
-      if (options < 10) throw new Error(error);
+      if (options < 10) throw error;
 
       return true;
     });
@@ -45,7 +50,11 @@ describe("Action Guard", () => {
     const res = await actionGuard.validate(8);
     const expected: ValidationResult = {
       valid: false,
-      error: new Error("Error"),
+      error: new CustomError({
+        message: "Error",
+        type: EnumCustomErrorType.Permission,
+        layer: EnumAppLayer.Logic,
+      }),
     };
     expect(res).toEqual(expected);
   });
