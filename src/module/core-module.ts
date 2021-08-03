@@ -26,6 +26,7 @@ import { globalModule } from "../global-module/global-module";
 import { EnumCustomErrorType, CustomModuleError } from "../custom-errors";
 import type { IClassConstructor } from "../shared";
 import { EnumLocalizationKeys } from "../localization/statics/localization-keys.enum";
+import type { LocalizationTranslations } from "../localization";
 
 type OtherConstructorOptions = {
   constructor: new (...args: any[]) => any;
@@ -79,8 +80,15 @@ export class CoreModule implements ICoreModule {
         options.httpClient,
         options.httpClientKey
       );
+
+      if (options.translations) this.setTranslations(options.translations);
     }
 
+    return this;
+  }
+
+  setTranslations(options: LocalizationTranslations) {
+    globalModule.getLocalization()?.setTranslations(options);
     return this;
   }
 

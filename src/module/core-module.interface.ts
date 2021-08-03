@@ -15,6 +15,7 @@ import type { IDecorator } from "../decorators/types/decorator.interface";
 import type { ICache } from "../cache";
 import type { ICacheConstructor } from "../cache/cache.interface";
 import type { IClassConstructor } from "../shared";
+import type { LocalizationTranslations } from "../localization";
 
 export type RegisterClassOptions = {
   key?: string;
@@ -33,6 +34,7 @@ export type RegisterControllerOptions = {
 export type ModuleBootstrapOptions<T = any> = {
   httpClient: IHTTPClient;
   httpClientKey?: string;
+  translations?: LocalizationTranslations;
   config?: T;
 };
 
@@ -52,6 +54,8 @@ export type ICoreModule = object & {
   bootstrap: (
     options?: ModuleBootstrapOptions
   ) => Promise<ICoreModule> | ICoreModule;
+
+  setTranslations: (options: LocalizationTranslations) => ICoreModule;
 
   useDecorators: (...decorators: IDecorator[]) => ICoreModule;
 

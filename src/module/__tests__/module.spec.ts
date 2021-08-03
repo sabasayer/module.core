@@ -35,6 +35,23 @@ describe("Module", () => {
 
       expect(resolvedClient).toBeInstanceOf(TestHttpClient);
     });
+
+    it("should set translations", () => {
+      globalModule.setLocalization(defaultLocalization);
+      const client = new TestHttpClient({ baseUrl: "test" });
+
+      const module = createModule();
+      module.bootstrap({
+        httpClient: client,
+        translations: {
+          tr: { test: "test" },
+        },
+      });
+
+      defaultLocalization.setLang("tr");
+      const res = defaultLocalization.translate("test");
+      expect(res).toBe("test");
+    });
   });
 
   describe("Http Client Algorithm", () => {
@@ -234,7 +251,7 @@ describe("Module", () => {
       });
       globalModule.setLocalization(defaultLocalization);
 
-      expect(() => module.resolve("test")).toThrowError('error test');
+      expect(() => module.resolve("test")).toThrowError("error test");
     });
   });
 });
