@@ -1,6 +1,10 @@
 import { defaultTranslations } from "./statics/translations.const";
-import type { LocalizationTranslations } from "./types/localization-translations.interface";
+import type {
+  LocalizationTranslations,
+  Translations,
+} from "./types/localization-translations.interface";
 import type { ILocalization } from "./types/localization.interface";
+import _get from "lodash/get";
 
 class DefaultLocalization implements ILocalization {
   private lang: string = "";
@@ -28,15 +32,15 @@ class DefaultLocalization implements ILocalization {
 
   translate(text?: string, ...args: string[]) {
     if (!text) return null;
-    let res = this.translations[this.lang]?.[text] ?? null;
+    let res = _get(this.translations[this.lang] ?? {}, text) ?? null;
 
     if (!res) return res;
 
     if (args.length) {
-      args.forEach((e) => res && (res = res.replace("%s", e)));
+      args.forEach((e) => res && (res = res.toString().replace("%s", e)));
     }
 
-    return res;
+    return res.toString();
   }
 
   clear() {
@@ -44,10 +48,7 @@ class DefaultLocalization implements ILocalization {
     this.translations = {};
   }
 
-  private combineLang(
-    lang: string,
-    langTranslations: { [key: string]: string }
-  ) {
+  private combineLang(lang: string, langTranslations: Translations) {
     this.translations[lang] = {
       ...this.translations[lang],
       ...langTranslations,

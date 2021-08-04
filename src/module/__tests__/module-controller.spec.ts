@@ -2,16 +2,13 @@ import {
   createRegisterProvider,
   createRegisterController,
   TestController,
-  TestProvider,
 } from "../__mocks__/module.mock";
 
 describe("Module Controller", () => {
   it("should register controller", () => {
     const module = createRegisterProvider();
 
-    module.registerController(TestController, {
-      provider: TestProvider,
-    });
+    module.registerController(TestController);
 
     const controller = module.resolveController("TestController");
 
@@ -22,7 +19,6 @@ describe("Module Controller", () => {
     const module = createRegisterProvider();
     module.registerController(TestController, {
       key: "test_controller",
-      provider: TestProvider,
     });
 
     const controller = module.resolveController("test_controller");

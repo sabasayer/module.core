@@ -22,6 +22,32 @@ describe("Default Localization", () => {
     expect(res).toBe("Merhaba");
   });
 
+  it("should access deep object and translate", () => {
+    defaultLocalization.setLang("tr");
+    defaultLocalization.setTranslations({
+      tr: {
+        first: {
+          second: "second",
+        },
+      },
+    });
+    const res = defaultLocalization.translate("first.second");
+    expect(res).toBe("second");
+  });
+
+  it("should access array and translate", () => {
+    defaultLocalization.setLang("tr");
+    defaultLocalization.setTranslations({
+      tr: {
+        first: {
+          arr: ["first", "second"],
+        },
+      },
+    });
+    const res = defaultLocalization.translate("first.arr[1]");
+    expect(res).toBe("second");
+  });
+
   it("should translate with arguments", () => {
     defaultLocalization.setLang("tr");
     defaultLocalization.setTranslations({
@@ -61,4 +87,6 @@ describe("Default Localization", () => {
     expect(hi).toBe("hi");
     expect(by).toBe("by");
   });
+
+  it;
 });

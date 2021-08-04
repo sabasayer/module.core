@@ -1,5 +1,7 @@
+export interface Translations {
+  [key: string]: string | string[] | Translations;
+}
+
 export interface LocalizationTranslations {
-  [lang: string]: {
-    [key: string]: string;
-  };
+  [lang: string]: Translations;
 }
