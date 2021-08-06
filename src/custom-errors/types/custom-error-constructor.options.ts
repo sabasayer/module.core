@@ -7,4 +7,5 @@ export type CustomErrorConstructorOptions = {
   message?: string;
   translate?: boolean;
   translateArgs?: string[];
+  children?: Error[];
 };

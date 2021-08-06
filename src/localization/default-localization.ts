@@ -1,4 +1,3 @@
-import { defaultTranslations } from "./statics/translations.const";
 import type {
   LocalizationTranslations,
   Translations,
@@ -8,7 +7,7 @@ import _get from "lodash/get";
 
 class DefaultLocalization implements ILocalization {
   private lang: string = "";
-  private translations: LocalizationTranslations = defaultTranslations;
+  private translations: LocalizationTranslations = {};
 
   setLang(lang: string) {
     this.lang = lang;

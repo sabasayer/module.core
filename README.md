@@ -13,6 +13,7 @@
     - [Mapper](#mapper)
     - [Cache](#cache)
     - [Action Guard](#action-guard)
+    - [Localizations](#localizations)
     - [Utilities](#utilities)
 
 # Module Based FrontEnd Orginazor
@@ -274,6 +275,33 @@ const res = await actionGuard.validate(12);
 
 const res2 = await actionGuard.validate(5);
 //res = { valid: true}
+
+```
+
+### [Localizations](#localizations)
+
+Register localization to globalModule and use it from there.
+There is a defaultLocalization with basic abilities
+
+```Typescript
+
+export const translations: LocalizationTranslations = {
+  "en-us": {
+    [EnumLocalizationKeys.HostNameError]:
+      "hostName or proper hostNames must be defined",
+    [EnumLocalizationKeys.NotRegisteredError]:
+      'There is no class registered with key "%s"',
+  },
+  "tr-tr": {
+    [EnumLocalizationKeys.HostNameError]:
+      "Uygun hostName veya hostNames tanımlanmalı",
+    [EnumLocalizationKeys.NotRegisteredError]:
+      '"%s" keyi ile bir sınıf kayıt edilmedi',
+  },
+};
+
+defaultLocalization.setTranslations(translations);
+globalModule.setLocalization(defaultLocalization)
 
 ```
 
